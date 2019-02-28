@@ -1,3 +1,4 @@
-from openjdk:8-jdk-alpine
-expose 8080
-entrypoint ["java","-jar","/app.jar"]
+FROM openjdk:8-jdk-alpine
+EXPOSE 8080
+VOLUME [ "/app" ]
+ENTRYPOINT ["java","-jar","/app/app.jar"]
