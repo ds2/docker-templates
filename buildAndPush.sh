@@ -15,5 +15,14 @@ function pushImage(){
     docker push "$tagName:$tagVersion"
 }
 
+function runTempImage(){
+    local tagName=$1
+    local tagVersion=${2:-latest}
+    echo "Testing image.."
+    local imgExec="docker run --rm -it $tagName:$tagVersion /bin/bash"
+    echo "Run: $imgExec"
+}
+
 buildImage "cicd/jkslave" "dstrauss/jk-jnlp-slave" "3.29-1"
-pushImage "dstrauss/jk-jnlp-slave" "3.29-1"
+# pushImage "dstrauss/jk-jnlp-slave" "3.29-1"
+runTempImage "dstrauss/jk-jnlp-slave" "3.29-1"
