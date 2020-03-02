@@ -3,4 +3,5 @@ FROM openjdk:8-jre-slim
 # RUN rm -rf /var/lib/apt/lists/* && apt-get purge --auto-remove && apt-get clean
 EXPOSE 8080 5151
 VOLUME [ "/app" ]
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+ENV JAVA_SYSTEM_PROPS "-Dmy.env=test -Dthis.Env=test"
+ENTRYPOINT ["java","$JAVA_SYSTEM_PROPS","-jar","/app/app.jar"]
