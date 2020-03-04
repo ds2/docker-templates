@@ -4,4 +4,6 @@ FROM openjdk:8-jre-slim
 EXPOSE 8080 5151
 VOLUME [ "/app" ]
 ENV JAVA_SYSTEM_PROPS "-Dmy.env=test -Dthis.Env=test"
-ENTRYPOINT ["java","$JAVA_SYSTEM_PROPS","-jar","/app/app.jar"]
+COPY runJar.sh /runJar.sh
+# CMD ["java","$JAVA_SYSTEM_PROPS","-jar","/app/app.jar"]
+ENTRYPOINT [ "/runJar.sh" ]
