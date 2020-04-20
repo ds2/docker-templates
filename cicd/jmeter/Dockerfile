@@ -1,5 +1,6 @@
 FROM azul/zulu-openjdk-alpine:8-jre
 ARG jmeterVersion=5.2.1
+EXPOSE 4445
 ENV JMETER_FILENAME=testplan.jmx
 RUN mkdir -p /jmeter-logs; mkdir -p /jmeter-src; mkdir -p /jmeter-results; chmod 777 /jmeter-src; chmod 777 /jmeter-logs; chmod 777 /jmeter-results
 RUN apk update && apk --upgrade add bash zsh curl unzip tar
