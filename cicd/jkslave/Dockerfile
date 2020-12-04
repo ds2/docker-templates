@@ -1,5 +1,5 @@
-FROM jenkins/jnlp-slave:4.3-4-jdk11
-LABEL version="4.3-4-jdk11"
+FROM jenkins/jnlp-slave:4.6-1-jdk11
+LABEL version="4.6-1-jdk11"
 USER root
 RUN apt-get update; \
     apt-get -y upgrade; \
