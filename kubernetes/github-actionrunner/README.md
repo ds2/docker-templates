@@ -6,7 +6,6 @@
 
 ## Test it first
 
-    docker run -it --rm opensuse/leap:15 /bin/bash
     docker run -it --rm delme:latest /bin/zsh
 
 ## Final Test
