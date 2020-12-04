@@ -1,5 +1,7 @@
 # Github ActionRunner sample
 
+A dummy container serving Java 11, Maven 3.6 and Gradle 4 as basic tools for CI support in Github as action runner. The idea is to run this on your machine or your server environment as support for GH actions.
+
 ## Build it
 
     docker build -t delme:latest .
