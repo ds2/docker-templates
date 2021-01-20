@@ -1,0 +1,15 @@
+# The following lines were added by compinstall
+#zstyle :compinstall filename '~/.zshrc'
+ZSH_THEME="ys"
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+# End of lines configured by zsh-newuser-install
+alias ls2='ls -alFh'
+alias less2='less -n +F'
+PROMPT='%(?.%F{green}√.%F{red}?%?)%f %B%F{240}%1~%f%b %# '
