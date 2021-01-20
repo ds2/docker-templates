@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM quay.io/ds2/alpine:3.13
 ARG terraformUrl014=https://releases.hashicorp.com/terraform/0.14.4/terraform_0.14.4_linux_amd64.zip
 ARG terraformUrl013=https://releases.hashicorp.com/terraform/0.13.6/terraform_0.13.6_linux_amd64.zip
 ARG terraformUrl012=https://releases.hashicorp.com/terraform/0.12.30/terraform_0.12.30_linux_amd64.zip
