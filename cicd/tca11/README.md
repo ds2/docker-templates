@@ -1,5 +1,7 @@
 # TeamCity Build Agent with Java 11
 
+[![Docker Repository on Quay](https://quay.io/repository/ds2/tc-buildagent-15/status "Docker Repository on Quay")](https://quay.io/repository/ds2/tc-buildagent-15)
+
 TeamCity is the CICD solution from Jetbrains. Check them out.
 
 I use their base image <https://hub.docker.com/r/jetbrains/teamcity-agent> to create an agent with java 11.
