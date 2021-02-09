@@ -6,6 +6,10 @@ TeamCity is the CICD solution from Jetbrains. Check them out.
 
 I use their base image <https://hub.docker.com/r/jetbrains/teamcity-agent> to create an agent with java 15.
 
+The current problem is that the TCA does not allow any Java version greater than 12. So, maybe you should ignore this image for now until a newer LTS version of Java is available and supported by TCA.
+
+*) TCA = TeamCity Agent
+
 ## How to build
 
     docker build -t tca15:latest .
