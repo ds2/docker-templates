@@ -13,3 +13,5 @@ I use their base image <https://hub.docker.com/r/jetbrains/teamcity-agent> to cr
 ## How to test
 
     docker run -it --rm tca15:latest java -version
+    export TC_URL=...
+    docker run -it --rm -e AGENT_NAME=testbuild1 -e SERVER_URL=$TC_URL -e DOCKER_IN_DOCKER=start tca15:latest
