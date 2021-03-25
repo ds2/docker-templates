@@ -19,3 +19,9 @@ See <https://www.payara.fish/>.
     docker run -it --rm -p 4848:4848 -p 8080:8080 -e JNDI_1_ID=testPool -e JNDI_1_DSCLASS=org.h2.jdbcx.JdbcDataSource -e JNDI_1_JNDI=jdbc/test1 -e JNDI_1_USER=sa -e JNDI_1_PW=123 -e JNDI_1_MINSIZE=1 -e "JNDI_1_URL=jdbc:h2:mem:testdb\;USER=sa\;PASSWORD=123\;INIT=create schema if not exists test" jeeserver:latest
 
 Login to <https://localhost:4848/> and use admin:admin as credentials. Check the JDBC Connection pools.
+
+## Build image with WAR files
+
+You can use $DEPLOY_DIR in your Dockerfile:
+
+    COPY target/myWar.war $DEPLOY_DIR/mywar.war

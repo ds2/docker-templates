@@ -1,7 +1,12 @@
 FROM payara/server-web:5.2021.1-jdk11
 EXPOSE 4848 8080
-VOLUME [ "/libs" ,"${SCRIPT_DIR}/init.d"]
+VOLUME [ "/libs" ]
+USER root
+RUN apt-get update; apt-get install -y curl
+RUN mkdir /libs; chmod 777 /libs
+RUN apt-get autoremove --purge; apt-get clean
 
+USER payara
 COPY registerJndis.sh ${SCRIPT_DIR}/init.d/
-COPY postgresql.jar /libs/
-COPY h2.jar /libs/
+COPY dl.sh /libs/dl.sh
+RUN cd /libs; ./dl.sh
