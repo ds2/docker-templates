@@ -2,7 +2,7 @@ FROM payara/server-full:5.2021.1-jdk11
 EXPOSE 4848 8080
 VOLUME [ "/libs" ]
 USER root
-RUN apt-get update; apt-get install -y curl
+RUN apt-get update; apt-get upgrade -y; apt-get install -y curl
 RUN mkdir /libs; chmod 777 /libs
 RUN apt-get autoremove --purge; apt-get clean
 
