@@ -1,0 +1,7 @@
+FROM payara/server-full:5.2021.1-jdk11
+EXPOSE 4848 8080
+VOLUME [ "/libs" ,"${SCRIPT_DIR}/init.d"]
+
+COPY registerJndis.sh ${SCRIPT_DIR}/init.d/
+COPY postgresql.jar /libs/
+COPY h2.jar /libs/
