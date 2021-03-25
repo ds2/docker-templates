@@ -1,6 +1,9 @@
 # Payara JNDI image
 
-To autoconfigure a payara server on boot to directly deploy JNDI WARs.
+[![Docker Repository on Quay](https://quay.io/repository/ds2/jeeserver-full/status "Docker Repository on Quay")](https://quay.io/repository/ds2/jeeserver-full)
+[![Docker Repository on Quay](https://quay.io/repository/ds2/jeeserver-web/status "Docker Repository on Quay")](https://quay.io/repository/ds2/jeeserver-web)
+
+To autoconfigure a payara server on boot to directly deploy JNDI configs.
 
 ## How to build
 
