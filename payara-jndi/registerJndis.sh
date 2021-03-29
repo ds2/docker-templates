@@ -2,25 +2,17 @@
 
 echo "Here we would run the JNDI registration.."
 
-DOMAIN="${DOMAIN:-domain1}"
+DOMAIN_NAME="${DOMAIN_NAME:-domain1}"
 
-cp /libs/*.jar ${PAYARA_DIR}/glassfish/domains/${DOMAIN}/lib/
+cp /libs/*.jar ${PAYARA_DIR}/glassfish/domains/${DOMAIN_NAME}/lib/
 
 POSTBOOTCMDS="${CONFIG_DIR}/post-boot-commands.asadmin"
-
-# if [ ! -z "${JNDI_1_ID}" ]; then
-#     echo "create-jdbc-connection-pool --datasourceclassname=org.postgresql.ds.PGConnectionPoolDataSource --restype javax.sql.ConnectionPoolDataSource --property \"user=n8w8dev:password=n8w8dev:serverName=localhost:portNumber=5433:databaseName=n8w8devdb\" --ping=true --steadypoolsize=1 --maxpoolsize=10 --maxwait=15000 --poolresize=2 --initsql=\"select 1\" --leaktimeout=300 --statementleaktimeout=240 --creationretryattempts=3 --statementtimeout=200 --statementcachesize=50 --description=\"the n8w8 jdbc pool\" ${JNDI_1_ID}" >>$POSTBOOTCMDS
-#     echo "create-jdbc-resource --connectionpoolid ${JNDI_1_ID} --description=\"The jndi link to the n8w8 jdbc pool\" jdbc/n8w8" >>$POSTBOOTCMDS
-# fi
 
 function fn() {
     echo ${!1}
 }
 
 function join_by() {
-    # local IFS=":"
-    # shift
-    # echo "$*"
     local separator=':'
     local first="$1"
     shift
@@ -56,11 +48,9 @@ function printAsAdm() {
         echo ""
     else
         CMD="create-jdbc-connection-pool --restype javax.sql.ConnectionPoolDataSource --ping=true  --maxwait=${JNDI_MAXWAIT:-2000} --initsql=\"${JNDI_INITSQL:-select 1}\"  --pooling=true"
-        # asadmin set domain.resources.jdbc-connection-pool.__TimerPool.slow-query-threshold-in-seconds=50
         CMD="$CMD --validateatmostonceperiod=300"
         CMD="$CMD --poolresize=${JNDI_RESIZE:-2} --steadypoolsize=${JNDI_MINSIZE:-0} --maxpoolsize=${JNDI_MAXSIZE:-5}"
         CMD="$CMD --statementtimeout=${JNDI_STATT0:-0} --statementcachesize=${JNDI_STCACHE:-0}"
-        # CMD="$CMD --statementleaktimeout=${JNDI_STATT0:-5}"
         if [ -n "$JNDI_LEAKT0" ]; then
             CMD="$CMD --leaktimeout=${JNDI_LEAKT0:-0} --leakreclaim=true"
         fi
@@ -70,8 +60,6 @@ function printAsAdm() {
         CMD="$CMD --creationretryattempts=3 --creationretryinterval=9"
         CMD="$CMD --logjdbccalls=${JNDI_SHOWSQL:-false}"
         CMD="$CMD --maxconnectionusagecount=${JNDI_MAXCONNUSE:-0}"
-        #  set resources.jdbc-connection-pool.test-pool.statement-leak-timeout-in-seconds=5
-        #asadmin> set resources.jdbc-connection-pool.test-pool.connection-leak-timeout-in-seconds=5
         if [ ! -z "$JNDI_DSCLASS" ]; then
             CMD="$CMD --datasourceclassname=${JNDI_DSCLASS}"
         else
