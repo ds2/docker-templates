@@ -1,3 +1,4 @@
 tmp
 .*
 target
+postgres-lqfw/test/sql/*.sh
