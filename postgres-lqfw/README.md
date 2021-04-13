@@ -12,4 +12,4 @@ Run:
 
 Run:
 
-    docker run -it --rm -v $(pwd)/test/lqdata:/db-data -v $(pwd)/test/pgconf:/pg-confs -v $(pwd)/test/lqdata:/docker-entrypoint-initdb.d    -e POSTGRES_PASSWORD=mysecretpw1 lqdb:latest
+    docker run -it --rm -v $(pwd)/test/lqdata:/db-data -v $(pwd)/test/pgconf:/pg-confs -v $(pwd)/test/sql:/docker-entrypoint-initdb.d    -e POSTGRES_PASSWORD=mysecretpw1 lqdb:latest

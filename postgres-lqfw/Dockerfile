@@ -16,7 +16,7 @@ ENV LANG de_DE.utf8
 ENV LQ_SH_DIR=/lq-scripts
 
 RUN whoami
-RUN apk update; apk add curl gzip tar
+RUN apk update; apk add curl gzip tar openjdk8-jre
 COPY liquibase.sh ${LQ_SH_DIR}/90-lqbase.sh
 COPY copyPgConfs.sh ${LQ_SH_DIR}/91-copyConfigs.sh
 COPY entrypoint.sh /lq-entrypoint.sh

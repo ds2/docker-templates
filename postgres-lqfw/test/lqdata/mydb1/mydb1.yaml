@@ -1,0 +1,41 @@
+databaseChangeLog:
+- changeSet:
+    id: 123-1
+    author: testuser
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: account_pkey
+            name: accountid
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: created
+            type: TIMESTAMP WITH TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: createdby
+            type: VARCHAR(255)
+        - column:
+            name: modified
+            type: TIMESTAMP WITH TIME ZONE
+        - column:
+            name: modifiedby
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: stateid
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: zoneid
+            type: BIGINT
+        tableName: account
