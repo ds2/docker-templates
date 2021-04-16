@@ -2,13 +2,13 @@
 
 export PATH=$PATH:${LQ_BIN_DIR}
 
-function performLqCall(){
+function performLqCall() {
     local dbName=$1
     echo "- will sleep for $LQ_SLEEP seconds.."
     sleep $LQ_SLEEP
     local lqDataExecDir="/tmp/lq-${dbName}"
     mkdir -p $lqDataExecDir
-    cp $DATA_DIR/${d}/*.yaml $lqDataExecDir/
+    cp -r $DATA_DIR/${d}/* $lqDataExecDir/
     cd $lqDataExecDir
     if [ -f liquibase.properties ]; then
         echo "found lq props file, ignoring creation"
@@ -20,7 +20,7 @@ logLevel=info
 url=jdbc:postgresql://localhost:5432/${dbName}
 username=${POSTGRES_USER}
 password=${POSTGRES_PASSWORD}
-# liquibaseSchemaName=public
+# liquibaseSchemaName=s1
 driver=org.postgresql.Driver
 classpath=/db-libs/postgresql.jar
 liquibase.hub.mode=off
@@ -28,6 +28,29 @@ EOF
     fi
     liquibase --contexts="${LQ_CTXS}" update
     liquibase --contexts="${LQ_CTXS}" validate
+}
+
+function printDatabaseSchemas() {
+    local dataDir=$1
+    local dbName=$2
+    local dbDirectory="$dataDir/$dbName"
+    cd $dbDirectory
+    DIRECTORIES=$(find . -type d)
+    COUNT_DIRECTORIES=$(echo "$DIRECTORIES" | wc -l)
+    if [ $COUNT_DIRECTORIES -gt 1 ]; then
+        for s in $DIRECTORIES; do
+            if [ "." = "$d" ]; then
+                continue
+            fi
+            if [[ "$s" =~ ^\./.* ]]; then
+                s="${s:2}"
+            fi
+            local yamlFile=$dataDir/$dbName/${s}/${dbName}.yaml
+            if [ -f "$yamlFile" ]; then
+                echo "$s"
+            fi
+        done
+    fi
 }
 
 cd $DATA_DIR
@@ -40,9 +63,10 @@ for d in $DATABASES; do
         d="${d:2}"
     fi
     echo "Checking directory $d for db yaml file"
+    printDatabaseSchemas "$DATA_DIR" "$d"
     YAMLFILE="$DATA_DIR/${d}/${d}.yaml"
     if [ -f "$YAMLFILE" ]; then
-        echo "found database file, will schedule execution in the future"
+        echo "found public database file, will schedule execution in the future"
         performLqCall "$d" &
     else
         echo "No yaml file $YAMLFILE found, ignoring."
