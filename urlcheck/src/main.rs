@@ -75,7 +75,7 @@ pub fn read_csv_data(path: &std::path::Path, records: &mut Vec<Record>) -> Resul
 fn main() {
     pretty_env_logger::init();
     info!("Url Checker");
-    let default_timeout_str = env::var("URL_TIMEOUT").unwrap_or("30".into_string());
+    let default_timeout_str = env::var("URL_TIMEOUT").unwrap_or("30".to_string());
     let default_timeout: u64 = default_timeout_str.parse().unwrap();
     let csv_file = env::var("CSV_FILE").unwrap_or("/to_check/urls.csv".to_string());
     let csv_file_path = std::path::Path::new(&csv_file);
