@@ -1,26 +1,62 @@
+#[macro_use]
+extern crate log;
+extern crate pretty_env_logger;
+extern crate reqwest;
+
+use std::env;
 use std::error::Error;
 use std::io;
 use std::process;
+use std::time::Duration;
+use std::vec::Vec;
+
 use log::{info, trace, warn};
-
-extern crate pretty_env_logger;
-#[macro_use] extern crate log;
-
+use reqwest::redirect::Policy;
+use reqwest::StatusCode;
 use serde::Deserialize;
+use url::Url;
 
-#[derive(Debug, Deserialize)]
-struct Record {
-    url: String,
-    timeout: Option<u8>,
+mod tests;
+
+#[derive(Debug)]
+enum HttpMethods {
+    GET,
+    HEAD,
+    POST,
+    PUT,
+    DELETE,
 }
 
-fn readCsvData() -> Result<(), Box<dyn Error>> {
-    let mut rdr = csv::Reader::from_reader(io::stdin());
+#[derive(Debug, Deserialize)]
+pub struct Record {
+    url: String,
+    timeout: Option<u8>,
+    method: Option<String>,
+}
+
+pub fn urlExists(url: &url::Url) -> bool {
+    let client = reqwest::blocking::Client::builder()
+        .timeout(Option::Some(Duration::from_secs(30)))
+        .redirect(Policy::limited(20))
+        .build().unwrap();
+    let res = client.get(url.to_string()).send();
+    if res.is_ok() {
+        let httpStatusCode=res.unwrap().status();
+        info!("Status for {}: {}", url, httpStatusCode);
+        return httpStatusCode.as_u16() < 400;
+    }
+    return false;
+}
+
+pub fn readCsvData(path: &std::path::Path, records: &mut Vec<Record>) -> Result<(), Box<dyn Error>> {
+    debug!("Will test with csv from {:?}", path);
+    let mut rdr = csv::Reader::from_path(path).unwrap();
     for result in rdr.deserialize() {
         // The iterator yields Result<StringRecord, Error>, so we check the
         // error here.
         let thisUrl: Record = result?;
-        trace!("{:?}", thisUrl);
+        debug!("{:?}", thisUrl);
+        records.push(thisUrl)
     }
     Ok(())
 }
@@ -28,4 +64,34 @@ fn readCsvData() -> Result<(), Box<dyn Error>> {
 fn main() {
     pretty_env_logger::init();
     info!("Url Checker");
+    let csvFile = env::var("CSV_FILE").unwrap_or("/to_check/urls.csv".to_string());
+    let csvFilePath = std::path::Path::new(&csvFile);
+    let mut recordsUnderTest = Vec::new();
+
+    if csvFilePath.exists() {
+        readCsvData(csvFilePath, &mut recordsUnderTest);
+    } else {
+        //assert we try a single url
+        let oneUrlRecord = Record {
+            url: env::var("URL").unwrap_or("http://localhost/".to_string()),
+            timeout: None,
+            method: Option::Some("GET".to_string()),
+        };
+        recordsUnderTest.push(oneUrlRecord);
+    }
+    info!("Starting tests..");
+    for thisRecord in recordsUnderTest {
+        let url = url::Url::parse(&thisRecord.url);
+        if url.is_ok() {
+            let thisUrl = url.unwrap();
+            info!("Checking url {}", thisUrl);
+            if urlExists(&thisUrl) {
+                info!("- looks good :)");
+            } else {
+                error!("- not good :(");
+            }
+        } else {
+            error!("Error when parsing url: {}", url.err().unwrap());
+        }
+    }
 }
