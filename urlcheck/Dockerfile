@@ -10,5 +10,7 @@ RUN find .
 COPY opsgenie.sh /opsgenie.sh
 RUN chmod a+x /opsgenie.sh
 ENV ON_EACH_FAIL="/opsgenie.sh"
+ENV URL_TIMEOUT=20
 ENV RUST_LOG=info
+#ENV CSV_FILE=/data/urls.csv
 CMD ["urlcheck"]
