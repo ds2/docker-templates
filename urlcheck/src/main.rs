@@ -126,7 +126,12 @@ fn main() {
                 let output = Command::new(&fail_cmd2)
                     .arg(url)
                     .output();
-                println!("{:?}", output.unwrap())
+                let o2 = output.unwrap();
+                info!("{:?}", o2);
+                if o2.status.code().unwrap() > 0 {
+                    error!("The command to report the error errored as well. Will give up here, sry.");
+                    exit(2);
+                }
             }
         } else {
             exit(1);

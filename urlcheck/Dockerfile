@@ -1,16 +1,19 @@
-FROM rust:latest as build
-WORKDIR /usr/src/myapp
-COPY src/* src/
-COPY Cargo.* ./
+FROM rust:latest as builder
+WORKDIR /usr/src
+COPY src ./src
+COPY Cargo.toml Cargo.lock ./
 RUN cargo install --path .
-RUN find .
 
-#FROM alpine:latest
-#COPY --from=builder /usr/local/cargo/bin/urlcheck /usr/local/bin/urlcheck
+FROM debian:buster-slim
+RUN apt-get clean; apt-get update && apt-get install -y bash ca-certificates openssl && rm -rf /var/lib/apt/lists/*
+COPY --from=builder /usr/local/cargo/bin/urlcheck /usr/local/bin/urlcheck
 COPY opsgenie.sh /opsgenie.sh
-RUN chmod a+x /opsgenie.sh
 ENV ON_EACH_FAIL="/opsgenie.sh"
-ENV URL_TIMEOUT=20
+# ENV OPSGEN_APIKEY="12345"
+# ENV OPSGEN_TEAM_NAME="My Team Name"
+# ENV OPSGEN_PRIO="P1"
+ENV URL_TIMEOUT=10
 ENV RUST_LOG=info
 #ENV CSV_FILE=/data/urls.csv
-CMD ["urlcheck"]
+USER 1000
+CMD ["/usr/local/bin/urlcheck"]
