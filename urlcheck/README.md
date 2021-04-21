@@ -28,3 +28,4 @@ Run:
 ## How to Test
 
     docker run -it --rm -e URL=https://www.pcwelt.de/ urlchecker:latest
+    docker run -it --rm -e CSV_FILE=/test/test.csv -v $(pwd):/test urlchecker:latest
