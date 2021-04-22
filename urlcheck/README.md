@@ -27,5 +27,12 @@ Run:
 
 ## How to Test
 
+### Test a single url
+
     docker run -it --rm -e URL=https://www.pcwelt.de/ urlchecker:latest
+
+### Test many urls
+
+Create a CSV file and map it into the container.
+
     docker run -it --rm -e CSV_FILE=/test/test.csv -v $(pwd):/test urlchecker:latest
