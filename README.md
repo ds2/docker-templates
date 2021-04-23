@@ -21,3 +21,7 @@ In case the quay.io builder is not working due to "requestlimit" issues, you can
     docker login quay.io
 
 Use your quay.io Username and the "Docker CLI" encrypted password to login.
+
+After that you can build your image, and then:
+
+    ./buildAndPush.sh -d MYDIRECTORY -r MYQUAYIOBASE

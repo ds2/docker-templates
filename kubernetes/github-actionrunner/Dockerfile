@@ -1,4 +1,4 @@
-FROM opensuse/leap:15
+FROM ubuntu:latest
 ARG USR=gitrunner
 ARG VERSION=2.278.0
 ENV HOSTNAME=myrunner01
@@ -9,17 +9,21 @@ ENV USR=${USR}
 ENV LABELS="localtest,dkr,mylabel1"
 # ENV LC_ALL de_DE.UTF-8
 ENV LANGUAGE de_DE.UTF-8
-ENV JAVA_HOME=/usr/lib/jvm/zulu-11
-RUN zypper --non-interactive up
-RUN zypper --non-interactive in bash zsh curl docker unzip gzip libicu libunwind less
+ENV JAVA_HOME=/usr/lib/jvm/zulu-11-amd64
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update; apt-get -y upgrade
+RUN apt-get install -y curl gnupg2
+
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB1998361219BD9C9
+RUN curl -o /tmp/zulu.deb https://cdn.azul.com/zulu/bin/zulu-repo_1.0.0-2_all.deb
+RUN apt-get install /tmp/zulu.deb; apt-get update
+RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime; apt-get install -y --no-install-recommends tzdata
+
+RUN apt-get install -y bash zsh docker unzip gzip less gnupg2 maven gradle nodejs npm zulu-11
 RUN useradd -c "Github Actionrunner User" -g users -m -s /bin/zsh ${USR}
 RUN mkdir -p /work; chmod 777 /work; chown ${USR}:users /work
 VOLUME [ "/work" ]
-
-RUN rpm --import https://www.azul.com/files/0xB1998361219BD9C9.txt
-RUN zypper --non-interactive in https://cdn.azul.com/zulu/bin/zulu11.43.55-ca-jdk11.0.9.1-linux.x86_64.rpm maven gradle
-
-RUN zypper --non-interactive in nodejs npm
 
 USER ${USR}
 WORKDIR /home/${USR}
