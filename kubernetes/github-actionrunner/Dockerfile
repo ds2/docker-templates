@@ -1,6 +1,6 @@
 FROM opensuse/leap:15
 ARG USR=gitrunner
-ARG VERSION=2.274.2
+ARG VERSION=2.278.0
 ENV HOSTNAME=myrunner01
 ENV REPOTOKEN=MYSECRETTOKEN
 ENV REPOURL=https://github.com/my/path/to/repo
@@ -17,7 +17,7 @@ RUN mkdir -p /work; chmod 777 /work; chown ${USR}:users /work
 VOLUME [ "/work" ]
 
 RUN rpm --import https://www.azul.com/files/0xB1998361219BD9C9.txt
-RUN zypper --non-interactive in https://cdn.azul.com/zulu/bin/zulu11.43.55-ca-jdk11.0.9.1-linux.x86_64.rpm maven gradle
+RUN zypper --non-interactive in https://cdn.azul.com/zulu/bin/zulu11.43.55-ca-jdk11.0.9.1-linux.x86_64.rpm maven gradle npm nodejs yarn
 
 USER ${USR}
 WORKDIR /home/${USR}

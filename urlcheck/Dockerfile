@@ -5,7 +5,7 @@ COPY Cargo.toml Cargo.lock ./
 RUN cargo install --path .
 
 FROM debian:buster-slim
-RUN apt-get clean; apt-get update && apt-get install -y bash ca-certificates openssl && rm -rf /var/lib/apt/lists/*
+RUN apt-get clean; apt-get update && apt-get install -y bash ca-certificates openssl curl && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/local/cargo/bin/urlcheck /usr/local/bin/urlcheck
 COPY opsgenie.sh /opsgenie.sh
 ENV ON_EACH_FAIL="/opsgenie.sh"
