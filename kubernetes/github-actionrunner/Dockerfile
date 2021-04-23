@@ -25,6 +25,7 @@ USER ${USR}
 WORKDIR /home/${USR}
 ADD entrypoint.sh /entrypoint.sh
 SHELL [ "/bin/zsh" ,"-c"]
+ADD health.sh /health.sh
 ADD ZSHRC.txt /home/${USR}/.zshrc
 RUN pwd; curl -O -L https://github.com/actions/runner/releases/download/v${VERSION}/actions-runner-linux-x64-${VERSION}.tar.gz; tar xzf ./actions-runner-linux-x64-${VERSION}.tar.gz
 ENTRYPOINT [ "/entrypoint.sh" ]

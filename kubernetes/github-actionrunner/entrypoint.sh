@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 echo "Will configure this container now with hostname $HOSTNAME.."
 cd ~
-./config.sh --url $REPOURL --token $REPOTOKEN --name $HOSTNAME --work /work --unattended --replace --labels "${LABELS}"
+./config.sh --url $REPOURL --token $REPOTOKEN --name $HOSTNAME --work /work --unattended --replace --labels "${LABELS}" || exit 1
 
 if [ -r "/secrets/maven-settings.xml" ]; then
     echo "Installing maven settings.."
