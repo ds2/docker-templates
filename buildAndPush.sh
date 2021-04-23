@@ -47,5 +47,5 @@ function buildImage(){
 buildImage "$DIRECTORY" "$REPO"
 
 if [ $PUSH -eq 1 ]; then
-    pushImage "$REPO"
+    uploadImage "$REPO"
 fi
