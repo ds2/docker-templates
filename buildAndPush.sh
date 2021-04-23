@@ -1,33 +1,51 @@
 #!/usr/bin/env bash
 
+GITHASH=$(git rev-parse --short=10 HEAD)
+
+PUSH=0
+DIRECTORY=""
+REPO=""
+
+while getopts ':pd:b:r:' OPTION; do
+    case "$OPTION" in
+    p) PUSH=1 ;;
+    d) DIRECTORY="$OPTARG" ;;
+    r) REPO="$OPTARG";;
+    *) echo "Unbekannter Parameter" ;;
+    \?) echo "Invalid param: $OPTARG" ;;
+    esac
+done
+
+if [ -z "$DIRECTORY" ]; then
+    echo "Directory is missing! Use -d DIR"
+    exit 1
+fi
+if [ -z "$REPO" ]; then
+    echo "Repository is missing! Use -r REPOBASENAME"
+    exit 1
+fi
+
+function uploadImage() {
+    local repo="$1"
+    echo "Retagging $repo from latest to $GITHASH"
+    docker tag ${repo}:latest ${repo}:${GITHASH} || exit 1
+    echo "Pushing image with hash first.."
+    docker push ${repo}:${GITHASH} || exit 2
+    echo "And now the latest tag"
+    docker push ${repo}:latest || exit 3
+}
+
 function buildImage(){
-    local dkrPath=$1
-    local tagName=$2
-    local tagVersion=${3:-latest}
-    echo "Building image from $dkrPath with tagName $tagName and tag $tagVersion.."
-    docker build --pull --rm -f "$dkrPath/Dockerfile" -t "$tagName:$tagVersion" "$dkrPath"
+    local dir=$1
+    local repo=$2
+    echo "Building image $repo.."
+    docker build -t "${repo}:latest" $dir
+    echo "You may run the image now via:"
+    echo "  docker run -it --rm ${repo}:latest"
 }
 
-function pushImage(){
-    local tagName=$1
-    local tagVersion=${2:-latest}
-    echo "Pushing image $tagName with tag $tagVersion to Docker Hub.."
-    docker push "$tagName:$tagVersion"
-}
+buildImage "$DIRECTORY" "$REPO"
 
-function runTempImage(){
-    local tagName=$1
-    local tagVersion=${2:-latest}
-    echo "Testing image.."
-    local imgExec="docker run --rm -it $tagName:$tagVersion /bin/bash"
-    echo "Run: $imgExec"
-}
-
-echo "Building some images with tags.."
-# buildImage "cicd/jkslave" "dstrauss/jk-jnlp-slave" "3.29-1"
-buildImage "cicd/jmeter" "dstrauss/jmeter-runner" "5.1.1"
-
-echo "Pushing some of these now to Docker.."
-# pushImage "dstrauss/jk-jnlp-slave" "3.29-1"
-pushImage "dstrauss/jmeter-runnter" "5.1.1"
-# runTempImage "dstrauss/jk-jnlp-slave" "3.29-1"
+if [ $PUSH -eq 1 ]; then
+    pushImage "$REPO"
+fi
