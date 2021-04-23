@@ -6,12 +6,12 @@ A dummy container serving Java 11, Maven 3.6 and Gradle 4 as basic tools for CI 
 
 ## Build it
 
-    docker build -t delme:latest .
+    docker build -t quay.io/ds2/github-actionrunner:latest .
 
 ## Test it first
 
-    docker run -it --rm delme:latest /bin/zsh
+    docker run -it --rm quay.io/ds2/github-actionrunner:latest /bin/zsh
 
 ## Final Test
 
-    docker run -it --rm -e REPOURL=https://github.com/my/repo/url -e REPOTOKEN=MYTOKEN delme:latest
+    docker run -it --rm -e REPOURL=https://github.com/my/repo/url -e REPOTOKEN=MYTOKEN quay.io/ds2/github-actionrunner:latest

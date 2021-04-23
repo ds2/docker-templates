@@ -17,13 +17,15 @@ RUN mkdir -p /work; chmod 777 /work; chown ${USR}:users /work
 VOLUME [ "/work" ]
 
 RUN rpm --import https://www.azul.com/files/0xB1998361219BD9C9.txt
-RUN zypper --non-interactive in https://cdn.azul.com/zulu/bin/zulu11.43.55-ca-jdk11.0.9.1-linux.x86_64.rpm maven gradle npm nodejs yarn
+RUN zypper --non-interactive in https://cdn.azul.com/zulu/bin/zulu11.43.55-ca-jdk11.0.9.1-linux.x86_64.rpm maven gradle
+
+RUN zypper --non-interactive in nodejs npm
 
 USER ${USR}
 WORKDIR /home/${USR}
 ADD entrypoint.sh /entrypoint.sh
 SHELL [ "/bin/zsh" ,"-c"]
 ADD ZSHRC.txt /home/${USR}/.zshrc
-RUN pwd; curl -O -L https://github.com/actions/runner/releases/download/v${VERSION}/actions-runner-linux-x64-${VERSION}.tar.gz; tar xzf ./actions-runner-linux-x64-2.274.2.tar.gz
+RUN pwd; curl -O -L https://github.com/actions/runner/releases/download/v${VERSION}/actions-runner-linux-x64-${VERSION}.tar.gz; tar xzf ./actions-runner-linux-x64-${VERSION}.tar.gz
 ENTRYPOINT [ "/entrypoint.sh" ]
 CMD [ "/home/${USR}/run.sh" ]
