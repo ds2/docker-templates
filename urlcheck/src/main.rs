@@ -52,10 +52,24 @@ pub struct TestResponse {
     connection_error: bool,
 }
 
+trait TestResult {
+    fn was_successful(&self) -> bool;
+    fn not_successful(&self) -> bool;
+}
+
+impl TestResult for TestResponse {
+    fn was_successful(&self) -> bool {
+        return !self.connection_error && self.response_code < 400 && self.response_code > 0;
+    }
+    fn not_successful(&self) -> bool {
+        return self.connection_error || self.response_code >= 400;
+    }
+}
+
 type BoxResult<T> = Result<T, Box<dyn Error>>;
 
 
-pub fn test_url(url: &url::Url, t0: u64) -> Result<TestResponse, Box<dyn Error>> {
+pub fn test_url(url: &url::Url, t0: u64) -> TestResponse {
     let client = reqwest::blocking::Client::builder()
         .timeout(Option::Some(Duration::from_secs(t0)))
         .redirect(Policy::limited(20))
@@ -74,35 +88,11 @@ pub fn test_url(url: &url::Url, t0: u64) -> Result<TestResponse, Box<dyn Error>>
         let http_status_code = res.unwrap().status();
         debug!("Status for {}: {}", url, http_status_code);
         response_object.response_code = http_status_code.as_u16();
-        if http_status_code.as_u16() >= 400 {
-            warn!("- The url {} returned status code {}!!", url, http_status_code)
-        }
     } else {
         warn!("- Error when connecting to url: {:?}", res.err().unwrap());
         response_object.connection_error = true
     }
-    Ok(response_object)
-}
-
-#[deprecated]
-pub fn url_exists(url: &url::Url, t0: u64) -> bool {
-    let client = reqwest::blocking::Client::builder()
-        .timeout(Option::Some(Duration::from_secs(t0)))
-        .redirect(Policy::limited(20))
-        .build().unwrap();
-    let res = client.get(url.to_string()).send();
-    if res.is_ok() {
-        let http_status_code = res.unwrap().status();
-        debug!("Status for {}: {}", url, http_status_code);
-        let was_successful = http_status_code.as_u16() < 400;
-        if !was_successful {
-            warn!("- The url {} returned status code {}!!", url, http_status_code)
-        }
-        return was_successful;
-    } else {
-        warn!("- Error when connecting to url: {:?}", res.err().unwrap())
-    }
-    return false;
+    response_object
 }
 
 pub fn read_csv_data(path: &std::path::Path, records: &mut Vec<Record>) -> Result<(), Box<dyn Error>> {
@@ -176,11 +166,18 @@ fn main() {
                 let tx_cloned = tx.clone();
                 thread::spawn(move || {
                     info!("Checking url {} with t0={:?}", this_url, this_record.timeout);
-                    let test_result = test_url(&this_url, this_record.timeout.unwrap_or(default_timeout));
-                    if test_result.is_ok() {
-                        tx_cloned.send(test_result.unwrap()).expect("Could not push result to TX channel!");
+                    let mut test_result = test_url(&this_url, this_record.timeout.unwrap_or(default_timeout));
+                    for _ in 1..2 {
+                        if test_result.not_successful() {
+                            debug!("test before was unsuccessful, try retest..");
+                            thread::sleep(Duration::from_secs(5));
+                            test_result = test_url(&this_url, this_record.timeout.unwrap_or(default_timeout));
+                        } else {
+                            break;
+                        }
                     }
                     debug!("done with check thread");
+                    tx_cloned.send(test_result).expect("Could not push result to TX channel!");
                 });
             } else {
                 warn!("Error when parsing url: {}", url.err().unwrap());
