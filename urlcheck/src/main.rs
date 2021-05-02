@@ -21,10 +21,9 @@ extern crate pretty_env_logger;
 extern crate reqwest;
 extern crate simple_error;
 
-use std::env;
+use std::{env, thread};
 use std::error::Error;
 use std::process::{Command, exit};
-use std::sync::{Arc, Barrier};
 use std::sync::mpsc::channel;
 use std::time::Duration;
 use std::vec::Vec;
@@ -34,7 +33,6 @@ use log::{info, warn};
 use reqwest::redirect::Policy;
 use serde::Deserialize;
 use simple_error::bail;
-use threadpool::ThreadPool;
 
 mod tests;
 
@@ -169,31 +167,30 @@ fn main() {
         records_under_test.push(one_url_record);
     }
     info!("Starting tests..");
-    let n_workers = 2;
-    let pool = ThreadPool::new(n_workers);
     let (tx, rx) = channel();
-    let barrier = Arc::new(Barrier::new(records_under_test.len() + 1));
-    for this_record in records_under_test {
-        let url = url::Url::parse(&this_record.url);
-        if url.is_ok() {
-            let this_url = url.unwrap();
-            let tx_cloned = tx.clone();
-            let barrier_cloned = barrier.clone();
-            pool.execute(move || {
-                info!("Checking url {} with t0={:?}", this_url, this_record.timeout);
-                let test_result = test_url(&this_url, this_record.timeout.unwrap_or(default_timeout));
-                if test_result.is_ok() {
-                    tx_cloned.send(test_result.unwrap()).expect("Could not push result to TX channel!");
-                }
-                barrier_cloned.wait();
-            });
-        } else {
-            warn!("Error when parsing url: {}", url.err().unwrap());
-            failed_records.push(this_record);
+    let pool_handle = thread::spawn(move || {
+        for this_record in records_under_test {
+            let url = url::Url::parse(&this_record.url);
+            if url.is_ok() {
+                let this_url = url.unwrap();
+                let tx_cloned = tx.clone();
+                thread::spawn(move || {
+                    info!("Checking url {} with t0={:?}", this_url, this_record.timeout);
+                    let test_result = test_url(&this_url, this_record.timeout.unwrap_or(default_timeout));
+                    if test_result.is_ok() {
+                        tx_cloned.send(test_result.unwrap()).expect("Could not push result to TX channel!");
+                    }
+                    debug!("done with check thread");
+                });
+            } else {
+                warn!("Error when parsing url: {}", url.err().unwrap());
+                failed_records.push(this_record);
+            }
         }
-    }
+    });
+
     info!("Waiting for tests to complete..");
-    barrier.wait();
+    pool_handle.join().unwrap();
     info!("Checking results..");
     let test_responses: Vec<TestResponse> = rx.into_iter().collect();
     debug!("Start iterator for all responses");
