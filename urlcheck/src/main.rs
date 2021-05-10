@@ -31,31 +31,14 @@ use std::vec::Vec;
 use chrono::prelude::*;
 use log::{info, warn};
 use reqwest::redirect::Policy;
-use serde::Deserialize;
-use simple_error::bail;
 
+use crate::uc_methods::{parse_tag_string, report_url, read_csv_data, test_url};
+use crate::uc_types::{CsvRecord, TestResponse, TestResult, BoxResult};
+use std::borrow::Borrow;
+
+mod uc_types;
 mod tests;
-
-#[derive(Debug, Deserialize)]
-pub struct Record {
-    url: String,
-    timeout: Option<u64>,
-    method: Option<String>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct TestResponse {
-    url: String,
-    duration: u64,
-    response_code: u16,
-    // 0 means client connect error
-    connection_error: bool,
-}
-
-trait TestResult {
-    fn was_successful(&self) -> bool;
-    fn not_successful(&self) -> bool;
-}
+mod uc_methods;
 
 impl TestResult for TestResponse {
     fn was_successful(&self) -> bool {
@@ -66,78 +49,10 @@ impl TestResult for TestResponse {
     }
 }
 
-type BoxResult<T> = Result<T, Box<dyn Error>>;
-
-
-pub fn test_url(url: &url::Url, t0: u64) -> TestResponse {
-    let client = reqwest::blocking::Client::builder()
-        .timeout(Option::Some(Duration::from_secs(t0)))
-        .redirect(Policy::limited(20))
-        .build().unwrap();
-    let start_time = Local::now();
-    let res = client.get(url.to_string()).send();
-    let end_time = Local::now();
-    let duration = end_time.signed_duration_since(start_time).to_std().unwrap();
-    let mut response_object = TestResponse {
-        url: url.to_string(),
-        duration: duration.as_millis() as u64,
-        response_code: 0,
-        connection_error: false,
-    };
-    if res.is_ok() {
-        let http_status_code = res.unwrap().status();
-        debug!("Status for {}: {}", url, http_status_code);
-        response_object.response_code = http_status_code.as_u16();
-    } else {
-        warn!("- Error when connecting to url: {:?}", res.err().unwrap());
-        response_object.connection_error = true
-    }
-    response_object
-}
-
-pub fn read_csv_data(path: &std::path::Path, records: &mut Vec<Record>) -> Result<(), Box<dyn Error>> {
-    debug!("Will test with csv from {:?}", path);
-    let mut rdr = csv::Reader::from_path(path).unwrap();
-    for result in rdr.deserialize() {
-        // The iterator yields Result<StringRecord, Error>, so we check the
-        // error here.
-        let this_url: Record = result?;
-        debug!("{:?}", this_url);
-        records.push(this_url)
-    }
-    Ok(())
-}
-
-pub fn report_url(response: &TestResponse) -> BoxResult<()> {
-    if !response.connection_error && response.response_code < 400 {
-        info!("Result: {} -> HTTP {} in {}ms", response.url, response.response_code, response.duration);
-    } else {
-        //could be an error
-        let fail_cmd = env::var("ON_EACH_FAIL");
-        if fail_cmd.is_ok() {
-            let fail_cmd2 = fail_cmd.unwrap();
-            let output = Command::new(&fail_cmd2)
-                .arg(response.url.to_string())
-                .arg(response.duration.to_string())
-                .arg(response.response_code.to_string())
-                .arg(response.connection_error.to_string())
-                .output();
-            let o2 = output.unwrap();
-            info!("{:?}", o2);
-            if o2.status.code().unwrap() > 0 {
-                // error!("The command to report the error errored as well. Will give up here, sry.");
-                bail!("The command exited with error! Please check your alert script!");
-            }
-        } else {
-            warn!("No fail command given. Will ignore reporting for url {}!", response.url)
-        }
-    }
-    Ok(())
-}
-
 fn main() {
     pretty_env_logger::init();
     info!("Url Checker");
+    let retry_count: u8 = env::var("RETRY_COUNT").unwrap_or("2".to_string()).parse().expect("Retry count could not be parsed!");
     let default_timeout_str = env::var("URL_TIMEOUT").unwrap_or("30".to_string());
     let default_timeout: u64 = default_timeout_str.parse().unwrap();
     let csv_file = env::var("CSV_FILE").unwrap_or("/to_check/urls.csv".to_string());
@@ -149,10 +64,11 @@ fn main() {
         read_csv_data(csv_file_path, &mut records_under_test).unwrap();
     } else {
         //assert we try a single url
-        let one_url_record = Record {
+        let one_url_record = CsvRecord {
             url: env::var("URL").unwrap_or("http://localhost/".to_string()),
             timeout: None,
-            method: Option::Some("GET".to_string()),
+            method: Some("GET".to_string()),
+            tags: None,
         };
         records_under_test.push(one_url_record);
     }
@@ -163,15 +79,18 @@ fn main() {
             let url = url::Url::parse(&this_record.url);
             if url.is_ok() {
                 let this_url = url.unwrap();
+                let http_method = this_record.method.unwrap_or("GET".to_string());
+                let max_timeout_value = this_record.timeout.unwrap_or(default_timeout);
+                let tags = parse_tag_string(this_record.tags, ' ');
                 let tx_cloned = tx.clone();
                 thread::spawn(move || {
-                    info!("Checking url {} with t0={:?}", this_url, this_record.timeout);
-                    let mut test_result = test_url(&this_url, this_record.timeout.unwrap_or(default_timeout));
-                    for _ in 1..2 {
+                    info!("Checking url {} with t0={:?}", this_url, max_timeout_value);
+                    let mut test_result = test_url(&this_url, max_timeout_value, http_method.borrow(), &tags);
+                    for _ in 1..retry_count {
                         if test_result.not_successful() {
                             debug!("test before was unsuccessful, try retest..");
                             thread::sleep(Duration::from_secs(5));
-                            test_result = test_url(&this_url, this_record.timeout.unwrap_or(default_timeout));
+                            test_result = test_url(&this_url, max_timeout_value, http_method.borrow(), &tags);
                         } else {
                             break;
                         }
@@ -200,3 +119,4 @@ fn main() {
     }
     info!("Done :)")
 }
+

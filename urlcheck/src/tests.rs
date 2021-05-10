@@ -17,25 +17,34 @@
  */
 #[cfg(test)]
 mod tests {
+
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
-    use crate::{url_exists, read_csv_data};
+    use crate::uc_methods::{parse_tag_string, read_csv_data};
+
+// #[test]
+    // fn test_urlExists() {
+    //     let url = url::Url::parse("https://www.google.com/").unwrap();
+    //     assert_eq!(test_url(url_exists(&url),5000,"GET",), true);
+    // }
+    //
+    // #[test]
+    // fn test_urlExists2() {
+    //     let url = url::Url::parse("https://www.pcwelt.de/").unwrap();
+    //     assert_eq!(url_exists(&url), true);
+    // }
 
     #[test]
-    fn test_urlExists() {
-        let url=url::Url::parse("https://www.google.com/").unwrap();
-        assert_eq!(url_exists(&url), true);
-    }
-
-    #[test]
-    fn test_urlExists2() {
-        let url=url::Url::parse("https://www.pcwelt.de/").unwrap();
-        assert_eq!(url_exists(&url), true);
-    }
-
-    #[test]
-    fn test_runWithCsvFile(){
+    fn test_runWithCsvFile() {
         let csvFilePath = std::path::Path::new("test.csv");
-        read_csv_data(csvFilePath);
+        let mut datasets = &mut vec![];
+        read_csv_data(csvFilePath, datasets);
+    }
+
+    #[test]
+    fn test_no_tags() {
+        let mytagstring = None;
+        let tags = parse_tag_string(mytagstring, ';');
+        assert_eq!(tags.len(), 0)
     }
 }
