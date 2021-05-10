@@ -18,7 +18,7 @@
 #[cfg(test)]
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
-    use crate::uc_methods::{parse_tag_string, read_csv_data};
+    use crate::uc_methods::{parse_tag_string_by_whitespace, read_csv_data};
 
 // #[test]
     // fn test_urlExists() {
@@ -42,7 +42,24 @@ mod tests {
     #[test]
     fn test_no_tags() {
         let mytagstring = None;
-        let tags = parse_tag_string(mytagstring, ';');
+        let tags = parse_tag_string_by_whitespace(mytagstring);
         assert_eq!(tags.len(), 0)
+    }
+
+    #[test]
+    fn test_one_tag() {
+        let mytagstring = Some("hello".to_string());
+        let tags = parse_tag_string_by_whitespace(mytagstring);
+        assert_eq!(tags.len(), 1);
+        assert_eq!(tags.get(0).expect("no hello"), "hello");
+    }
+
+    #[test]
+    fn test_two_tag() {
+        let mytagstring = Some("hello world".to_string());
+        let tags = parse_tag_string_by_whitespace(mytagstring);
+        assert_eq!(tags.len(), 2);
+        assert_eq!(tags.get(0).expect("no hello"), "hello");
+        assert_eq!(tags.get(1).expect("no world"), "world");
     }
 }

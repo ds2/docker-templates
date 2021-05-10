@@ -9,8 +9,8 @@ use simple_error::bail;
 
 use crate::uc_types::{BoxResult, CsvRecord, TestResponse};
 
-pub fn parse_tag_string(tag_string: Option<String>, sep: char) -> Vec<String> {
-    debug!("Got string {:?} to separate via {}", tag_string, sep);
+pub fn parse_tag_string_by_whitespace(tag_string: Option<String>) -> Vec<String> {
+    debug!("Got string {:?} to separate", tag_string);
     let tag_string = tag_string.unwrap_or("".to_string());
     let found_tags_splitted = tag_string.split_whitespace();
     return found_tags_splitted.map(|item| (item.to_string())).collect();

@@ -30,7 +30,7 @@ use std::vec::Vec;
 
 use log::{info, warn};
 
-use crate::uc_methods::{parse_tag_string, read_csv_data, report_url, test_url};
+use crate::uc_methods::{parse_tag_string_by_whitespace, read_csv_data, report_url, test_url};
 use crate::uc_types::{CsvRecord, TestResponse, TestResult};
 
 mod uc_types;
@@ -78,7 +78,7 @@ fn main() {
                 let this_url = url.unwrap();
                 let http_method = this_record.method.unwrap_or("GET".to_string());
                 let max_timeout_value = this_record.timeout.unwrap_or(default_timeout);
-                let tags = parse_tag_string(this_record.tags, ' ');
+                let tags = parse_tag_string_by_whitespace(this_record.tags);
                 let tx_cloned = tx.clone();
                 thread::spawn(move || {
                     info!("Checking url {} with t0={:?}", this_url, max_timeout_value);
