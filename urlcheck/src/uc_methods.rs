@@ -1,13 +1,13 @@
 use std::env;
 use std::error::Error;
 use std::process::Command;
+use std::time::Duration;
 
+use chrono::Local;
+use reqwest::redirect::Policy;
 use simple_error::bail;
 
 use crate::uc_types::{BoxResult, CsvRecord, TestResponse};
-use std::time::Duration;
-use reqwest::redirect::Policy;
-use chrono::Local;
 
 pub fn parse_tag_string(tag_string: Option<String>, sep: char) -> Vec<String> {
     debug!("Got string {:?} to separate via {}", tag_string, sep);

@@ -17,9 +17,7 @@
  */
 #[cfg(test)]
 mod tests {
-
     // Note this useful idiom: importing names from outer (for mod tests) scope.
-    use super::*;
     use crate::uc_methods::{parse_tag_string, read_csv_data};
 
 // #[test]
@@ -35,10 +33,10 @@ mod tests {
     // }
 
     #[test]
-    fn test_runWithCsvFile() {
-        let csvFilePath = std::path::Path::new("test.csv");
-        let mut datasets = &mut vec![];
-        read_csv_data(csvFilePath, datasets);
+    fn test_run_with_csv_file() {
+        let csv_file_path = std::path::Path::new("test.csv");
+        let datasets = &mut vec![];
+        read_csv_data(csv_file_path, datasets).expect("Error when reading the CSV!");
     }
 
     #[test]

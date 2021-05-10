@@ -1,6 +1,5 @@
 use std::error::Error;
 
-#[macro_use]
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]

@@ -22,19 +22,16 @@ extern crate reqwest;
 extern crate simple_error;
 
 use std::{env, thread};
-use std::error::Error;
-use std::process::{Command, exit};
+use std::borrow::Borrow;
+use std::process::exit;
 use std::sync::mpsc::channel;
 use std::time::Duration;
 use std::vec::Vec;
 
-use chrono::prelude::*;
 use log::{info, warn};
-use reqwest::redirect::Policy;
 
-use crate::uc_methods::{parse_tag_string, report_url, read_csv_data, test_url};
-use crate::uc_types::{CsvRecord, TestResponse, TestResult, BoxResult};
-use std::borrow::Borrow;
+use crate::uc_methods::{parse_tag_string, read_csv_data, report_url, test_url};
+use crate::uc_types::{CsvRecord, TestResponse, TestResult};
 
 mod uc_types;
 mod tests;
