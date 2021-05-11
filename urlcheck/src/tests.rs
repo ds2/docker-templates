@@ -18,19 +18,14 @@
 #[cfg(test)]
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
-    use crate::uc_methods::{parse_tag_string_by_whitespace, read_csv_data};
+    use crate::uc_methods::{parse_tag_string_by_whitespace, read_csv_data, test_url};
+    use crate::uc_types::TestResult;
 
-// #[test]
-    // fn test_urlExists() {
-    //     let url = url::Url::parse("https://www.google.com/").unwrap();
-    //     assert_eq!(test_url(url_exists(&url),5000,"GET",), true);
-    // }
-    //
-    // #[test]
-    // fn test_urlExists2() {
-    //     let url = url::Url::parse("https://www.pcwelt.de/").unwrap();
-    //     assert_eq!(url_exists(&url), true);
-    // }
+    #[test]
+    fn test_url_exists() {
+        let url = url::Url::parse("https://www.google.com/").unwrap();
+        assert_eq!(test_url(&url, 5000, "GET", &vec![]).was_successful(), true);
+    }
 
     #[test]
     fn test_run_with_csv_file() {
