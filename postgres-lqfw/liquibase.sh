@@ -4,8 +4,11 @@ export PATH=$PATH:${LQ_BIN_DIR}
 
 function performLqCall() {
     local dbName=$1
-    echo "- will sleep for $LQ_SLEEP seconds.."
-    sleep $LQ_SLEEP
+    echo "- waiting ${LQ_SLEEP} seconds for Liquibase execution.."
+    while true; do
+        exec 6<>/dev/tcp/127.0.0.1/5432 || sleep 1
+        break
+    done
     local lqDataExecDir="/tmp/lq-${dbName}"
     mkdir -p $lqDataExecDir
     cp -r $DATA_DIR/${d}/* $lqDataExecDir/
