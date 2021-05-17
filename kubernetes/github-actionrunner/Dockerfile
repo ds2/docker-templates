@@ -23,7 +23,8 @@ RUN apt-get install /tmp/zulu.deb; apt-get update
 RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime; apt-get install -y --no-install-recommends tzdata
 
 RUN apt-get install -y bash zsh docker unzip gzip less gnupg2 maven gradle zulu-11 git
-RUN apt-get install -y xvfb nodejs npm
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y xvfb nodejs
 RUN useradd -c "Github Actionrunner User" -g users -m -s /bin/zsh ${USR}; apt-get install sudo;
 COPY --chown=root:root sudoers.txt /etc/sudoers.d/10-ghar
 RUN mkdir -p /work; chmod 777 /work; chown ${USR}:users /work
