@@ -1,7 +1,13 @@
 #!/usr/bin/env zsh
 echo "Will configure this container now with hostname $HOSTNAME.."
 cd ~
-./config.sh --url $REPOURL --token $REPOTOKEN --name $HOSTNAME --work /work --unattended --replace --labels "${LABELS}" || exit 1
+if [ -z "$DRYRUN" ]; then
+    ./config.sh --url $REPOURL --token $REPOTOKEN --name $HOSTNAME --work /work --unattended --replace --labels "${LABELS}" || exit 1
+else
+    echo "Dryrun enabled! Will not kill container if error!"
+    ./config.sh --url $REPOURL --token $REPOTOKEN --name $HOSTNAME --work /work --unattended --replace --labels "${LABELS}"
+fi
+
 
 if [ -r "/secrets/maven-settings.xml" ]; then
     echo "Installing maven settings.."
@@ -9,4 +15,4 @@ if [ -r "/secrets/maven-settings.xml" ]; then
 fi
 
 echo "Running now the cmd.."
-eval $@
+eval "$@"
