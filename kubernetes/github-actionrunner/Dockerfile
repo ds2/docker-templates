@@ -29,6 +29,8 @@ COPY --chown=root:root sudoers.txt /etc/sudoers.d/10-ghar
 RUN mkdir -p /work; chmod 777 /work; chown ${USR}:users /work
 VOLUME [ "/work" ]
 
+RUN rm -rf /var/lib/apt/lists/* && apt-get purge --auto-remove && apt-get clean
+
 USER ${USR}
 WORKDIR /home/${USR}
 ADD entrypoint.sh /entrypoint.sh
