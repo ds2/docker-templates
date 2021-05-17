@@ -39,7 +39,7 @@ function buildImage(){
     local dir=$1
     local repo=$2
     echo "Building image $repo.."
-    docker build -t "${repo}:latest" $dir
+    docker build -t "${repo}:latest" $dir || exit 1
     echo "You may run the image now via:"
     echo "  docker run -it --rm ${repo}:latest"
 }
