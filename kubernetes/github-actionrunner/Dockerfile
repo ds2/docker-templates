@@ -1,4 +1,4 @@
-FROM ubuntu:21.04
+FROM public.ecr.aws/lts/ubuntu:latest
 ARG USR=gitrunner
 ARG VERSION=2.278.0
 ENV HOSTNAME=myrunner01
