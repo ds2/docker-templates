@@ -20,7 +20,7 @@ RUN curl -o /tmp/zulu.deb https://cdn.azul.com/zulu/bin/zulu-repo_1.0.0-2_all.de
 RUN apt-get install /tmp/zulu.deb; apt-get update
 RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime; apt-get install -y --no-install-recommends tzdata
 
-RUN apt-get install -y bash zsh docker unzip gzip less gnupg2 maven gradle nodejs npm zulu-11
+RUN apt-get install -y bash zsh docker unzip gzip less gnupg2 maven gradle nodejs npm zulu-11 git
 RUN useradd -c "Github Actionrunner User" -g users -m -s /bin/zsh ${USR}
 RUN mkdir -p /work; chmod 777 /work; chown ${USR}:users /work
 VOLUME [ "/work" ]
