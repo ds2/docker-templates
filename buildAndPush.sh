@@ -4,7 +4,7 @@ GITHASH=$(git rev-parse --short=10 HEAD)
 
 PUSH=0
 DIRECTORY=""
-REPO=""
+REPO="delme"
 
 while getopts ':pd:b:r:' OPTION; do
     case "$OPTION" in
