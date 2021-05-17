@@ -1,4 +1,5 @@
-FROM public.ecr.aws/lts/ubuntu:latest
+#FROM public.ecr.aws/lts/ubuntu:latest
+FROM ubuntu:bionic
 ARG USR=gitrunner
 ARG VERSION=2.278.0
 ENV HOSTNAME=myrunner01
@@ -11,6 +12,7 @@ ENV LABELS="localtest,dkr,mylabel1"
 ENV LANGUAGE de_DE.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/zulu-11-amd64
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/Berlin
 
 RUN apt-get update; apt-get -y upgrade
 RUN apt-get install -y curl gnupg2
