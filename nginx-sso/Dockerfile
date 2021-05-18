@@ -1,5 +1,6 @@
 FROM openresty/openresty:1.19.3.1-alpine
 MAINTAINER Hans Kristian Flaatten <hans.flaatten@evry.com>
+EXPOSE 80 8080
 
 ENV \
  SESSION_VERSION=2.22 \
@@ -9,7 +10,7 @@ ENV \
  HMAC_VERSION=989f601acbe74dee71c1a48f3e140a427f2d03ae
 
 RUN \
- apk update && apk upgrade && apk add curl && \
+ apk update && apk upgrade && apk add curl perl && \
  cd /tmp && \
  curl -sSL https://github.com/bungle/lua-resty-session/archive/v${SESSION_VERSION}.tar.gz | tar xz && \
  curl -sSL https://github.com/pintsized/lua-resty-http/archive/v${HTTP_VERSION}.tar.gz | tar xz  && \
@@ -24,8 +25,8 @@ RUN \
  rm -rf /tmp/* && \
  mkdir -p /usr/local/openresty/nginx/conf/hostsites/ && \
  true
+RUN opm install zmartzone/lua-resty-openidc
+# COPY bootstrap.sh /usr/local/openresty/bootstrap.sh
+COPY nginx.conf /etc/nginx/conf.d/dirk.conf
 
-COPY bootstrap.sh /usr/local/openresty/bootstrap.sh
-COPY nginx /usr/local/openresty/nginx/
-
-ENTRYPOINT ["/usr/local/openresty/bootstrap.sh"]
+# ENTRYPOINT ["/usr/local/openresty/bootstrap.sh"]
