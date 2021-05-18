@@ -13,4 +13,6 @@ Now you can build the image:
 
 ## How to test
 
-    docker run -it --rm -p 8081:80 nginx-sso:latest
+    docker run -it --rm -p 8081:8080 nginx-sso:latest
+
+Open <http://localhost:8081/> now.

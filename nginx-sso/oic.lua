@@ -4,7 +4,7 @@ local opts = {
     -- ngx.var.scheme.."://"..ngx.var.http_host..opts.redirect_uri
     -- unless the scheme was overridden using opts.redirect_uri_scheme or an X-Forwarded-Proto header in the incoming request
     redirect_uri = "https://MY_HOST_NAME/redirect_uri",
-    -- up until version 1.6.1 you'd specify
+    -- up until version 1.6.1 you would specify
     -- redirect_uri_path = "/redirect_uri",
     -- and could not set the hostname
 
@@ -48,10 +48,10 @@ local opts = {
     -- redirect_after_logout_with_id_token_hint = true,
     -- Whether the redirection after logout should include the id token as an hint (if available). This option is used only if redirect_after_logout_uri is set.
     -- post_logout_redirect_uri = "https://www.zmartzone.eu/logoutSuccessful",
-    -- Where does the RP requests that the OP redirects the user after logout. If this option is set to a relative URI, it will be relative to the OP's logout endpoint, not the RP's.
+    -- Where does the RP requests that the OP redirects the user after logout. If this option is set to a relative URI, it will be relative to the OPs logout endpoint, not the RPs.
 
     -- accept_none_alg = false
-    -- if your OpenID Connect Provider doesn't sign its id tokens
+    -- if your OpenID Connect Provider doesnt sign its id tokens
     -- (uses the "none" signature algorithm) then set this to true.
 
     -- accept_unsupported_alg = true
