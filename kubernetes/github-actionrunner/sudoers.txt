@@ -1,1 +1,1 @@
-gitrunner    ALL=(root) NOPASSWD:/bin/bash
+gitrunner    ALL=(root) NOPASSWD:/bin/zsh
