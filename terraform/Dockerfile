@@ -1,4 +1,4 @@
-FROM quay.io/ds2/alpine:3.13
+FROM alpine:3.13
 ARG terraformUrl015=https://releases.hashicorp.com/terraform/0.15.3/terraform_0.15.3_linux_amd64.zip
 ARG terraformUrl014=https://releases.hashicorp.com/terraform/0.14.11/terraform_0.14.11_linux_amd64.zip
 ARG terraformUrl013=https://releases.hashicorp.com/terraform/0.13.7/terraform_0.13.7_linux_amd64.zip
@@ -10,6 +10,10 @@ ARG TFUSER=tfuser
 ARG TFUSERID=1000
 
 ENV TIMEZONE=Europe/Berlin
+ENV TF_DATA_DIR=/tf-data
+ENV TF_LOG_PATH=/tf-logs/terraform.log
+#ENV TF_INPUT=0
+#ENV TF_IN_AUTOMATION=true
 
 # Initial setup
 RUN apk update
@@ -51,7 +55,7 @@ RUN apk del .build-deps
 
 # Final setup
 RUN rm /tmp/*.zip
-RUN mkdir /tf; chmod 0777 /tf; touch /tf/install_here_your_tf_files.tf
+RUN mkdir /tf /tf-logs ${TF_DATA_DIR}; chmod 0777 /tf ${TF_DATA_DIR} /tf-logs; touch /tf/install_here_your_tf_files.tf
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
 USER ${TFUSER}
