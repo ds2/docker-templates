@@ -20,5 +20,4 @@ Run:
 
 Push to quay.io:
 
-    docker tag operatorsdk:latest quay.io/ds2/operator-sdk-cicd:latest
-    docker push quay.io/ds2/operator-sdk-cicd:latest
+    ./buildAndPush.sh -d operator-sdk -r quay.io/ds2/operator-sdk-cicd -p
