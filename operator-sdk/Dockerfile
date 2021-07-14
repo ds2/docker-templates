@@ -6,5 +6,3 @@ RUN export ARCH=$(case $(uname -m) in x86_64) echo -n amd64 ;; aarch64) echo -n 
     echo "Will use this url to download the sdk binary: ${OPERATOR_SDK_DL_URL}/operator-sdk_${OS}_${ARCH}" && \
     curl -LO ${OPERATOR_SDK_DL_URL}/operator-sdk_${OS}_${ARCH} && \
     chmod +x operator-sdk_${OS}_${ARCH} && mv operator-sdk_${OS}_${ARCH} /usr/local/bin/operator-sdk
-
-USER 1000
