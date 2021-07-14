@@ -1,5 +1,7 @@
 # Build image for Operator-SDK on Gitlab
 
+[![Docker Repository on Quay](https://quay.io/repository/ds2/operator-sdk-cicd/status "Docker Repository on Quay")](https://quay.io/repository/ds2/operator-sdk-cicd)
+
 This image is for building kubernetes operators using the Operator SDK.
 
 ## How to build
