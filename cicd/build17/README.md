@@ -1,15 +1,17 @@
-# CICD Java 8 image
+[![Docker Repository on Quay](https://quay.io/repository/ds2/cicd-17/status "Docker Repository on Quay")](https://quay.io/repository/ds2/cicd-17)
 
-to test software via IntelliJ in Docker
+# CICD Java 17 image
+
+An image to be used in IntelliJ to run projects with a non-ide java version.
 
 ## How to build this image
 
 Run:
 
-    docker build -t cicd:17 .
+    docker build -t quay.io/ds2/cicd-17:latest .
 
 ## How to test
 
 Run:
 
-    docker run -it --rm cicd:17
+    docker run -it --rm quay.io/ds2/cicd-17:latest
