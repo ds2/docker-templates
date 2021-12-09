@@ -1,5 +1,5 @@
 FROM azul/zulu-openjdk-alpine:8
-RUN apk add gradle maven bash zsh git
+RUN apk --update add --no-cache gradle maven bash zsh git
 WORKDIR /src
 ENV JAVA_HOME=/usr/lib/jvm/zulu8
 ENV LANG=de_DE.UTF-8
