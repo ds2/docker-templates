@@ -3,8 +3,7 @@ RUN apk update; apk upgrade; apk --update add --no-cache gradle maven bash zsh g
 WORKDIR /src
 ENV JAVA_HOME=/usr/lib/jvm/zulu8
 ENV LANG=de_DE.UTF-8
-RUN rm /usr/lib/jvm/default-jvm; ln -s /usr/lib/jvm/zulu8 /usr/lib/jvm/default-jvm
-# CMD [ "java","-version" ]
+RUN rm /usr/lib/jvm/default-jvm; ln -s ${JAVA_HOME} /usr/lib/jvm/default-jvm
 RUN adduser -s /bin/zsh -D -u 1000 cicd
 RUN rm -rf /var/cache/apk/*
 
