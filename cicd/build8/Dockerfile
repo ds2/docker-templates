@@ -1,11 +1,12 @@
 FROM azul/zulu-openjdk-alpine:8
-RUN apk --update add --no-cache gradle maven bash zsh git
+RUN apk update; apk upgrade; apk --update add --no-cache gradle maven bash zsh git
 WORKDIR /src
 ENV JAVA_HOME=/usr/lib/jvm/zulu8
 ENV LANG=de_DE.UTF-8
 RUN rm /usr/lib/jvm/default-jvm; ln -s /usr/lib/jvm/zulu8 /usr/lib/jvm/default-jvm
 # CMD [ "java","-version" ]
 RUN adduser -s /bin/zsh -D -u 1000 cicd
+RUN rm -rf /var/cache/apk/*
 
 USER cicd
 RUN touch ~/.zshrc; echo "PROMPT=\"%h-\u231a %* %n@%m: %~ > \"" > ~/.zshrc
