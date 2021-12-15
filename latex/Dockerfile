@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:3.15.0
 RUN apk upgrade --update-cache --available
 RUN apk add texlive bash
 RUN adduser -s /bin/bash -u 1000 -D latex
