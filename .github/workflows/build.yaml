@@ -43,7 +43,7 @@ jobs:
         with:
           context: ./${{env.REPO_PATH}}
   terraform:
-    name: build image
+    name: build image terraform
     runs-on: ubuntu-latest
     env:
       REPO_PATH: terraform
@@ -60,7 +60,7 @@ jobs:
         with:
           context: ./${{env.REPO_PATH}}
   payara-jndi-web:
-    name: build image
+    name: build image payara web
     runs-on: ubuntu-latest
     env:
       REPO_PATH: 'payara-jndi-web'
@@ -77,7 +77,7 @@ jobs:
         with:
           context: ./${{env.REPO_PATH}}
   payara-jndi-full:
-    name: build image
+    name: build image payara full
     runs-on: ubuntu-latest
     env:
       REPO_PATH: 'payara-jndi-full'
@@ -94,7 +94,7 @@ jobs:
         with:
           context: ./${{env.REPO_PATH}}
   k8s-fw:
-    name: build image
+    name: build image k8s filewatcher
     runs-on: ubuntu-latest
     env:
       REPO_PATH: 'kubernetes/filewatcher'
@@ -111,7 +111,7 @@ jobs:
         with:
           context: ./${{env.REPO_PATH}}
   k8s-ghar:
-    name: build image
+    name: build image k8s ghar
     runs-on: ubuntu-latest
     env:
       REPO_PATH: 'kubernetes/github-actionrunner'
