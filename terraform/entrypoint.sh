@@ -11,7 +11,7 @@ if [ -r $KEYDIR/aws-credentials ]; then
     cp $KEYDIR/aws-config /home/tignum/.aws/credentials
 fi
 
-export PATH=/usr/local/bin:$PATH:/opt/tf015
+export PATH=/usr/local/bin:$PATH:/opt/tf110
 
 terraform --version
 aws --version

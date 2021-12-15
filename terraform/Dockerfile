@@ -1,4 +1,5 @@
 FROM alpine:3.13
+ARG terraformUrl110=https://releases.hashicorp.com/terraform/1.1.0/terraform_1.1.0_linux_amd64.zip
 ARG terraformUrl015=https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip
 ARG terraformUrl014=https://releases.hashicorp.com/terraform/0.14.11/terraform_0.14.11_linux_amd64.zip
 ARG terraformUrl013=https://releases.hashicorp.com/terraform/0.13.7/terraform_0.13.7_linux_amd64.zip
@@ -24,11 +25,13 @@ RUN curl -o /tmp/tf12.zip -L ${terraformUrl012}; mkdir /opt/tf012/; unzip -d /op
 RUN curl -o /tmp/tf13.zip -L ${terraformUrl013}; mkdir /opt/tf013/; unzip -d /opt/tf013 /tmp/tf13.zip
 RUN curl -o /tmp/tf14.zip -L ${terraformUrl014}; mkdir /opt/tf014/; unzip -d /opt/tf014 /tmp/tf14.zip
 RUN curl -o /tmp/tf15.zip -L ${terraformUrl015}; mkdir /opt/tf015/; unzip -d /opt/tf015 /tmp/tf15.zip
+RUN curl -o /tmp/tf110.zip -L ${terraformUrl110}; mkdir /opt/tf110/; unzip -d /opt/tf110 /tmp/tf110.zip
 RUN mkdir /opt/tfsec/; curl -o /opt/tfsec/tfsec -L ${tfsecUrl}
 ENV TF12BIN=/opt/tf012/terraform
 ENV TF13BIN=/opt/tf013/terraform
 ENV TF14BIN=/opt/tf014/terraform
 ENV TF15BIN=/opt/tf015/terraform
+ENV TF110BIN=/opt/tf110/terraform
 
 # add TF User
 RUN adduser -s /bin/zsh -D -u ${TFUSERID} ${TFUSER}
@@ -40,7 +43,7 @@ WORKDIR /tmp
 RUN apk add --no-cache aws-cli
 RUN mkdir -p /opt/awsv2
 RUN curl "${awsCliUrl}" -o "/tmp/awscliv2.zip"; unzip /tmp/awscliv2.zip; ./aws/install -b /opt/awsv2
-#RUN ls -alFh /opt/awsv2; /usr/local/aws-cli/v2/current/bin/aws --version
+RUN aws --version
 
 # GCloud
 RUN curl -o /tmp/gcloud.tgz ${gcloudSdkUrl}
@@ -48,9 +51,10 @@ RUN tar -xzf /tmp/gcloud.tgz
 
 # Azure
 RUN apk add --virtual .build-deps rust cargo python3-dev gcc make openssl-dev libffi-dev musl-dev linux-headers; apk add libintl icu-libs libc6-compat
+RUN pip3 install wheel
 RUN pip3 install azure-cli
 RUN apk del .build-deps
-#RUN curl -L https://aka.ms/InstallAzureCli | sed -e "s/XXXX/XXXXXX/g" | bash
+RUN az --version
 
 
 # Final setup
