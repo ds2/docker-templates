@@ -1,7 +1,57 @@
 version: 2
 updates:
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/cicd/build8"
     schedule:
       interval: "daily"
-    open-pull-requests-limit: 20
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/cicd/build17"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/java8/exec-jre"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/java11/exec-jre"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/openjdk8/execjre"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/openjdk11/execjre"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/operator-sdk"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/payara-jndi"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/terraform"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/urlcheck"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/flutter"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
