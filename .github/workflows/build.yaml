@@ -7,8 +7,10 @@ on:
 
 jobs:
   cicd_build8:
-    name: build image
+    name: build cicd build8 image
     runs-on: ubuntu-latest
+    env:
+      REPO_PATH: cicd/build8
     steps:
       - name: checkout project
         uses: actions/checkout@v2
@@ -20,5 +22,5 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          context: ./cicd/build8
-          tags: cicd/build8:latest
+          context: ./${env.REPO_PATH}
+          # tags: ${env.REPO_PATH}:latest
