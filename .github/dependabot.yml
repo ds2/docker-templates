@@ -55,3 +55,18 @@ updates:
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/kubernetes/filewatcher"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/kubernetes/github-actionrunner"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/latex"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
