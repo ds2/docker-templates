@@ -1,5 +1,5 @@
 FROM alpine:3.13
-ARG terraformUrl015=https://releases.hashicorp.com/terraform/0.15.3/terraform_0.15.3_linux_amd64.zip
+ARG terraformUrl015=https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip
 ARG terraformUrl014=https://releases.hashicorp.com/terraform/0.14.11/terraform_0.14.11_linux_amd64.zip
 ARG terraformUrl013=https://releases.hashicorp.com/terraform/0.13.7/terraform_0.13.7_linux_amd64.zip
 ARG terraformUrl012=https://releases.hashicorp.com/terraform/0.12.31/terraform_0.12.31_linux_amd64.zip
@@ -47,7 +47,7 @@ RUN curl -o /tmp/gcloud.tgz ${gcloudSdkUrl}
 RUN tar -xzf /tmp/gcloud.tgz
 
 # Azure
-RUN apk add --virtual .build-deps python3-dev gcc make openssl-dev libffi-dev musl-dev linux-headers; apk add libintl icu-libs libc6-compat
+RUN apk add --virtual .build-deps rust cargo python3-dev gcc make openssl-dev libffi-dev musl-dev linux-headers; apk add libintl icu-libs libc6-compat
 RUN pip3 install azure-cli
 RUN apk del .build-deps
 #RUN curl -L https://aka.ms/InstallAzureCli | sed -e "s/XXXX/XXXXXX/g" | bash
