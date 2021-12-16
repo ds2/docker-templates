@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-slim
+FROM openjdk:9-jre-slim
 EXPOSE 8080 5151
 ARG userId=1000
 ARG groupId=1000
