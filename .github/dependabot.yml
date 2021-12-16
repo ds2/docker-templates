@@ -11,6 +11,21 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
+    directory: "/cicd/jmeter"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/cicd/jkslave"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/cicd/tca11"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
     directory: "/java8/exec-jre"
     schedule:
       interval: "daily"
