@@ -61,11 +61,6 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
-    directory: "/urlcheck"
-    schedule:
-      interval: "daily"
-    open-pull-requests-limit: 10
-  - package-ecosystem: "docker"
     directory: "/flutter"
     schedule:
       interval: "daily"
