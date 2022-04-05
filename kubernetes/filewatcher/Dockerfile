@@ -1,4 +1,4 @@
-FROM alpine:3.15.3
+FROM alpine:3.15.4
 ARG MON_DIR=/watch
 ENV SEC_DIR /secrets
 ENV HOST_ID myHostId
