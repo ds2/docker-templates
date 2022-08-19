@@ -6,6 +6,26 @@ on:
       - develop
 
 jobs:
+  build-image-matrix:
+    name: Build images via Buildah
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        path:
+          - node-yarn-fe-builder
+    steps:
+      - name: checkout project ${{matrix.path}}
+        uses: actions/checkout@v3
+      - name: Buildah Action
+        id: build-image-buildah
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ matrix.path }}
+          context: ./${{ matrix.path }}
+          tags: latest ${{ github.sha }}
+          containerfiles: |
+            ./Containerfile
+
   cicd_build8:
     name: build cicd build8 image
     runs-on: ubuntu-latest

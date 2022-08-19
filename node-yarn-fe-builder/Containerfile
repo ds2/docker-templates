@@ -1,0 +1,14 @@
+FROM node:18
+ARG NPM_VERSION=8.18.0
+ARG WITH_COREPACK=1
+EXPOSE 8888
+# set NODE_ENV # development, production
+ENV NODE_ENV=development
+USER root
+RUN if [ ${WITH_COREPACK} -eq 1 ]; then echo "enable corepack.."; corepack enable; fi
+RUN npm install -g npm@${NPM_VERSION}
+RUN npm install -g yarn; yarn set version berry; yarn set version stable
+
+USER node
+WORKDIR /src
+RUN yarn --version
