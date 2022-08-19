@@ -24,7 +24,7 @@ jobs:
           context: ./${{ matrix.path }}
           tags: latest ${{ github.sha }}
           containerfiles: |
-            ./Containerfile
+            ./${{ matrix.path }}/Containerfile
 
   cicd_build8:
     name: build cicd build8 image
