@@ -56,7 +56,12 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
-    directory: "/payara-jndi"
+    directory: "/payara-jndi-web"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    directory: "/payara-jndi-full"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
