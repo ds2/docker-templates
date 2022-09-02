@@ -4,12 +4,18 @@ EXPOSE 8888
 # set NODE_ENV # development, production
 ENV NODE_ENV=development
 
-# install tools
+# install updates for OS
 USER root
+RUN apt-get update -y; apt-get upgrade -y
+
+# install tools
 RUN npm version
 RUN if [ ${WITH_COREPACK} -eq 1 ]; then echo "enable corepack.."; corepack enable; fi
 RUN npm install -g yarn; yarn set version berry; yarn set version stable
 RUN npm install -g @angular/cli
+
+#Cleanup
+RUN rm -rf /var/lib/apt/lists/* && apt-get purge   --auto-remove && apt-get clean 
 
 # setup runtime
 USER node
