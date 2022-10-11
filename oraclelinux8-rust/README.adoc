@@ -14,3 +14,5 @@ Testing it locally:
 ----
 podman run -it --rm quay.io/ds2/ol8-rust:latest
 ----
+
+You may want to run _rustup update_ afterwards to check for the latest version.
