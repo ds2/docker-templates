@@ -7,27 +7,17 @@ RUN adduser -c "RPM build user for Rust stuff" -s /bin/zsh -m rusty
 
 # setup user environment (we do not run as root!!)
 USER rusty
+SHELL [ "/bin/zsh" ]
 WORKDIR /tmp
 ENV CARGO_BUILD_TARGET='x86_64-unknown-linux-gnu'
-ENV CARGO_HOME=/home/rusty/.cargo
-ENV PATH=${CARGO_HOME}/bin:~/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
-# setup zsh
-RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-# RUN echo 'ZSH_THEME="agnoster"' >>~/.zshrc
 
 # install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh  -s -- --profile minimal -y
-RUN source "$CARGO_HOME/env"; cargo version; echo "source ~/.cargo/env" >>~/.zshrc
-
-# # install hx editor :D
-# RUN source "${CARGO_HOME}/env"; git clone https://github.com/helix-editor/helix; cd helix; cargo install --path helix-term
-# RUN hx --version
-# ENV EDITOR=hx
+RUN source ~/.cargo/env; cargo version
 
 # prepare runs
+RUN mv ~/.cargo/env ~/.cargo/env.orig; echo "" >~/.cargo/env
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
 WORKDIR /work
-SHELL [ "/bin/zsh" ]
 CMD [ "/bin/zsh" ]
