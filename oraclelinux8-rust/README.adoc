@@ -1,3 +1,16 @@
 = Oracle Linux 8 with Rust
 
 A developer image to allow building rust binaries for Oracle Linux 8.
+
+Building it via Podman:
+
+----
+podman build -t quay.io/ds2/ol8-rust:latest .
+----
+
+
+Testing it locally:
+
+----
+podman run -it --rm quay.io/ds2/ol8-rust:latest
+----

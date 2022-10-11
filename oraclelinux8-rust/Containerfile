@@ -4,5 +4,7 @@ RUN dnf -y install rpmdevtools rpm-build rpm-sign gcc openssl-devel pkg-config z
 RUN adduser -c "RPM build user for Rust stuff" -s /bin/zsh -m rusty
 
 USER rusty
+ENV CARGO_BUILD_TARGET='x86_64-unknown-linux-gnu'
+ENV PATH=~/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh  -s -- --profile minimal -y
 RUN source "$HOME/.cargo/env"; cargo version
