@@ -1,4 +1,5 @@
 FROM oraclelinux:8.6
+RUN dnf update -y
 RUN dnf -y install rpmdevtools rpm-build rpm-sign gcc openssl-devel pkg-config zsh
 RUN adduser -c "RPM build user for Rust stuff" -s /bin/zsh -m rusty
 
