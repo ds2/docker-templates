@@ -2,8 +2,9 @@ FROM oraclelinux:8.6
 
 # prepare image
 RUN dnf update -y
-RUN dnf -y install rpmdevtools rpm-build rpm-sign gcc openssl-devel pkg-config zsh git
-RUN adduser -c "RPM build user for Rust stuff" -s /bin/zsh -m rusty
+RUN dnf -y install rpmdevtools rpm-build rpm-sign gcc openssl-devel pkg-config zsh git sudo
+RUN adduser -c "RPM build user for Rust stuff" -g users -G wheel -s /bin/zsh -m rusty
+ADD sudoers.txt /etc/sudoers.d/rusty
 
 # setup user environment (we do not run as root!!)
 USER rusty
@@ -15,6 +16,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh  -s -- --prof
 RUN source ~/.cargo/env; cargo version
 
 # prepare runs
+ADD --chown=rusty:users ZSHRC.txt /home/rusty/.zshrc
 RUN mv ~/.cargo/env ~/.cargo/env.orig; echo "" >~/.cargo/env
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
