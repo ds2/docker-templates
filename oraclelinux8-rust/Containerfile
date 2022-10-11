@@ -7,7 +7,6 @@ RUN adduser -c "RPM build user for Rust stuff" -s /bin/zsh -m rusty
 
 # setup user environment (we do not run as root!!)
 USER rusty
-SHELL [ "/bin/zsh" ]
 WORKDIR /tmp
 ENV CARGO_BUILD_TARGET='x86_64-unknown-linux-gnu'
 
