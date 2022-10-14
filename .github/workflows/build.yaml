@@ -67,7 +67,7 @@ jobs:
       - name: Push To quay.io
         id: push-to-quay
         uses: redhat-actions/push-to-registry@v2
-        if: ${{matrix.containers.registry}} && steps.check_files.outputs.run_job == 'true' && ${{ steps.build-image-buildah.outputs.image }} && steps.build-image-buildah.outcome == 'success'
+        if: ${{ matrix.containers.registry && steps.build-image-buildah.outputs.image && steps.build-image-buildah.outcome == 'success' }}
         with:
           image: ${{ steps.build-image-buildah.outputs.image }}
           tags: ${{ steps.build-image-buildah.outputs.tags }}
