@@ -1,0 +1,3 @@
+registry=quay.io
+repository=/ds2/enterpriselinux-rust
+tag=latest
