@@ -15,56 +15,69 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        path:
-          - node-yarn-fe-builder
-          - oraclelinux8-rust
-          - enterpriselinux-rust
+        containers:
+          [
+            {
+              path: "enterpriselinux-rust",
+              registry: "quay.io",
+              repository: "/ds2/enterpriselinux-rust",
+            },
+            { path: "node-yarn-fe-builder" },
+            { path: "oraclelinux8-rust" },
+          ]
     steps:
-      - name: checkout project ${{matrix.path}}
+      - name: checkout project ${{matrix.containers.path}}
         uses: actions/checkout@v3
-      # - name: Check file existence
-      #   id: check_files
-      #   uses: andstor/file-existence-action@v1
-      #   with:
-      #     files: "Containerfile .registry-data"
-      - name: configure endpoints
-        working-directory: ${{matrix.path}}
-        id: register-endpoint
-        if: ${{ always() && hashFiles( matrix.path +'.registry-data') }}
+        with:
+          fetch-depth: 2
+      - name: check modified files
+        id: check_files
         run: |
-          pwd
-          ls -alFh
-          if [ -f .registry-data ]; then
-            source .registry-data
-          fi
-          echo "::set-output name=registry::$registry"
-          echo "::set-output name=repository::$repository"
+          echo "=============== list modified files ==============="
+          git diff --name-only HEAD^ HEAD
+
+          echo "========== check paths of modified files =========="
+          git diff --name-only HEAD^ HEAD > files.txt
+          while IFS= read -r file
+          do
+            echo $file
+            if [[ $file != ${{matrix.containers.path}}/* ]]; then
+              echo "This modified file is not under the 'db' folder."
+              echo "::set-output name=run_job::false"
+              break
+            else
+              echo "::set-output name=run_job::true"
+            fi
+          done < files.txt
+
       - name: Buildah Action
         id: build-image-buildah
-        if: ${{ success() }}
+        if: steps.check_files.outputs.run_job == 'true'
         uses: redhat-actions/buildah-build@v2
         with:
-          image: ${{ matrix.path }}
-          context: ./${{ matrix.path }}
+          image: ${{ matrix.containers.path }}
+          context: ./${{ matrix.containers.path }}
           tags: latest ${{ github.sha }} ${{github.ref_name}}
           build-args: |
             distroVersion=9
             linuxDistro=oraclelinux
           containerfiles: |
-            ./${{ matrix.path }}/Containerfile
+            ./${{ matrix.containers.path }}/Containerfile
           labels: |
             build_on:github
-      # - name: Push To quay.io
-      #   id: push-to-quay
-      #   uses: redhat-actions/push-to-registry@v2
-      #   with:
-      #     image: ${{ steps.build-image-buildah.outputs.image }}
-      #     tags: ${{ steps.build-image-buildah.outputs.tags }}
-      #     registry: quay.io/ds2
-      #     username: ${{ secrets.QUAY_IO_REGISTRY_USERNAME }}
-      #     password: ${{ secrets.QUAY_IO_REGISTRY_PASSWORD }}
-      # - name: Print image url
-      #   run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+      - name: Push To quay.io
+        id: push-to-quay
+        uses: redhat-actions/push-to-registry@v2
+        if: ${{matrix.containers.registry}}
+        with:
+          image: ${{ steps.build-image-buildah.outputs.image }}
+          tags: ${{ steps.build-image-buildah.outputs.tags }}
+          registry: ${{matrix.containers.registry}}${{matrix.containers.repository}}
+          username: ${{ secrets.QUAY_IO_REGISTRY_USERNAME }}
+          password: ${{ secrets.QUAY_IO_REGISTRY_PASSWORD }}
+      - name: Print image url
+        if: ${{success()}}
+        run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
   cicd_build8:
     name: build cicd build8 image
