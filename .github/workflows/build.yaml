@@ -20,7 +20,7 @@ jobs:
             {
               path: "enterpriselinux-rust",
               registry: "quay.io",
-              repository: "/ds2/enterpriselinux-rust",
+              repository: "ds2/enterpriselinux-rust",
             },
             { path: "node-yarn-fe-builder" },
             { path: "oraclelinux8-rust" },
@@ -56,7 +56,7 @@ jobs:
         if: steps.check_files.outputs.run_job == 'true'
         uses: redhat-actions/buildah-build@v2
         with:
-          image: ${{ matrix.containers.path }}
+          image: ${{ matrix.containers.repository || matrix.containers.path }}
           context: ./${{ matrix.containers.path }}
           tags: latest ${{ github.sha }} ${{github.ref_name}}
           build-args: |
@@ -73,7 +73,7 @@ jobs:
         with:
           image: ${{ steps.build-image-buildah.outputs.image }}
           tags: ${{ steps.build-image-buildah.outputs.tags }}
-          registry: ${{matrix.containers.registry}}${{matrix.containers.repository}}
+          registry: ${{matrix.containers.registry}}
           username: ${{ secrets.QUAY_IO_REGISTRY_USERNAME }}
           password: ${{ secrets.QUAY_IO_REGISTRY_PASSWORD }}
       - name: Print image url
