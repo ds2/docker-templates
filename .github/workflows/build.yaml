@@ -44,9 +44,9 @@ jobs:
             if [[ $file != ${{matrix.containers.path}}/* ]]; then
               echo "This modified file is not from our folder."
               echo "run_job=false" >> $GITHUB_ENV
-              break
             else
               echo "run_job=true" >> $GITHUB_ENV
+              break
             fi
           done < files.txt
       - name: Buildah Action
