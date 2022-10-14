@@ -5,6 +5,10 @@ on:
     branches:
       - develop
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-image-matrix:
     name: Build images via Buildah
@@ -26,7 +30,7 @@ jobs:
       - name: configure endpoints
         working-directory: ${{matrix.path}}
         id: register-endpoint
-        if: ${{ always() && hashFiles('.registry-data') }}
+        # if: ${{ always() && hashFiles('.registry-data') }}
         run: |
           pwd
           ls -alFh
@@ -119,7 +123,7 @@ jobs:
     name: build image payara web
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'payara-jndi-web'
+      REPO_PATH: "payara-jndi-web"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
@@ -136,7 +140,7 @@ jobs:
     name: build image payara full
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'payara-jndi-full'
+      REPO_PATH: "payara-jndi-full"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
@@ -153,7 +157,7 @@ jobs:
     name: build image k8s filewatcher
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'kubernetes/filewatcher'
+      REPO_PATH: "kubernetes/filewatcher"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
@@ -170,7 +174,7 @@ jobs:
     name: build image k8s ghar
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'kubernetes/github-actionrunner'
+      REPO_PATH: "kubernetes/github-actionrunner"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
@@ -187,7 +191,7 @@ jobs:
     name: build image java11 execjre
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'java11/exec-jre'
+      REPO_PATH: "java11/exec-jre"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
@@ -204,7 +208,7 @@ jobs:
     name: build image java8 execjre
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'java8/exec-jre'
+      REPO_PATH: "java8/exec-jre"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
@@ -221,7 +225,7 @@ jobs:
     name: build image openjdk8 execjre
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'openjdk8/execjre'
+      REPO_PATH: "openjdk8/execjre"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
@@ -238,7 +242,7 @@ jobs:
     name: build image openjdk11 execjre
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'openjdk11/execjre'
+      REPO_PATH: "openjdk11/execjre"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
@@ -255,7 +259,7 @@ jobs:
     name: build image latex
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'latex'
+      REPO_PATH: "latex"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
@@ -272,7 +276,7 @@ jobs:
     name: build image operatorsdk
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'operator-sdk'
+      REPO_PATH: "operator-sdk"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
@@ -289,7 +293,7 @@ jobs:
     name: build image cicd jmeter
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'cicd/jmeter'
+      REPO_PATH: "cicd/jmeter"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
@@ -306,7 +310,7 @@ jobs:
     name: build image cicd tca11
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'cicd/tca11'
+      REPO_PATH: "cicd/tca11"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
@@ -323,7 +327,7 @@ jobs:
     name: build image cicd jenkins
     runs-on: ubuntu-latest
     env:
-      REPO_PATH: 'cicd/tca11'
+      REPO_PATH: "cicd/tca11"
     steps:
       - name: checkout project ${{env.REPO_PATH}}
         uses: actions/checkout@v3
