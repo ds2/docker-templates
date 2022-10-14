@@ -19,6 +19,7 @@ jobs:
       - name: checkout project ${{matrix.path}}
         uses: actions/checkout@v3
       - name: configure endpoints
+        working-directory: ${{matrix.path}}
         id: register-endpoint
         if: ${{ always() && hashFiles('.registry-data') }}
         run: |
