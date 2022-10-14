@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v3
       - name: configure endpoints
         id: register-endpoint
-        if: ${{hashFiles('.registry-data') != "" }}
+        if: ${{ always() && hashFiles('.registry-data') }}
         run: |
           if [ -f .registry-data ]; then
             source .registry-data
