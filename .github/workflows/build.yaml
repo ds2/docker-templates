@@ -42,14 +42,15 @@ jobs:
           do
             echo "checking file $file to be from ${{matrix.containers.path}}"
             if [[ $file != ${{matrix.containers.path}}/* ]]; then
-              echo "This modified file is not from our folder."
+              echo "ignoring.."
             else
               echo "found changes!"
               run_job=true
               break
             fi
           done < files.txt
-          echo "run_job=$run_job" >> $GITHUB_ENV
+          echo "Outcome will be set to: $run_job"
+          echo "run_job=$run_job" >> $GITHUB_OUTPUT
       - name: Buildah Action
         id: build-image-buildah
         if: steps.check_files.outputs.run_job == 'true'
