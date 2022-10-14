@@ -40,9 +40,9 @@ jobs:
           git diff --name-only HEAD^ HEAD > files.txt
           while IFS= read -r file
           do
-            echo $file
+            echo "checking file $file to be from ${{matrix.containers.path}}"
             if [[ $file != ${{matrix.containers.path}}/* ]]; then
-              echo "This modified file is not under the 'db' folder."
+              echo "This modified file is not from our folder."
               echo "run_job=false" >> $GITHUB_ENV
               break
             else
