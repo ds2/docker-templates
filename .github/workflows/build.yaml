@@ -43,10 +43,10 @@ jobs:
             echo $file
             if [[ $file != ${{matrix.containers.path}}/* ]]; then
               echo "This modified file is not under the 'db' folder."
-              echo "::set-output name=run_job::false"
+              echo "run_job=false" >> $GITHUB_ENV
               break
             else
-              echo "::set-output name=run_job::true"
+              echo "run_job=true" >> $GITHUB_ENV
             fi
           done < files.txt
 
@@ -68,7 +68,7 @@ jobs:
       - name: Push To quay.io
         id: push-to-quay
         uses: redhat-actions/push-to-registry@v2
-        if: ${{matrix.containers.registry}}
+        if: ${{matrix.containers.registry}} && ${{ steps.build-image-buildah.outputs.image }}
         with:
           image: ${{ steps.build-image-buildah.outputs.image }}
           tags: ${{ steps.build-image-buildah.outputs.tags }}
