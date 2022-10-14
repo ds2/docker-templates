@@ -1,0 +1,22 @@
+= Oracle Linux 9 with Rust
+
+A developer image to allow building rust binaries for Oracle Linux 9.
+
+Building it via Podman:
+
+[,shell]
+----
+DISTRO_VERSION=9
+podman build -t quay.io/ds2/elx-rust:${DISTRO_VERSION} --build-arg distroVersion=${DISTRO_VERSION} --build-arg 'linuxDistro=oraclelinux' .
+----
+
+
+Testing it locally:
+
+[,shell]
+----
+podman run -it --rm -e CARGO_HOME=/work/cargo quay.io/ds2/elx-rust:${DISTRO_VERSION}
+podman run -it --rm quay.io/ds2/elx-rust:${DISTRO_VERSION}
+----
+
+You may want to run _rustup update_ afterwards to check for the latest version.

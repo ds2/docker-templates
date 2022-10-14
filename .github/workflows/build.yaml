@@ -14,6 +14,7 @@ jobs:
         path:
           - node-yarn-fe-builder
           - oraclelinux8-rust
+          - enterpriselinux-rust
     steps:
       - name: checkout project ${{matrix.path}}
         uses: actions/checkout@v3
