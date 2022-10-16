@@ -46,7 +46,7 @@ jobs:
         with:
           image: ${{ env.repository }}
           context: ./${{ env.path }}
-          tags: latest ${{ github.sha }} ${{github.ref_name}} oraclelinux9
+          tags: latest ol9-${{ github.sha }} ${{github.ref_name}} oraclelinux9
           build-args: |
             distroVersion=9
             linuxDistro=oraclelinux
@@ -107,7 +107,7 @@ jobs:
         with:
           image: ${{ env.repository }}
           context: ./${{ env.path }}
-          tags: latest ${{ github.sha }} ${{github.ref_name}} oraclelinux8
+          tags: latest ol8-${{ github.sha }} ${{github.ref_name}} oraclelinux8
           build-args: |
             distroVersion=8
             linuxDistro=oraclelinux
@@ -168,7 +168,7 @@ jobs:
         with:
           image: ${{ env.repository }}
           context: ./${{ env.path }}
-          tags: latest ${{ github.sha }} ${{github.ref_name}} almalinux9
+          tags: latest alm9-${{ github.sha }} ${{github.ref_name}} almalinux9 
           build-args: |
             distroVersion=9
             linuxDistro=almalinux
