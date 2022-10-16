@@ -1,9 +1,6 @@
 name: Test Dockerfile(s)
 on:
   pull_request:
-  push:
-    branches:
-      - develop
 
 concurrency:
   group: ${{ github.ref }}
@@ -66,19 +63,19 @@ jobs:
             ./${{ matrix.containers.path }}/Containerfile
           labels: |
             build_on:github
-      - name: Push To quay.io
-        id: push-to-quay
-        uses: redhat-actions/push-to-registry@v2
-        if: ${{ matrix.containers.registry && steps.build-image-buildah.outputs.image && steps.build-image-buildah.outcome == 'success' }}
-        with:
-          image: ${{ steps.build-image-buildah.outputs.image }}
-          tags: ${{ steps.build-image-buildah.outputs.tags }}
-          registry: ${{matrix.containers.registry}}
-          username: ${{ secrets.QUAY_IO_REGISTRY_USERNAME }}
-          password: ${{ secrets.QUAY_IO_REGISTRY_PASSWORD }}
-      - name: Print image url
-        if: ${{steps.push-to-quay.outcome == 'success'}}
-        run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+      # - name: Push To quay.io
+      #   id: push-to-quay
+      #   uses: redhat-actions/push-to-registry@v2
+      #   if: ${{ matrix.containers.registry && steps.build-image-buildah.outputs.image && steps.build-image-buildah.outcome == 'success' }}
+      #   with:
+      #     image: ${{ steps.build-image-buildah.outputs.image }}
+      #     tags: ${{ steps.build-image-buildah.outputs.tags }}
+      #     registry: ${{matrix.containers.registry}}
+      #     username: ${{ secrets.QUAY_IO_REGISTRY_USERNAME }}
+      #     password: ${{ secrets.QUAY_IO_REGISTRY_PASSWORD }}
+      # - name: Print image url
+      #   if: ${{steps.push-to-quay.outcome == 'success'}}
+      #   run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
   cicd_build8:
     name: build cicd build8 image
