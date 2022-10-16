@@ -107,7 +107,7 @@ jobs:
         with:
           image: ${{ env.repository }}
           context: ./${{ env.path }}
-          tags: latest ol8-${{ github.sha }} ${{github.ref_name}} oraclelinux8
+          tags: ol8-${{ github.sha }} oraclelinux8
           build-args: |
             distroVersion=8
             linuxDistro=oraclelinux
@@ -168,7 +168,7 @@ jobs:
         with:
           image: ${{ env.repository }}
           context: ./${{ env.path }}
-          tags: latest alm9-${{ github.sha }} ${{github.ref_name}} almalinux9 
+          tags: latest alm9-${{ github.sha }} almalinux9 
           build-args: |
             distroVersion=9
             linuxDistro=almalinux
