@@ -6,11 +6,6 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 5
   - package-ecosystem: "docker"
-    directory: "/oraclelinux8-rust"
-    schedule:
-      interval: "daily"
-    open-pull-requests-limit: 5
-  - package-ecosystem: "docker"
     directory: "/cicd/build8"
     schedule:
       interval: "daily"

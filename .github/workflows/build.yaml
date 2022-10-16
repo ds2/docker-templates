@@ -20,7 +20,6 @@ jobs:
               repository: "ds2/enterpriselinux-rust",
             },
             { path: "node-yarn-fe-builder" },
-            { path: "oraclelinux8-rust" },
           ]
     steps:
       - name: checkout project ${{matrix.containers.path}}
