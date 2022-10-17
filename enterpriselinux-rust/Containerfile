@@ -27,6 +27,7 @@ RUN curl -o /tmp/azcopy.tgz -L https://aka.ms/downloadazcopy-v10-linux; cd /tmp;
 
 # prepare runs
 ADD --chown=rusty:users ZSHRC.txt /home/rusty/.zshrc
+ENV CARGO_HOME=/home/rusty/.cargo
 RUN mv ~/.cargo/env ~/.cargo/env.orig; echo "" >~/.cargo/env
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
