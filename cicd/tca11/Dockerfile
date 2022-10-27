@@ -1,4 +1,4 @@
-FROM jetbrains/teamcity-agent:2022.04.4-linux-sudo
+FROM jetbrains/teamcity-agent:2022.10-linux-sudo
 USER root
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB1998361219BD9C9
 RUN curl -o /tmp/repo.deb -L https://cdn.azul.com/zulu/bin/zulu-repo_1.0.0-2_all.deb; apt-get install -y -f /tmp/repo.deb; curl -L https://apt.corretto.aws/corretto.key | apt-key add - ;\
