@@ -5,10 +5,12 @@ ARG distroVersion=9
 FROM ${linuxDistro}:${distroVersion}
 ENV TZ=Etc/UTC
 ARG semverRpmVersion=0.1.1-rc.6
+#ARG protocVersion=3.15.8
+ARG protocVersion=21.9
 
 # prepare image
 RUN dnf repolist; yum repolist -v enabled; dnf update -y; dnf upgrade -y
-RUN dnf -y install rpmdevtools rpm-build rpm-sign gcc openssl-devel pkg-config zsh git sudo protobuf protobuf-compiler
+RUN dnf -y install rpmdevtools rpm-build rpm-sign gcc openssl-devel pkg-config zsh git sudo protobuf
 RUN adduser -c "RPM build user for Rust stuff" -g users -G wheel -s /bin/zsh -m rusty
 ADD sudoers.txt /etc/sudoers.d/rusty
 
@@ -25,6 +27,8 @@ RUN curl -o /tmp/azcopy.tgz -L https://aka.ms/downloadazcopy-v10-linux; cd /tmp;
 
 COPY createRpms.sh /usr/local/bin/
 
+# install protoc
+RUN cd /tmp; export distroVersion=$(cat /etc/system-release-cpe | cut -d ':' -f5); echo "distroVersion is ${distroVersion}"; PB_REL="https://github.com/protocolbuffers/protobuf/releases"; curl -LO $PB_REL/download/v${protocVersion}/protoc-${protocVersion}-linux-x86_64.zip; unzip protoc-${protocVersion}-linux-x86_64.zip; mv bin/protoc /usr/local/bin/protoc
 RUN protoc --version
 
 # setup user environment (we do not run as root!!)
