@@ -28,7 +28,7 @@ RUN curl -o /tmp/azcopy.tgz -L https://aka.ms/downloadazcopy-v10-linux; cd /tmp;
 COPY createRpms.sh /usr/local/bin/
 
 # install protoc
-RUN cd /tmp; export distroVersion=$(cat /etc/system-release-cpe | cut -d ':' -f5); echo "distroVersion is ${distroVersion}"; PB_REL="https://github.com/protocolbuffers/protobuf/releases"; curl -LO $PB_REL/download/v${protocVersion}/protoc-${protocVersion}-linux-x86_64.zip; unzip protoc-${protocVersion}-linux-x86_64.zip; mv bin/protoc /usr/local/bin/protoc
+RUN cd /tmp; export distroVersion=$(cat /etc/system-release-cpe | cut -d ':' -f5); echo "distroVersion is ${distroVersion}"; PB_REL="https://github.com/protocolbuffers/protobuf/releases"; curl -LO $PB_REL/download/v${protocVersion}/protoc-${protocVersion}-linux-x86_64.zip; unzip protoc-${protocVersion}-linux-x86_64.zip; dnf install -y protobuf-compiler || mv bin/protoc /usr/local/bin/protoc
 RUN protoc --version
 
 # setup user environment (we do not run as root!!)
