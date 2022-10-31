@@ -7,7 +7,7 @@ ENV TZ=Etc/UTC
 ARG semverRpmVersion=0.1.1-rc.6
 
 # prepare image
-RUN dnf update -y
+RUN dnf repolist; yum repolist -v enabled; dnf update -y; dnf upgrade -y
 RUN dnf -y install rpmdevtools rpm-build rpm-sign gcc openssl-devel pkg-config zsh git sudo protobuf protobuf-compiler
 RUN adduser -c "RPM build user for Rust stuff" -g users -G wheel -s /bin/zsh -m rusty
 ADD sudoers.txt /etc/sudoers.d/rusty
@@ -24,6 +24,8 @@ RUN dnf list --showduplicates azure-cli; dnf -y install azure-cli
 RUN curl -o /tmp/azcopy.tgz -L https://aka.ms/downloadazcopy-v10-linux; cd /tmp; tar -xzvf /tmp/azcopy.tgz --strip 1; find /tmp; chmod 755 /tmp/azcopy; cp /tmp/azcopy /usr/bin/; azcopy --version
 
 COPY createRpms.sh /usr/local/bin/
+
+RUN protoc --version
 
 # setup user environment (we do not run as root!!)
 USER rusty
