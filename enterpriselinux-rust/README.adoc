@@ -7,7 +7,10 @@ Building it via Podman:
 [,shell]
 ----
 DISTRO_VERSION=9
-podman build -t quay.io/ds2/elx-rust:${DISTRO_VERSION} --build-arg distroVersion=${DISTRO_VERSION} --build-arg 'linuxDistro=oraclelinux' .
+podman build -t quay.io/ds2/elx-rust:${DISTRO_VERSION} --build-arg distroVersion=${DISTRO_VERSION} --build-arg 'linuxDistro=oraclelinux' -f Containerfile .
+
+# or via Docker
+docker build -t quay.io/ds2/elx-rust:${DISTRO_VERSION} --build-arg distroVersion=${DISTRO_VERSION} --build-arg 'linuxDistro=oraclelinux' -f Containerfile .
 ----
 
 
@@ -20,3 +23,29 @@ podman run -it --rm quay.io/ds2/elx-rust:${DISTRO_VERSION}
 ----
 
 You may want to run _rustup update_ afterwards to check for the latest version.
+
+== Testing AzCopy and Repository Sync
+
+Since azcopy and az cli are part of the image, you can test it as well.
+
+[,shell]
+----
+test -n ${MY_AZ_CTR_STR}
+podman run -it --rm -e AZURE_STORAGE_CONNECTION_STRING=${MY_AZ_CTR_STR} quay.io/ds2/elx-rust:${DISTRO_VERSION}
+----
+
+
+[,shell]
+----
+cd /work
+expiryDate=$(date +"%Y-%m-%dT%H:%MZ" -d "+2 hours")
+az login --connection-string "${AZURE_STORAGE_CONNECTION_STRING}"
+az storage container generate-sas \
+    --account-name ds2linuxrepo \
+    --name rpms \
+    --permissions acdlrw \
+    --expiry "$expiryDate" \
+    --auth-mode login \
+    --as-user
+azcopy sync '/work' 'https://ds2linuxrepo.blob.core.windows.net/rpms' --recursive
+----
