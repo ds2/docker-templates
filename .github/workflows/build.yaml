@@ -54,7 +54,7 @@ jobs:
         with:
           image: ${{ matrix.containers.repository || matrix.containers.path }}
           context: ./${{ matrix.containers.path }}
-          tags: latest ${{ github.sha }} ${{github.ref_name}}
+          tags: latest ${{ github.sha }}
           build-args: |
             distroVersion=9
             linuxDistro=oraclelinux
