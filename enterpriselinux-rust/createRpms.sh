@@ -10,9 +10,17 @@ export REL_VERSION=${REL_VERSION:-}
 export SEMVER_PARAMS=${SEMVER_PARAMS:-"-a"}
 export SRC_DIR=${SRC_DIR:-$(pwd)}
 export ARTIFACTS_DIR=${ARTIFACTS_DIR:-/tmp/artifacts}
+export CARGO_HOME=${CARGO_HOME:-$HOME/.cargo}
+
+if [[ $# -eq 0 ]]; then
+    echo "You may want to use -cbp maybe?"
+    exit 1
+fi
 
 # execute tests
+echo "Setting up build directories.."
 mkdir -p ${CARGO_TARGET_DIR} ${ARTIFACTS_DIR}
+echo "Changing owner of build dirs to rusty.."
 sudo chown -R rusty:users ${CARGO_TARGET_DIR} ${CARGO_HOME}
 
 while getopts ':cbp' OPTION; do
@@ -77,7 +85,12 @@ while getopts ':cbp' OPTION; do
         ;;
     \?) echo "Invalid param: $OPTARG" ;;
 
-    *) echo "Unbekannter Parameter" ;;
+    *)
+        echo "Unknown parameter. Use:"
+        echo " -c = clean target directory"
+        echo " -b = build binaries"
+        echo " -p = package RPMs from binaries"
+        ;;
 
     esac
 done
