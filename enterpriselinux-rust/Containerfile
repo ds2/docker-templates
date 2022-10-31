@@ -10,7 +10,7 @@ ARG protocVersion=21.9
 
 # prepare image
 RUN dnf repolist; yum repolist -v enabled; dnf update -y; dnf upgrade -y
-RUN dnf -y install rpmdevtools rpm-build rpm-sign gcc openssl-devel pkg-config zsh git sudo protobuf createrepo pinentry
+RUN dnf -y install rpmdevtools rpm-build rpm-sign gcc openssl-devel pkg-config zsh git sudo protobuf createrepo pinentry vim
 RUN adduser -c "RPM build user for Rust stuff" -g users -G wheel -s /bin/zsh -m rusty
 ADD sudoers.txt /etc/sudoers.d/rusty
 
