@@ -7,7 +7,10 @@ Building it via Podman:
 [,shell]
 ----
 DISTRO_VERSION=9
-podman build -t quay.io/ds2/elx-rust:${DISTRO_VERSION} --build-arg distroVersion=${DISTRO_VERSION} --build-arg 'linuxDistro=oraclelinux' .
+podman build -t quay.io/ds2/elx-rust:${DISTRO_VERSION} --build-arg distroVersion=${DISTRO_VERSION} --build-arg 'linuxDistro=oraclelinux' -f Containerfile .
+
+# or via Docker
+docker build -t quay.io/ds2/elx-rust:${DISTRO_VERSION} --build-arg distroVersion=${DISTRO_VERSION} --build-arg 'linuxDistro=oraclelinux' -f Containerfile .
 ----
 
 

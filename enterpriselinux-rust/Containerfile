@@ -23,6 +23,8 @@ RUN dnf list --showduplicates azure-cli; dnf -y install azure-cli
 # install azcopy
 RUN curl -o /tmp/azcopy.tgz -L https://aka.ms/downloadazcopy-v10-linux; cd /tmp; tar -xzvf /tmp/azcopy.tgz --strip 1; find /tmp; chmod 755 /tmp/azcopy; cp /tmp/azcopy /usr/bin/; azcopy --version
 
+COPY createRpms.sh /usr/local/bin/
+
 # setup user environment (we do not run as root!!)
 USER rusty
 WORKDIR /tmp
