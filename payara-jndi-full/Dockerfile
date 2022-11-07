@@ -1,4 +1,4 @@
-FROM payara/server-full:5.2022.3-jdk17
+FROM payara/server-full:5.2022.4-jdk17
 USER root
 ENV JEE_LIBS_DIR /libs
 ENV JEE_CONFIGS_DIR /configs
