@@ -10,7 +10,7 @@ ARG protocVersion=21.9
 
 # prepare image
 RUN dnf repolist; yum repolist -v enabled; dnf update -y; dnf upgrade -y
-RUN dnf -y install rpmdevtools rpm-build rpm-sign gcc openssl-devel pkg-config zsh git sudo protobuf createrepo pinentry vim
+RUN dnf -y install rpmdevtools rpm-build rpm-sign gcc openssl-devel pkg-config zsh git sudo protobuf createrepo pinentry vim python3-pip
 RUN adduser -c "RPM build user for Rust stuff" -g users -G wheel -s /bin/zsh -m rusty
 ADD sudoers.txt /etc/sudoers.d/rusty
 
@@ -38,7 +38,9 @@ ENV CARGO_BUILD_TARGET='x86_64-unknown-linux-gnu'
 
 # install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh  -s -- --profile minimal -y
-RUN source ~/.cargo/env; cargo version
+RUN source ~/.cargo/env; cargo version; rustup update stable-${CARGO_BUILD_TARGET}
+
+RUN pip3 install pre-commit
 
 # prepare runs
 ENV GNUPGHOME_ALT=/home/rusty/gnupg-alt
