@@ -1,6 +1,6 @@
 # also almalinux might be an idea?
 # test 5
-ARG linuxDistro=oraclelinux 
+ARG linuxDistro=oraclelinux
 ARG distroVersion=9
 FROM ${linuxDistro}:${distroVersion}
 ENV TZ=Etc/UTC
