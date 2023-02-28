@@ -37,7 +37,7 @@ WORKDIR /tmp
 ENV CARGO_BUILD_TARGET='x86_64-unknown-linux-gnu'
 
 # install rust
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh  -s -- --profile minimal -y
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh  -s -- --profile minimal --no-modify-path -y
 RUN source ~/.cargo/env; cargo version; rustup update stable-${CARGO_BUILD_TARGET}
 
 RUN pip3 install --user pre-commit
