@@ -20,6 +20,7 @@ jobs:
               repository: "ds2/enterpriselinux-rust",
             },
             { path: "node-yarn-fe-builder" },
+            { path: "rust-debian" },
           ]
     steps:
       - name: checkout project ${{matrix.containers.path}}

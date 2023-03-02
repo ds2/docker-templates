@@ -168,10 +168,68 @@ jobs:
         with:
           image: ${{ env.repository }}
           context: ./${{ env.path }}
-          tags: latest alm9-${{ github.sha }} almalinux9 
+          tags: latest alm9-${{ github.sha }} almalinux9
           build-args: |
             distroVersion=9
             linuxDistro=almalinux
+          containerfiles: |
+            ./${{ env.path }}/Containerfile
+          labels: |
+            build_on:github
+      - name: Push To quay.io
+        id: push-to-quay
+        uses: redhat-actions/push-to-registry@v2
+        if: ${{ env.registry && steps.build-image-buildah.outputs.image && steps.build-image-buildah.outcome == 'success' }}
+        with:
+          image: ${{ steps.build-image-buildah.outputs.image }}
+          tags: ${{ steps.build-image-buildah.outputs.tags }}
+          registry: ${{env.registry}}
+          username: ${{ secrets.QUAY_IO_REGISTRY_USERNAME }}
+          password: ${{ secrets.QUAY_IO_REGISTRY_PASSWORD }}
+      - name: Print image url
+        if: ${{steps.push-to-quay.outcome == 'success'}}
+        run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+  publish-rust-debian:
+    name: Publish Debian Rust Image
+    runs-on: ubuntu-22.04
+    env:
+      path: "rust-debian"
+      registry: "quay.io"
+      repository: "ds2/rust-debian"
+    steps:
+      - name: checkout project
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 5
+      - name: check modified files
+        id: check_files
+        run: |
+          run_job=false
+          echo "=============== list modified files ==============="
+          git diff --name-only HEAD^ HEAD
+          echo "========== check paths of modified files =========="
+          git diff --name-only HEAD^ HEAD > files.txt
+          while IFS= read -r file
+          do
+            echo "checking file $file to be from ${{env.path}}"
+            if [[ $file != ${{env.path}}/* ]]; then
+              echo "ignoring.."
+            else
+              echo "found changes!"
+              run_job=true
+              break
+            fi
+          done < files.txt
+          echo "Outcome will be set to: $run_job"
+          echo "run_job=$run_job" >> $GITHUB_OUTPUT
+      - name: Buildah Action
+        id: build-image-buildah
+        if: steps.check_files.outputs.run_job == 'true'
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ env.repository }}
+          context: ./${{ env.path }}
+          tags: latest bw-${{ github.sha }} bookworm
           containerfiles: |
             ./${{ env.path }}/Containerfile
           labels: |
