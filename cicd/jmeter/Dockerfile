@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk-alpine:19-jre
+FROM azul/zulu-openjdk-alpine:20-jre
 ARG jmeterVersion=5.2.1
 EXPOSE 4445
 ENV JMETER_FILENAME=testplan.jmx
