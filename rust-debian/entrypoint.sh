@@ -1,21 +1,35 @@
 #!/usr/bin/env zsh
 
+whoami
+
 echo "My path is actually: ${PATH}"
 
 export CARGO_HOME=${CARGO_HOME:-/home/rusty/.cargo}
 export SRC_DIR=${SRC_DIR:-/work}
 export CARGO_BUILD_TARGET=${CARGO_BUILD_TARGET:-'x86_64-unknown-linux-gnu'}
 export CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-/tmp/rust-stuff}
+export PERFORM_RUSTUP_UPDATE=${PERFORM_RUSTUP_UPDATE:-0}
 
 if [ "${CARGO_HOME}" != "/home/rusty/.cargo" ]; then
-    echo "Copying existing cargo bins from ~/.cargo/bin/ to new CARGO_HOME at $CARGO_HOME/bin/"
-    mkdir -p $CARGO_HOME/bin && cp ~/.cargo/bin/* $CARGO_HOME/bin/
+    echo "Alternate cargo home detected: $CARGO_HOME"
+    echo "Copying existing cargo bins from ~/.cargo/bin/ to new CARGO_HOME at $CARGO_HOME/bin/.."
+    sudo install -d -o rusty $CARGO_HOME/bin
+    cp ~/.cargo/bin/* $CARGO_HOME/bin/
 else
     echo "Reusing default cargo home :)"
 fi
 
 echo "Resetting PATHs.."
 export PATH=$CARGO_HOME/bin:$PATH
+
+if [[ $PERFORM_RUSTUP_UPDATE -eq 1 ]]; then
+    echo "Performing rustup update.."
+    rm $CARGO_HOME/bin/rustfmt
+    rm $CARGO_HOME/bin/cargo-fmt
+    rustup update stable
+fi
+
+cargo --version
 
 echo "Alright. Good luck now :D"
 exec "$@"
