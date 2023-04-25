@@ -6,7 +6,7 @@ FROM ${linuxDistro}:${distroVersion}
 ENV TZ=Etc/UTC
 ARG semverRpmVersion=0.1.1-rc.6
 #ARG protocVersion=3.15.8
-ARG protocVersion=21.9
+ARG protocVersion=22.0
 
 # prepare image
 RUN dnf repolist; yum repolist -v enabled; dnf update -y; dnf upgrade -y
@@ -21,6 +21,7 @@ RUN curl -o /tmp/semver.rpm -L https://ds2linuxrepo.blob.core.windows.net/rpms/s
 RUN rpm --import https://packages.microsoft.com/keys/microsoft.asc
 RUN export distroVersion=$(cat /etc/system-release-cpe | cut -d ':' -f5); echo "distroVersion is ${distroVersion}"; if [ $distroVersion == 9 ]; then dnf install -y https://packages.microsoft.com/config/rhel/9.0/packages-microsoft-prod.rpm; elif [ $distroVersion == 8 ]; then sudo dnf install -y https://packages.microsoft.com/config/rhel/8/packages-microsoft-prod.rpm; else echo "No Distro installed??"; exit 23; fi; dnf update -y
 RUN dnf list --showduplicates azure-cli; dnf -y install azure-cli
+RUN az --version
 
 # install azcopy
 RUN curl -o /tmp/azcopy.tgz -L https://aka.ms/downloadazcopy-v10-linux; cd /tmp; tar -xzvf /tmp/azcopy.tgz --strip 1; find /tmp; chmod 755 /tmp/azcopy; cp /tmp/azcopy /usr/bin/; azcopy --version
@@ -38,7 +39,7 @@ ENV CARGO_BUILD_TARGET='x86_64-unknown-linux-gnu'
 
 # install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh  -s -- --profile minimal --no-modify-path -y
-RUN source ~/.cargo/env; cargo version; rustup update stable-${CARGO_BUILD_TARGET}
+RUN source ~/.cargo/env; cargo version
 
 RUN pip3 install --user pre-commit
 
