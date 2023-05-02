@@ -12,6 +12,36 @@ export SEMVER_PARAMS=${SEMVER_PARAMS:-}       # if we want to override some valu
 export WORKSPACE_MEMBER=${WORKSPACE_MEMBER:-} # in case in a multi module project we only want to build one member
 export ARTIFACTS_DIR=${ARTIFACTS_DIR:-${SRC_DIR}/out}
 
+function get_os_name(){
+  local rc=""
+  if [[ -f "/etc/os-release" ]]; then
+    source /etc/os-release
+    rc=$VERSION_CODENAME
+  fi
+  if [[ -z "$rc" ]]; then
+    echo "Could not find os name!"
+    exit 1
+  fi
+  echo $rc
+}
+
+echo "Preparations.."
+if [[ ! -d "os-packaging/linux/deb" ]]; then
+  echo "No debian os packaging directory os-packaging/linux/deb found!"
+  exit 2
+fi
+
+if [[ ! -d "$ARTIFACTS_DIR" ]]; then
+  echo "Creating artifacts directory in $ARTIFACTS_DIR .."
+  mkdir -p "$ARTIFACTS_DIR"
+else
+  echo "Artifacts will be put into $ARTIFACTS_DIR. Please check if this directory has the right permissions!"
+  if [[ ! -w "$ARTIFACTS_DIR" ]]; then
+    echo "Cannot write to artifacts directory $ARTIFACTS_DIR ! Please check."
+    exit 3
+  fi
+fi
+
 test -n "${RUST_PROFILE}"
 rustup target add "${CARGO_BUILD_TARGET}"
 #cargo clean
@@ -58,10 +88,6 @@ eval "$version_string"
 
 BUILD_ROOT="/tmp/debmkp"
 
-if [[ ! -d "os-packaging/linux/deb" ]]; then
-  echo "No debian os packaging directory found!"
-  exit 2
-fi
 cd "os-packaging/linux/deb"
 packages=$(ls -d */)
 echo "Packages: $packages"
@@ -88,6 +114,10 @@ for p in $packages; do
   dpkg-deb --build --root-owner-group "${BUILD_PACKAGE_ROOT}"
   dpkg-deb --info "${BUILD_PACKAGE_ROOT}.deb"
   dpkg --contents "${BUILD_PACKAGE_ROOT}.deb"
-  mkdir -p "$ARTIFACTS_DIR" || true
+  
+  echo "Copying artifacts to output directory.."
   cp "${BUILD_PACKAGE_ROOT}.deb" "${ARTIFACTS_DIR}/"
 done
+
+echo "Artifacts:"
+ls $ARTIFACTS_DIR/*.deb

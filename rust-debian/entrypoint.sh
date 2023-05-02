@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+set -euo pipefail #e=exitonfail u=unboundvarsdisallow o=pipefail x=debug
+
 whoami
 
 echo "My path is actually: ${PATH}"
@@ -13,6 +15,7 @@ export PERFORM_RUSTUP_UPDATE=${PERFORM_RUSTUP_UPDATE:-0}
 if [ "${CARGO_HOME}" != "/home/rusty/.cargo" ]; then
     echo "Alternate cargo home detected: $CARGO_HOME"
     echo "Copying existing cargo bins from ~/.cargo/bin/ to new CARGO_HOME at $CARGO_HOME/bin/.."
+    sudo install -d -o rusty $CARGO_HOME
     sudo install -d -o rusty $CARGO_HOME/bin
     cp ~/.cargo/bin/* $CARGO_HOME/bin/
 else
@@ -22,7 +25,7 @@ fi
 echo "Resetting PATHs.."
 export PATH=$CARGO_HOME/bin:$PATH
 
-if [[ $PERFORM_RUSTUP_UPDATE -eq 1 ]]; then
+if [ $PERFORM_RUSTUP_UPDATE -eq 1 ]; then
     echo "Performing rustup update.."
     rm $CARGO_HOME/bin/rustfmt
     rm $CARGO_HOME/bin/cargo-fmt

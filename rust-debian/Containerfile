@@ -1,13 +1,14 @@
 FROM debian:bookworm
 
 ENV TZ=Etc/UTC
+ENV RUST_BACKTRACE=1
 ARG semverRpmVersion=0.1.1-rc.6
 #ARG protocVersion=3.15.8
 ARG protocVersion=22.0
 
 # prepare image
 RUN apt-get -y update; apt-get -y upgrade
-RUN apt-get install -y zsh sudo git protobuf-compiler python3-pip vim curl unzip pre-commit lsb-release
+RUN apt-get install -y zsh sudo git protobuf-compiler python3-pip vim curl unzip pre-commit lsb-release pkg-config
 RUN useradd -c "build user for Rust stuff" -g users -s /bin/zsh -m rusty
 ADD sudoers.txt /etc/sudoers.d/rusty
 

@@ -6,26 +6,26 @@ To build the image, run:
 
 [,shell]
 ----
-podman build -t quay.io/ds2/debian-rust:bookworm -f Containerfile .
+podman build -t quay.io/ds2/rust-debian:bookworm -f Containerfile .
 ----
 
 To run it, use:
 
 [,shell]
 ----
-podman run -it --rm quay.io/ds2/debian-rust:bookworm
+podman run -it --rm quay.io/ds2/rust-debian:bookworm
 ----
 
 and to test it with your debian like project, run:
 
 [,shell]
 ----
-podman run -it --rm -v $(pwd):/work quay.io/ds2/debian-rust:bookworm
+podman run -it --rm -v $(pwd):/work quay.io/ds2/rust-debian:bookworm
 ----
 
 and to finally test it, run:
 
 [,shell]
 ----
-podman run -it --rm -v $(pwd):/work quay.io/ds2/debian-rust:bookworm createDeb.sh myfile.debcontrol
+podman run -it --rm -v $(pwd):/work quay.io/ds2/rust-debian:bookworm createDeb.sh myfile.debcontrol
 ----

@@ -4,6 +4,7 @@ ARG linuxDistro=oraclelinux
 ARG distroVersion=9
 FROM ${linuxDistro}:${distroVersion}
 ENV TZ=Etc/UTC
+ENV RUST_BACKTRACE=1
 ARG semverRpmVersion=0.1.1-rc.6
 #ARG protocVersion=3.15.8
 ARG protocVersion=22.0
