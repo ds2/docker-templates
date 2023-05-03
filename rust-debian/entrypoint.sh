@@ -7,7 +7,6 @@ whoami
 echo "My path is actually: ${PATH}"
 
 export CARGO_HOME=${CARGO_HOME:-/home/rusty/.cargo}
-export SRC_DIR=${SRC_DIR:-/work}
 export CARGO_BUILD_TARGET=${CARGO_BUILD_TARGET:-'x86_64-unknown-linux-gnu'}
 export CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-/tmp/rust-stuff}
 export PERFORM_RUSTUP_UPDATE=${PERFORM_RUSTUP_UPDATE:-0}

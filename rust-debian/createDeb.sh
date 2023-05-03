@@ -2,15 +2,28 @@
 
 set -euo pipefail
 
-SRC_DIR=$(pwd)
-export SRC_DIR
+export SRC_DIR=$(pwd)
+export NEW_SRC_DIR=${NEW_SRC_DIR:-/tmp/work-mirrored}
+MIRROR_SRC_DIR=${MIRROR_SRC_DIR:-}
+export ARTIFACTS_DIR=${ARTIFACTS_DIR:-${SRC_DIR}/out}
+export ARTIFACTS_DIR=$(readlink -f $ARTIFACTS_DIR)
+
+if [[ ! -z "$MIRROR_SRC_DIR" ]]; then
+  mkdir $NEW_SRC_DIR
+  echo "Using new src dir $NEW_SRC_DIR to address user permissions.."
+  cp -R $SRC_DIR/* $NEW_SRC_DIR/
+  cp -R $SRC_DIR/.* $NEW_SRC_DIR/
+  cd $NEW_SRC_DIR
+fi
+
+echo "Running in $(pwd) :)"
+
 export CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-$(pwd)/target}
 export CARGO_BUILD_TARGET=${CARGO_BUILD_TARGET:-x86_64-unknown-linux-gnu}
 export RUST_PROFILE=${RUST_PROFILE:-debug}
 export REL_VERSION=${REL_VERSION:-}           # this is our target version; given as semver
 export SEMVER_PARAMS=${SEMVER_PARAMS:-}       # if we want to override some values
 export WORKSPACE_MEMBER=${WORKSPACE_MEMBER:-} # in case in a multi module project we only want to build one member
-export ARTIFACTS_DIR=${ARTIFACTS_DIR:-${SRC_DIR}/out}
 
 function get_os_name(){
   local rc=""
@@ -33,7 +46,7 @@ fi
 
 if [[ ! -d "$ARTIFACTS_DIR" ]]; then
   echo "Creating artifacts directory in $ARTIFACTS_DIR .."
-  mkdir -p "$ARTIFACTS_DIR"
+  install -m 0755 -d $ARTIFACTS_DIR
 else
   echo "Artifacts will be put into $ARTIFACTS_DIR. Please check if this directory has the right permissions!"
   if [[ ! -w "$ARTIFACTS_DIR" ]]; then
@@ -41,6 +54,8 @@ else
     exit 3
   fi
 fi
+echo "Testing write to artifacts directory.."
+touch "$ARTIFACTS_DIR/.$(date | sha256sum).log"
 
 test -n "${RUST_PROFILE}"
 rustup target add "${CARGO_BUILD_TARGET}"
@@ -72,10 +87,12 @@ SEMVER_VERSION=$(echo "$REL_VERSION" | grep -Po "(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|
 export SEMVER_VERSION
 test -n "${SEMVER_VERSION}" # check if set
 echo "SEMVER_VERSION is set to $SEMVER_VERSION"
+
+echo "Setting default build env vars"
 RPM_VERSION=$(echo "$SEMVER_VERSION" | grep -Po "(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)")
 export RPM_VERSION
 export RPM_RELEASE='alpha.1'
-echo "RPM set"
+
 semverBin='semver-formatter'
 
 if [ -f "${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/semver-formatter" ]; then
