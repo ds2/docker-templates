@@ -1,14 +1,17 @@
 = OSBuild Composer image
 
-An image to create OS images.
+An image to create OS images from the base os.
 
-== Build the image
+== Build the images
 
 Run:
 
 [,shell]
 ----
-podman build -t osbc:latest -f Containerfile .
+podman build --build-arg repository=fedora --build-arg version=39 -t osbc:fed-39 -t osbc:latest -f Containerfile .
+podman build --build-arg repository=almalinux --build-arg version=9 -t osbc:alma-9 -t osbc:latest -f Containerfile .
+podman build --build-arg repository=oraclelinux --build-arg version=8 -t osbc:ol-8 -t osbc:latest -f Containerfile .
+podman build --build-arg repository=oraclelinux --build-arg version=9 -t osbc:ol-9 -t osbc:latest -f Containerfile .
 ----
 
 == Test the image
@@ -18,15 +21,56 @@ Run:
 [,shell]
 ----
 # sudo setsebool -P container_manage_cgroup true
-podman run -t -d -l osbuild=true --rm osbc:latest
+podman stop $(podman container list --filter=label=osbuild=true --quiet)
+CONTAINERID=$(podman run -t -d -l osbuild=true --rm osbc:latest)
 ----
 
 This will run the container in the background.
+
+[,shell]
+----
+podman logs $CONTAINERID
+----
+
+To get its ID, you can either use the stdout from the podman_run command from above, or rely on the labels:
+
+[,shell]
+----
+CONTAINERID=$(podman container list --filter=label=osbuild=true --quiet)
+----
+
+To finally stop it, run:
+
+[,shell]
+----
+podman stop $CONTAINERID
+# or to stop all:
+podman stop $(podman container list --filter=label=osbuild=true --quiet)
+----
+
+== Using the container to build images
 
 To create an image, you need to exec into the container:
 
 [,shell]
 ----
-CONTAINERID=$(podman container list --filter=label=osbuild=true --quiet)
-podman container list --filter=label=osbuild=true --quiet | podman exec -it
+podman exec -it $CONTAINERID /bin/bash
+----
+
+Inside the container, use a toml blueprint file to create the image:
+
+[,bash]
+----
+composer-cli compose types # show all types we can build
+composer-cli blueprints push test01.toml # push our test01.toml blueprint to the server
+composer-cli blueprints list # list all known blueprints
+----
+
+to trigger the build, run:
+
+[,bash]
+----
+composer-cli compose start base-image-with-tmux qcow2 # will start the build and return a job id; use -j to return a json which can be parsed via jq
+composer-cli compose info $JOBID # to see the state of the build
+composer-cli logs $JOBID # to see the build log
 ----

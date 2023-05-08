@@ -1,17 +1,13 @@
-FROM fedora:39
 ARG compy_pw=compy124
+ARG repository="fedora"
+ARG version="39"
+FROM ${repository}:${version}
 RUN dnf update -y; dnf upgrade -y
-RUN dnf install -y systemd osbuild-composer composer-cli; dnf clean all
+RUN dnf install -y systemd osbuild-composer composer-cli jq rsync tar; dnf clean all
 RUN systemctl enable osbuild-composer.socket
 RUN groupadd composers
-RUN useradd -c "Composer user" -g composers -G weldr compy
-RUN newgrp composers; newgrp weldr
 RUN composer-cli version
-RUN install -d --owner compy --group composers -m 0777 /work
+RUN install -d --group composers -m 0777 /work
 COPY test01.toml /work/
-#COPY entrypoint.sh /entrypoint.sh
-#ENTRYPOINT ["/entrypoint.sh"]
-#USER compy
-#CMD ["/bin/bash"]
 CMD ["/sbin/init"]
 WORKDIR /work

@@ -21,6 +21,7 @@ jobs:
             },
             { path: "node-yarn-fe-builder" },
             { path: "rust-debian" },
+            { path: "osbuild-composer" },
           ]
     steps:
       - name: checkout project ${{matrix.containers.path}}
