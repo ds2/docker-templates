@@ -308,7 +308,7 @@ jobs:
       - name: Print image url
         if: ${{steps.push-to-quay.outcome == 'success'}}
         run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
-  publish-osbuild-alma9:
+  publish-osbuild-ol8:
     name: Publish OSBuild OracleLinux 8
     runs-on: ubuntu-22.04
     env:
