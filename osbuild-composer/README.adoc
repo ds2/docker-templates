@@ -1,0 +1,32 @@
+= OSBuild Composer image
+
+An image to create OS images.
+
+== Build the image
+
+Run:
+
+[,shell]
+----
+podman build -t osbc:latest -f Containerfile .
+----
+
+== Test the image
+
+Run:
+
+[,shell]
+----
+# sudo setsebool -P container_manage_cgroup true
+podman run -t -d -l osbuild=true --rm osbc:latest
+----
+
+This will run the container in the background.
+
+To create an image, you need to exec into the container:
+
+[,shell]
+----
+CONTAINERID=$(podman container list --filter=label=osbuild=true --quiet)
+podman container list --filter=label=osbuild=true --quiet | podman exec -it
+----
