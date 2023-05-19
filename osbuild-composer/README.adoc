@@ -27,16 +27,18 @@ CONTAINERID=$(podman run -t -d -l osbuild=true --rm osbc:latest)
 
 This will run the container in the background.
 
-[,shell]
-----
-podman logs $CONTAINERID
-----
-
 To get its ID, you can either use the stdout from the podman_run command from above, or rely on the labels:
 
 [,shell]
 ----
 CONTAINERID=$(podman container list --filter=label=osbuild=true --quiet)
+----
+
+Check if the socket is up and running:
+
+[,shell]
+----
+podman logs $CONTAINERID
 ----
 
 To finally stop it, run:
@@ -54,6 +56,7 @@ To create an image, you need to exec into the container:
 
 [,shell]
 ----
+CONTAINERID=$(podman container list --filter=label=osbuild=true --quiet)
 podman exec -it $CONTAINERID /bin/bash
 ----
 
@@ -61,6 +64,7 @@ Inside the container, use a toml blueprint file to create the image:
 
 [,bash]
 ----
+composer-cli status show
 composer-cli compose types # show all types we can build
 composer-cli blueprints push test01.toml # push our test01.toml blueprint to the server
 composer-cli blueprints list # list all known blueprints
