@@ -23,6 +23,10 @@ mkdir -p ${CARGO_TARGET_DIR} ${ARTIFACTS_DIR}
 echo "Changing owner of build dirs to rusty.."
 sudo chown -R rusty:users ${CARGO_TARGET_DIR} ${CARGO_HOME}
 
+if [ "release" == "$RUST_PROFILE" ]; then
+  BUILD_ARGS+=" --release"
+fi
+
 while getopts ':cbp' OPTION; do
     case "$OPTION" in
     c)
@@ -35,10 +39,10 @@ while getopts ':cbp' OPTION; do
         rustup target add ${CARGO_BUILD_TARGET}
         if [ -z "${WORKSPACE_MEMBER}" ]; then
             # build all
-            cargo build --workspace
+            cargo build $BUILD_ARGS --workspace
         else
             # build only the workspace member
-            cargo build -p ${WORKSPACE_MEMBER}
+            cargo build $BUILD_ARGS -p ${WORKSPACE_MEMBER}
             ${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/${WORKSPACE_MEMBER} --version
         fi
         ;;

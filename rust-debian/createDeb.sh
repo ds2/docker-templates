@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -euo pipefail #e=exitonfail u=unboundvarsdisallow o=pipefail x=debug
 
+# set ENV vars
 export SRC_DIR=$(pwd)
+export BUILD_ARGS=${BUILD_ARGS:-}
 export NEW_SRC_DIR=${NEW_SRC_DIR:-/tmp/work-mirrored}
 MIRROR_SRC_DIR=${MIRROR_SRC_DIR:-}
 export ARTIFACTS_DIR=${ARTIFACTS_DIR:-${SRC_DIR}/out}
@@ -25,7 +27,7 @@ export REL_VERSION=${REL_VERSION:-}           # this is our target version; give
 export SEMVER_PARAMS=${SEMVER_PARAMS:-}       # if we want to override some values
 export WORKSPACE_MEMBER=${WORKSPACE_MEMBER:-} # in case in a multi module project we only want to build one member
 
-function get_os_name(){
+function get_os_name() {
   local rc=""
   if [[ -f "/etc/os-release" ]]; then
     source /etc/os-release
@@ -61,12 +63,15 @@ test -n "${RUST_PROFILE}"
 rustup target add "${CARGO_BUILD_TARGET}"
 #cargo clean
 echo "Building binary/binaries.."
+if [ "release" == "$RUST_PROFILE" ]; then
+  BUILD_ARGS+=" --release"
+fi
 if [ -z "${WORKSPACE_MEMBER}" ]; then
   # build all
-  cargo build --workspace
+  cargo build $BUILD_ARGS --workspace
 else
   # build only the workspace member
-  cargo build -p "${WORKSPACE_MEMBER}"
+  cargo build $BUILD_ARGS -p "${WORKSPACE_MEMBER}"
   # test if it works
   "${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/${WORKSPACE_MEMBER}" --version
 fi
@@ -121,7 +126,7 @@ for p in $packages; do
   mkdir -p "$BUILD_PACKAGE_ROOT/usr/local/bin"
   cp "$SRC_PACKAGE_ROOT/debian.control" "$BUILD_PACKAGE_ROOT/DEBIAN/control"
   if [[ -f "./$SRC_PACKAGE_ROOT/prepare.sh" ]]; then
-      . "./$SRC_PACKAGE_ROOT/prepare.sh"
+    . "./$SRC_PACKAGE_ROOT/prepare.sh"
   else
     # assert that we only have a single binary
     cp "${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/${packageId}" "$BUILD_PACKAGE_ROOT/usr/local/bin/${packageId}"
@@ -131,7 +136,7 @@ for p in $packages; do
   dpkg-deb --build --root-owner-group "${BUILD_PACKAGE_ROOT}"
   dpkg-deb --info "${BUILD_PACKAGE_ROOT}.deb"
   dpkg --contents "${BUILD_PACKAGE_ROOT}.deb"
-  
+
   echo "Copying artifacts to output directory.."
   cp "${BUILD_PACKAGE_ROOT}.deb" "${ARTIFACTS_DIR}/"
 done
