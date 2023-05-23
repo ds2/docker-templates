@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail #e=exitonfail u=unboundvarsdisallow o=pipefail x=debug
+unalias cp || true
 
 # set ENV vars
 export SRC_DIR=$(pwd)
@@ -40,11 +41,72 @@ function get_os_name() {
   echo $rc
 }
 
+function build_workspace() {
+  test -n "${RUST_PROFILE}"
+  rustup target add "${CARGO_BUILD_TARGET}"
+  #cargo clean
+  echo "Building binary/binaries.."
+  if [ "release" == "$RUST_PROFILE" ]; then
+    BUILD_ARGS+=" --release"
+  fi
+  if [ -z "${WORKSPACE_MEMBER}" ]; then
+    # build all
+    cargo build $BUILD_ARGS --workspace
+  else
+    # build only the workspace member
+    cargo build $BUILD_ARGS -p "${WORKSPACE_MEMBER}"
+    # test if it works
+    "${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/${WORKSPACE_MEMBER}" --version
+  fi
+}
+
+function build_packages() {
+  BUILD_ROOT="/tmp/debmkp"
+
+  cd "os-packaging/linux"
+  packages=$(ls -d */)
+  echo "Packages: $packages"
+
+  for p in $packages; do
+    if [[ $p == "." ]]; then
+      continue
+    fi
+    packageId=${p/\//}
+    echo "Testing package $packageId.."
+    export BUILD_PACKAGE_ROOT="$BUILD_ROOT/${packageId}_${DEB_VERSION}-${DEB_REVISION}_amd64"
+    SRC_PACKAGE_ROOT="$packageId"
+    local countSpecs=$(ls -1 ${SRC_PACKAGE_ROOT}/*.spec 2>/dev/null | wc -l)
+    local countDeb=$(ls -1 ${SRC_PACKAGE_ROOT}/debian.control 2>/dev/null | wc -l)
+    mkdir -p "$BUILD_PACKAGE_ROOT/DEBIAN"
+    mkdir -p "$BUILD_PACKAGE_ROOT/usr/local/bin"
+    if [[ $countDeb -eq 0 ]]; then
+      echo "No manifest file found, ignoring directory"
+      continue
+    fi
+    cp "$SRC_PACKAGE_ROOT/debian.control" "$BUILD_PACKAGE_ROOT/DEBIAN/control"
+    if [[ -f "./$SRC_PACKAGE_ROOT/prepare.sh" ]]; then
+      echo "Preparing package.."
+      . "./$SRC_PACKAGE_ROOT/prepare.sh"
+    else
+      # assert that we only have a single binary
+      cp "${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/${packageId}" "$BUILD_PACKAGE_ROOT/usr/local/bin/${packageId}"
+    fi
+    echo "Version: ${DEB_VERSION}-${DEB_REVISION}" >>"${BUILD_PACKAGE_ROOT}/DEBIAN/control"
+
+    # build package
+    dpkg-deb --build --root-owner-group "${BUILD_PACKAGE_ROOT}"
+
+    # verify package
+    dpkg-deb --info "${BUILD_PACKAGE_ROOT}.deb"
+    dpkg --contents "${BUILD_PACKAGE_ROOT}.deb"
+
+    # copy package to artifacts directory
+    echo "Copying artifacts to output directory.."
+    cp "${BUILD_PACKAGE_ROOT}.deb" "${ARTIFACTS_DIR}/"
+  done
+}
+
 echo "Preparations.."
-if [[ ! -d "os-packaging/linux/deb" ]]; then
-  echo "No debian os packaging directory os-packaging/linux/deb found!"
-  exit 2
-fi
 
 if [[ ! -d "$ARTIFACTS_DIR" ]]; then
   echo "Creating artifacts directory in $ARTIFACTS_DIR .."
@@ -59,29 +121,18 @@ fi
 echo "Testing write to artifacts directory.."
 touch "$ARTIFACTS_DIR/.$(date | sha256sum).log"
 
-test -n "${RUST_PROFILE}"
-rustup target add "${CARGO_BUILD_TARGET}"
-#cargo clean
-echo "Building binary/binaries.."
-if [ "release" == "$RUST_PROFILE" ]; then
-  BUILD_ARGS+=" --release"
-fi
-if [ -z "${WORKSPACE_MEMBER}" ]; then
-  # build all
-  cargo build $BUILD_ARGS --workspace
-else
-  # build only the workspace member
-  cargo build $BUILD_ARGS -p "${WORKSPACE_MEMBER}"
-  # test if it works
-  "${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/${WORKSPACE_MEMBER}" --version
-fi
+build_workspace
+
+echo "Perform packaging.."
 if [ -z "$REL_VERSION" ]; then
+  # first try
   echo "Will try to extract release version from toml file.."
   REL_VERSION=$(cat Cargo.toml | grep "^version" | grep -Po "(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?")
   export REL_VERSION
 fi
 if [ -z "$REL_VERSION" ]; then
-  echo "(WARN) no rel version found. Will try to get it from semver file.."
+  # second try
+  echo "(WARN) no rel version found. Will try to get it from semver file (if found).."
   if [ -f ".semver-version" ]; then
     REL_VERSION=$(cat .semver-version)
   fi
@@ -108,38 +159,7 @@ version_string="$(${semverBin} -f deb ${SEMVER_PARAMS} ${SEMVER_VERSION})"
 # echo "Will evaluate: $version_string"
 eval "$version_string"
 
-BUILD_ROOT="/tmp/debmkp"
-
-cd "os-packaging/linux/deb"
-packages=$(ls -d */)
-echo "Packages: $packages"
-
-for p in $packages; do
-  if [[ $p == "." ]]; then
-    continue
-  fi
-  packageId=${p/\//}
-  echo "Building package $packageId.."
-  export BUILD_PACKAGE_ROOT="$BUILD_ROOT/${packageId}_${DEB_VERSION}-${DEB_REVISION}_amd64"
-  SRC_PACKAGE_ROOT="$packageId"
-  mkdir -p "$BUILD_PACKAGE_ROOT/DEBIAN"
-  mkdir -p "$BUILD_PACKAGE_ROOT/usr/local/bin"
-  cp "$SRC_PACKAGE_ROOT/debian.control" "$BUILD_PACKAGE_ROOT/DEBIAN/control"
-  if [[ -f "./$SRC_PACKAGE_ROOT/prepare.sh" ]]; then
-    . "./$SRC_PACKAGE_ROOT/prepare.sh"
-  else
-    # assert that we only have a single binary
-    cp "${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/${packageId}" "$BUILD_PACKAGE_ROOT/usr/local/bin/${packageId}"
-  fi
-
-  echo "Version: ${DEB_VERSION}-${DEB_REVISION}" >>"${BUILD_PACKAGE_ROOT}/DEBIAN/control"
-  dpkg-deb --build --root-owner-group "${BUILD_PACKAGE_ROOT}"
-  dpkg-deb --info "${BUILD_PACKAGE_ROOT}.deb"
-  dpkg --contents "${BUILD_PACKAGE_ROOT}.deb"
-
-  echo "Copying artifacts to output directory.."
-  cp "${BUILD_PACKAGE_ROOT}.deb" "${ARTIFACTS_DIR}/"
-done
+build_packages
 
 echo "Artifacts:"
 ls $ARTIFACTS_DIR/*.deb

@@ -20,7 +20,7 @@ and to test it with your debian like project, run:
 
 [,shell]
 ----
-podman run -it --rm -v $(pwd):/work quay.io/ds2/rust-debian:bookworm
+podman run -it --rm -e CARGO_HOME=/tmp/cargo -v /tmp/cargo:/tmp/cargo -v $(pwd):/work quay.io/ds2/rust-debian:bookworm
 ----
 
 and to finally test it, run:
