@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 set -euo pipefail #e=exitonfail u=unboundvarsdisallow o=pipefail x=debug
+
+echo "I am $(id) and will perform the build process :)"
+
 unalias cp || true
 
 # set ENV vars
@@ -10,6 +13,8 @@ export NEW_SRC_DIR=${NEW_SRC_DIR:-/tmp/work-mirrored}
 MIRROR_SRC_DIR=${MIRROR_SRC_DIR:-}
 export ARTIFACTS_DIR=${ARTIFACTS_DIR:-${SRC_DIR}/out}
 export ARTIFACTS_DIR=$(readlink -f $ARTIFACTS_DIR)
+export SUDO_CLEAN_TARGET=${SUDO_CLEAN_TARGET:-0}
+export PERFORM_CLEAN_TARGET=${PERFORM_CLEAN_TARGET:-0}
 
 if [[ ! -z "$MIRROR_SRC_DIR" ]]; then
     mkdir $NEW_SRC_DIR
@@ -21,7 +26,7 @@ fi
 
 echo "Running in $(pwd) :)"
 
-export CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-$(pwd)/target}
+export CARGO_TARGET_DIR=$(readlink -f "$CARGO_TARGET_DIR")
 export CARGO_BUILD_TARGET=${CARGO_BUILD_TARGET:-x86_64-unknown-linux-gnu}
 export RUST_PROFILE=${RUST_PROFILE:-debug}
 export REL_VERSION=${REL_VERSION:-}           # this is our target version; given as semver
@@ -42,10 +47,30 @@ function get_os_name() {
 }
 
 function build_workspace() {
+    echo "Setting build target to $CARGO_BUILD_TARGET"
     test -n "${RUST_PROFILE}"
     rustup target add "${CARGO_BUILD_TARGET}"
-    #cargo clean
+    test -n "$CARGO_TARGET_DIR"
+    if [[ ! -w "$CARGO_TARGET_DIR" ]]; then
+        echo "Cannot write target directory?? I will change the target dir for now to a temporary directory."
+        export CARGO_TARGET_DIR=/tmp/my-temp-rust-cargo-target-dir
+    fi
+    if [ $SUDO_CLEAN_TARGET -ge 1 -a -d "$CARGO_TARGET_DIR" ]; then
+        echo "Sudoing the target directory $CARGO_TARGET_DIR.."
+        sudo rm -rf "$CARGO_TARGET_DIR"
+    else
+        echo "Will not sudo removing the target directory $CARGO_TARGET_DIR. This is ok :)"
+    fi
+    if [ $PERFORM_CLEAN_TARGET -ge 1 ]; then
+        echo "Cleaning cargo.."
+        cargo clean
+    fi
+    if [ ! -d "$CARGO_TARGET_DIR" ]; then
+        echo "Creating target directory $CARGO_TARGET_DIR .."
+        sudo install -o rusty -g users -m 0777 -d "$CARGO_TARGET_DIR"
+    fi
     echo "Building binary/binaries.."
+    ls -alFh $CARGO_TARGET_DIR
     if [ "release" == "$RUST_PROFILE" ]; then
         BUILD_ARGS+=" --release"
     fi

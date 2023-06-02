@@ -20,6 +20,7 @@ Testing it locally:
 
 [,shell]
 ----
+mkdir -p /tmp/cargo
 podman run -it --rm -e CARGO_HOME=/work/cargo quay.io/ds2/elx-rust:${DISTRO_VERSION}
 podman run -it --rm -e CARGO_HOME=/tmp/cargo -v /tmp/cargo:/tmp/cargo -v $(pwd):/work quay.io/ds2/elx-rust:${DISTRO_VERSION}
 podman run -it --rm quay.io/ds2/elx-rust:${DISTRO_VERSION}

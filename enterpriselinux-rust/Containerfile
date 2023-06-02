@@ -2,6 +2,7 @@
 # test 5
 ARG linuxDistro=oraclelinux
 ARG distroVersion=9
+ARG rustVersion=""
 FROM ${linuxDistro}:${distroVersion}
 ENV TZ=Etc/UTC
 ENV RUST_BACKTRACE=1
@@ -27,8 +28,6 @@ RUN az --version
 # install azcopy
 RUN curl -o /tmp/azcopy.tgz -L https://aka.ms/downloadazcopy-v10-linux; cd /tmp; tar -xzvf /tmp/azcopy.tgz --strip 1; find /tmp; chmod 755 /tmp/azcopy; cp /tmp/azcopy /usr/bin/; azcopy --version
 
-COPY createRpms.sh /usr/local/bin/
-
 # install protoc
 RUN cd /tmp; export distroVersion=$(cat /etc/system-release-cpe | cut -d ':' -f5); echo "distroVersion is ${distroVersion}"; PB_REL="https://github.com/protocolbuffers/protobuf/releases"; curl -LO $PB_REL/download/v${protocVersion}/protoc-${protocVersion}-linux-x86_64.zip; unzip protoc-${protocVersion}-linux-x86_64.zip; dnf install -y protobuf-compiler || mv bin/protoc /usr/local/bin/protoc
 RUN protoc --version
@@ -48,8 +47,16 @@ RUN pip3 install --user pre-commit
 ENV GNUPGHOME_ALT=/home/rusty/gnupg-alt
 ADD --chown=rusty:users ZSHRC.txt /home/rusty/.zshrc
 ENV CARGO_HOME=/home/rusty/.cargo
+ENV PERFORM_CLEAN_TARGET=0
+ENV CARGO_TARGET_DIR=target
+ENV SUDO_CLEAN_TARGET=0
 RUN mv ~/.cargo/env ~/.cargo/env.orig; echo "" >~/.cargo/env
+
+USER root
 COPY entrypoint.sh /entrypoint.sh
+COPY createRpms.sh /usr/local/bin/
+
+USER rusty
 ENTRYPOINT [ "/entrypoint.sh" ]
 WORKDIR /work
 CMD [ "/bin/zsh" ]

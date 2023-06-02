@@ -8,7 +8,7 @@ echo "My path is actually: ${PATH}"
 
 export CARGO_HOME=${CARGO_HOME:-/home/rusty/.cargo}
 export CARGO_BUILD_TARGET=${CARGO_BUILD_TARGET:-'x86_64-unknown-linux-gnu'}
-export CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-/tmp/rust-stuff}
+export CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-target}
 export PERFORM_RUSTUP_UPDATE=${PERFORM_RUSTUP_UPDATE:-0}
 
 if [ "${CARGO_HOME}" != "/home/rusty/.cargo" ]; then
