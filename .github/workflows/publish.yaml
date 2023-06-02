@@ -247,7 +247,7 @@ jobs:
       - name: Print image url
         if: ${{steps.push-to-quay.outcome == 'success'}}
         run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
-  publisher-matrix:
+  publish-quay:
     name: Publish container images
     runs-on: ubuntu-22.04
     strategy:
@@ -304,11 +304,11 @@ jobs:
       - name: Push To Registry
         id: push-to-quay
         uses: redhat-actions/push-to-registry@v2
-        if: ${{ env.registry && steps.build-image-buildah.outputs.image && steps.build-image-buildah.outcome == 'success' }}
+        if: ${{ matrix.containers.registry && steps.build-image-buildah.outputs.image && steps.build-image-buildah.outcome == 'success' }}
         with:
           image: ${{ steps.build-image-buildah.outputs.image }}
           tags: ${{ steps.build-image-buildah.outputs.tags }}
-          registry: ${{env.registry}}
+          registry: ${{matrix.containers.registry}}
           username: ${{ secrets.QUAY_IO_REGISTRY_USERNAME }}
           password: ${{ secrets.QUAY_IO_REGISTRY_PASSWORD }}
       - name: Print image url
