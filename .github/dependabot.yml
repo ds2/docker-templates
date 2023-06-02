@@ -1,6 +1,11 @@
 version: 2
 updates:
   - package-ecosystem: "docker"
+    directory: "/golang-ol8"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
+  - package-ecosystem: "docker"
     directory: "/enterpriselinux-rust"
     schedule:
       interval: "daily"
