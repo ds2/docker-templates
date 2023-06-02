@@ -28,20 +28,20 @@ fi
 function uploadImage() {
     local repo="$1"
     echo "Retagging $repo from latest to $GITHASH"
-    docker tag ${repo}:latest ${repo}:${GITHASH} || exit 1
+    podman tag ${repo}:latest ${repo}:${GITHASH} || exit 1
     echo "Pushing image with hash first.."
-    docker push ${repo}:${GITHASH} || exit 2
+    podman push ${repo}:${GITHASH} || exit 2
     echo "And now the latest tag"
-    docker push ${repo}:latest || exit 3
+    podman push ${repo}:latest || exit 3
 }
 
 function buildImage(){
     local dir=$1
     local repo=$2
     echo "Building image $repo.."
-    docker build -t "${repo}:latest" $dir || exit 1
+    podman build -t "${repo}:latest" $dir || exit 1
     echo "You may run the image now via:"
-    echo "  docker run -it --rm ${repo}:latest"
+    echo "  podman run -it --rm ${repo}:latest"
 }
 
 buildImage "$DIRECTORY" "$REPO"

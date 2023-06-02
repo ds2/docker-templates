@@ -24,4 +24,4 @@ Use your quay.io Username and the "Docker CLI" encrypted password to login.
 
 After that you can build your image, and then:
 
-    ./buildAndPush.sh -d MYDIRECTORY -r MYQUAYIOBASE
+    ./buildAndPush.sh -d MYDIRECTORY -r quay.io/ds2/myimage -p
