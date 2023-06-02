@@ -1,0 +1,6 @@
+FROM oraclelinux:8
+RUN dnf update -y; dnf upgrade -y
+RUN dnf install -y libvirt-devel protobuf
+RUN dnf module enable go-toolset:ol8addon; dnf module install go-toolset -y
+RUN go version
+WORKDIR /work
