@@ -22,6 +22,7 @@ jobs:
             { path: "node-yarn-fe-builder" },
             { path: "rust-debian" },
             { path: "golang-ol8" },
+            { path: "package-cloud" },
           ]
     steps:
       - name: checkout project ${{matrix.containers.path}}

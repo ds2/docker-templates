@@ -247,3 +247,70 @@ jobs:
       - name: Print image url
         if: ${{steps.push-to-quay.outcome == 'success'}}
         run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+  publisher-matrix:
+    name: Publish container images
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        containers:
+          [
+            {
+              path: "package-cloud",
+              registry: "quay.io",
+              repository: "ds2/packagecloud-cli",
+            },
+          ]
+    steps:
+      - name: checkout project ${{matrix.containers.path}}
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: check modified files
+        id: check_files
+        run: |
+          run_job=false
+          echo "=============== list modified files ==============="
+          git diff --name-only HEAD^ HEAD
+          echo "========== check paths of modified files =========="
+          git diff --name-only HEAD^ HEAD > files.txt
+          while IFS= read -r file
+          do
+            echo "checking file $file to be from ${{matrix.containers.path}}"
+            if [[ $file != ${{matrix.containers.path}}/* ]]; then
+              echo "ignoring.."
+            else
+              echo "found changes!"
+              run_job=true
+              break
+            fi
+          done < files.txt
+          echo "Outcome will be set to: $run_job"
+          echo "run_job=$run_job" >> $GITHUB_OUTPUT
+      - name: Buildah Action
+        id: build-image-buildah
+        if: steps.check_files.outputs.run_job == 'true'
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ matrix.containers.repository || matrix.containers.path }}
+          context: ./${{ matrix.containers.path }}
+          tags: latest ${{ github.sha }}
+          # build-args: |
+          #   distroVersion=9
+          #   linuxDistro=oraclelinux
+          containerfiles: |
+            ./${{ matrix.containers.path }}/Containerfile
+          labels: |
+            build_on:github
+      - name: Push To Registry
+        id: push-to-quay
+        uses: redhat-actions/push-to-registry@v2
+        if: ${{ env.registry && steps.build-image-buildah.outputs.image && steps.build-image-buildah.outcome == 'success' }}
+        with:
+          image: ${{ steps.build-image-buildah.outputs.image }}
+          tags: ${{ steps.build-image-buildah.outputs.tags }}
+          registry: ${{env.registry}}
+          username: ${{ secrets.QUAY_IO_REGISTRY_USERNAME }}
+          password: ${{ secrets.QUAY_IO_REGISTRY_PASSWORD }}
+      - name: Print image url
+        if: ${{steps.push-to-quay.outcome == 'success'}}
+        run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"

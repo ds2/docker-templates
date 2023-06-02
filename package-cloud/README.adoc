@@ -1,0 +1,26 @@
+= Packagecloud Image
+
+This image here is only to run packagecloud stuff.
+
+- https://www.rubydoc.info/gems/package_cloud/
+- https://packagecloud.io/docs#cli
+
+== Build the image
+
+Via:
+
+[,shell]
+----
+podman build -t quay.io/ds2/packagecloud-cli:latest -f Containerfile
+----
+
+== Test the image
+
+Run:
+
+[,shell]
+----
+podman run -it --rm -t quay.io/ds2/packagecloud-cli:latest
+----
+
+Be sure to export the PACKAGECLOUD_TOKEN to work with the api.
