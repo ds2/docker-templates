@@ -205,6 +205,17 @@ jobs:
               path: "rust-debian",
               registry: "quay.io",
               repository: "ds2/rust-debian",
+              buildArgs: "linuxDistro=debian \n
+                distroVersion=bookworm",
+              tag: "bookworm",
+            },
+            {
+              path: "rust-debian",
+              registry: "quay.io",
+              repository: "ds2/rust-debian",
+              buildArgs: "linuxDistro=ubuntu \n
+                distroVersion=jammy",
+              tag: "jammy",
             },
           ]
     steps:
@@ -240,10 +251,8 @@ jobs:
         with:
           image: ${{ matrix.containers.repository || matrix.containers.path }}
           context: ./${{ matrix.containers.path }}
-          tags: latest ${{ github.sha }}
-          # build-args: |
-          #   distroVersion=9
-          #   linuxDistro=oraclelinux
+          tags: latest ${{ github.sha }} ${{matrix.containers.tag || ''}}
+          build-args: ${{ matrix.containers.buildArgs || '' }}
           containerfiles: |
             ./${{ matrix.containers.path }}/Containerfile
           labels: |
