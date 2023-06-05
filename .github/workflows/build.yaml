@@ -21,8 +21,11 @@ jobs:
             },
             { path: "node-yarn-fe-builder" },
             { path: "rust-debian" },
-            { path: "rust-debian", buildArgs: "linuxDistro=ubuntu
-            distroVersion=jammy" },
+            {
+              path: "rust-debian",
+              buildArgs: "linuxDistro=ubuntu \n
+              distroVersion=jammy",
+            },
             { path: "golang-ol8" },
             { path: "package-cloud" },
           ]
