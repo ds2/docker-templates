@@ -225,14 +225,6 @@ jobs:
                 distroVersion=jammy",
               tag: "jammy",
             },
-            {
-              path: "rust-debian",
-              registry: "quay.io",
-              repository: "ds2/rust-debian",
-              buildArgs: "linuxDistro=ubuntu \n
-                distroVersion=lunar",
-              tag: "lunar",
-            },
           ]
     steps:
       - name: checkout project ${{matrix.containers.path}}
