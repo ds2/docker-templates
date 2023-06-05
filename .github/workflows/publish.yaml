@@ -213,9 +213,25 @@ jobs:
               path: "rust-debian",
               registry: "quay.io",
               repository: "ds2/rust-debian",
+              buildArgs: "linuxDistro=debian \n
+                distroVersion=bullseye",
+              tag: "bullseye",
+            },
+            {
+              path: "rust-debian",
+              registry: "quay.io",
+              repository: "ds2/rust-debian",
               buildArgs: "linuxDistro=ubuntu \n
                 distroVersion=jammy",
               tag: "jammy",
+            },
+            {
+              path: "rust-debian",
+              registry: "quay.io",
+              repository: "ds2/rust-debian",
+              buildArgs: "linuxDistro=ubuntu \n
+                distroVersion=lunar",
+              tag: "lunar",
             },
           ]
     steps:

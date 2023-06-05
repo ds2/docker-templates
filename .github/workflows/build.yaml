@@ -27,6 +27,8 @@ jobs:
             { path: "rust-debian" },
             { path: "rust-debian", buildArgs: "linuxDistro=ubuntu \n
                 distroVersion=jammy", tag: "jammy" },
+            { path: "rust-debian", buildArgs: "linuxDistro=ubuntu \n
+                distroVersion=lunar", tag: "lunar" },
             { path: "golang-ol8" },
             { path: "package-cloud" },
           ]
