@@ -1,9 +1,9 @@
+ARG rustVersion=""
 FROM debian:bookworm
 
 ENV TZ=Etc/UTC
 ENV RUST_BACKTRACE=1
 ARG semverRpmVersion=0.1.1-rc.6
-#ARG protocVersion=3.15.8
 ARG protocVersion=22.0
 
 # prepare image
@@ -24,8 +24,7 @@ RUN az --version
 # install azcopy
 RUN curl -o /tmp/azcopy.tgz -L https://aka.ms/downloadazcopy-v10-linux; cd /tmp; tar -xzvf /tmp/azcopy.tgz --strip 1; find /tmp; chmod 755 /tmp/azcopy; cp /tmp/azcopy /usr/bin/; azcopy --version
 
-COPY createDeb.sh /usr/local/bin/
-
+# install protoc
 RUN protoc --version
 
 # setup user environment (we do not run as root!!)
@@ -43,8 +42,16 @@ RUN pip3 install --user --break-system-packages pre-commit
 ENV GNUPGHOME_ALT=/home/rusty/gnupg-alt
 ADD --chown=rusty:users zshrc.txt /home/rusty/.zshrc
 ENV CARGO_HOME=/home/rusty/.cargo
+ENV PERFORM_CLEAN_TARGET=0
+ENV CARGO_TARGET_DIR=target
+ENV SUDO_CLEAN_TARGET=0
 RUN mv ~/.cargo/env ~/.cargo/env.orig; echo "" >~/.cargo/env
+
+USER root
 COPY entrypoint.sh /entrypoint.sh
+COPY createDeb.sh /usr/local/bin/
+
+USER rusty
 ENTRYPOINT [ "/entrypoint.sh" ]
 WORKDIR /work
 CMD [ "/bin/zsh" ]
