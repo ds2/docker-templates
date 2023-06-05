@@ -21,6 +21,8 @@ jobs:
             },
             { path: "node-yarn-fe-builder" },
             { path: "rust-debian" },
+            { path: "rust-debian", buildArgs: "linuxDistro=ubuntu
+            distroVersion=jammy" },
             { path: "golang-ol8" },
             { path: "package-cloud" },
           ]
@@ -58,9 +60,7 @@ jobs:
           image: ${{ matrix.containers.repository || matrix.containers.path }}
           context: ./${{ matrix.containers.path }}
           tags: latest ${{ github.sha }}
-          build-args: |
-            distroVersion=9
-            linuxDistro=oraclelinux
+          build-args: ${{ matrix.containers.buildArgs || '' }}
           containerfiles: |
             ./${{ matrix.containers.path }}/Containerfile
           labels: |

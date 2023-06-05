@@ -1,5 +1,7 @@
 ARG rustVersion=""
-FROM debian:bookworm
+ARG linuxDistro="debian"
+ARG distroVersion="bookworm"
+FROM ${linuxDistro}:${distroVersion}
 
 ENV TZ=Etc/UTC
 ENV RUST_BACKTRACE=1
@@ -36,7 +38,9 @@ ENV CARGO_BUILD_TARGET='x86_64-unknown-linux-gnu'
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh  -s -- --profile minimal --no-modify-path -y
 RUN . ~/.cargo/env; cargo version
 
-RUN pip3 install --user --break-system-packages pre-commit
+RUN pip3 install --user pre-commit || true
+RUN pip3 install --user --break-system-packages pre-commit || true
+RUN pre-commit --version
 
 # prepare runs
 ENV GNUPGHOME_ALT=/home/rusty/gnupg-alt

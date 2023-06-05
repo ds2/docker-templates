@@ -7,6 +7,7 @@ To build the image, run:
 [,shell]
 ----
 podman build -t quay.io/ds2/rust-debian:bookworm -f Containerfile .
+podman build --build-arg linuxDistro=ubuntu --build-arg distroVersion=jammy -t quay.io/ds2/rust-debian:jammy -f Containerfile .
 ----
 
 To run it, use:
@@ -14,6 +15,7 @@ To run it, use:
 [,shell]
 ----
 podman run -it --rm quay.io/ds2/rust-debian:bookworm
+podman run -it --rm quay.io/ds2/rust-debian:jammy
 ----
 
 and to test it with your debian like project, run:
