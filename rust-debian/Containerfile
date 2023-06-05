@@ -1,6 +1,6 @@
-ARG rustVersion=""
 ARG linuxDistro="debian"
 ARG distroVersion="bookworm"
+ARG rustVersion=""
 FROM ${linuxDistro}:${distroVersion}
 
 ENV TZ=Etc/UTC
@@ -28,6 +28,10 @@ RUN curl -o /tmp/azcopy.tgz -L https://aka.ms/downloadazcopy-v10-linux; cd /tmp;
 
 # install protoc
 RUN protoc --version
+
+# install MS SBOM tool
+RUN apt-get install -y libicu; curl -Lo /usr/local/bin/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64; chmod a+x /usr/local/bin/sbom-tool
+RUN sbom-tool version
 
 # setup user environment (we do not run as root!!)
 USER rusty
