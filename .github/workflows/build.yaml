@@ -8,19 +8,30 @@ concurrency:
 
 jobs:
   build-image-matrix:
-    name: Build images via Buildah
+    name: Podman Builds
     runs-on: ubuntu-22.04
     strategy:
       matrix:
         containers:
           [
+            { path: "enterpriselinux-rust" },
             {
               path: "enterpriselinux-rust",
               registry: "quay.io",
               repository: "ds2/enterpriselinux-rust",
+              buildArgs: "linuxDistro=oraclelinux \n
+                distroVersion=9",
+              tag: "ol9",
             },
             { path: "node-yarn-fe-builder" },
             { path: "rust-debian" },
+            { path: "rust-debian", buildArgs: "linuxDistro=ubuntu \n
+                distroVersion=jammy", tag: "jammy" },
+            {
+              path: "rust-debian",
+              buildArgs: "distroVersion=bullseye",
+              tag: "bullseye",
+            },
             { path: "golang-ol8" },
             { path: "package-cloud" },
           ]
@@ -57,10 +68,8 @@ jobs:
         with:
           image: ${{ matrix.containers.repository || matrix.containers.path }}
           context: ./${{ matrix.containers.path }}
-          tags: latest ${{ github.sha }}
-          build-args: |
-            distroVersion=9
-            linuxDistro=oraclelinux
+          tags: latest ${{ github.sha }} ${{matrix.containers.tag || ''}}
+          build-args: ${{ matrix.containers.buildArgs || '' }}
           containerfiles: |
             ./${{ matrix.containers.path }}/Containerfile
           labels: |
