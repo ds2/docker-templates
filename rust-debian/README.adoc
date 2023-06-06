@@ -25,6 +25,7 @@ and to test it with your debian like project, run:
 ----
 mkdir -p /tmp/cargo
 podman run -it --rm -e CARGO_HOME=/tmp/cargo -v /tmp/cargo:/tmp/cargo -v $(pwd):/work quay.io/ds2/rust-debian:bookworm
+podman run -it --rm -e MIRROR_SRC_DIR="y" -e SEMVER_PARAMS="-a -g -m 8" -e CARGO_HOME=/tmp/cargo -v /tmp/cargo:/tmp/cargo -v $(pwd):/work quay.io/ds2/rust-debian:jammy
 ----
 
 and to finally test it, run:

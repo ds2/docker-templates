@@ -17,10 +17,11 @@ export SUDO_CLEAN_TARGET=${SUDO_CLEAN_TARGET:-0}
 export PERFORM_CLEAN_TARGET=${PERFORM_CLEAN_TARGET:-0}
 
 if [[ ! -z "$MIRROR_SRC_DIR" ]]; then
-    mkdir $NEW_SRC_DIR
+    if [[ ! -d "$NEW_SRC_DIR" ]]; then
+        mkdir $NEW_SRC_DIR
+    fi
     echo "Using new src dir $NEW_SRC_DIR to address user permissions.."
-    cp -R $SRC_DIR/* $NEW_SRC_DIR/
-    cp -R $SRC_DIR/.* $NEW_SRC_DIR/
+    rsync -azP --include ".git" --exclude ".*" --exclude target --exclude out --exclude "*.rpm" --exclude "*.deb" $SRC_DIR/ $NEW_SRC_DIR/
     cd $NEW_SRC_DIR
 fi
 
