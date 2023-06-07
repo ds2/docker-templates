@@ -32,7 +32,11 @@ jobs:
               buildArgs: "distroVersion=bullseye",
               tag: "bullseye",
             },
-            { path: "golang-ol8" },
+            { path: "golang-ol8", tag: "ol8" },
+            { path: "golang-ol8", buildArgs: "linuxDistro=almalinux \n
+                distroVersion=9", tag: "alm9" },
+            { path: "golang-ol8", buildArgs: "linuxDistro=almalinux \n
+                distroVersion=8", tag: "alm8" },
             { path: "package-cloud" },
           ]
     steps:

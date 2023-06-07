@@ -6,7 +6,13 @@ This container image can be used to build binaries for OL8/RHEL8.
 
 [,shell]
 ----
-podman build -t golang:ol8 -f Containerfile
+DISTRO_VERSION=8
+podman build --build-arg linuxDistro=oraclelinux --build-arg distroVersion=$DISTRO_VERSION -t golang:ol$DISTRO_VERSION -f Containerfile
+DISTRO_VERSION=8
+podman build --build-arg linuxDistro=almalinux --build-arg distroVersion=$DISTRO_VERSION -t golang:alm$DISTRO_VERSION -f Containerfile
+DISTRO_VERSION=9
+podman build --build-arg linuxDistro=oraclelinux --build-arg distroVersion=$DISTRO_VERSION -t golang:ol$DISTRO_VERSION -f Containerfile
+podman build --build-arg linuxDistro=almalinux --build-arg distroVersion=$DISTRO_VERSION -t golang:alm$DISTRO_VERSION -f Containerfile
 ----
 
 == Test the image

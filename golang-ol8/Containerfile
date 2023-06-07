@@ -1,6 +1,23 @@
-FROM oraclelinux:8
+ARG linuxDistro=oraclelinux
+ARG distroVersion=9
+FROM ${linuxDistro}:${distroVersion}
 RUN dnf update -y; dnf upgrade -y
-RUN dnf install -y libvirt-devel protobuf
-RUN dnf module enable go-toolset:ol8addon; dnf module install go-toolset -y
+
+RUN ls -l /etc/*-release
+RUN cat /etc/*-release
+
+# for OracleLinux 8:
+RUN source /etc/os-release; if [ "$ORACLE_BUGZILLA_PRODUCT" = "Oracle Linux 8" ]; then dnf module enable go-toolset:ol8addon; dnf module install go-toolset; fi;
+
+RUN dnf install go-toolset -y
+
 RUN go version
+
+# Additional deps
+#RUN dnf install -y libvirt-devel protobuf rpm-build
+
+# the fpm script to build RPMs
+RUN dnf install ruby -y; gem install fpm
+
+ENV TZ=Etc/UTC
 WORKDIR /work

@@ -73,6 +73,24 @@ jobs:
               tag: "almalinux9",
               shortTag: "alm9-",
             },
+            {
+              path: "golang-ol8",
+              registry: "quay.io",
+              repository: "ds2/golang-el",
+              buildArgs: "linuxDistro=oraclelinux \n
+                distroVersion=9",
+              tag: "ol9",
+              shortTag: "ol9-",
+            },
+            {
+              path: "golang-ol8",
+              registry: "quay.io",
+              repository: "ds2/golang-el",
+              buildArgs: "linuxDistro=almalinux \n
+                distroVersion=8",
+              tag: "alm8",
+              shortTag: "alm8-",
+            },
           ]
     steps:
       - name: checkout project ${{matrix.containers.path}}
@@ -89,9 +107,9 @@ jobs:
         run: |
           run_job=false
           echo "=============== list modified files ==============="
-          git diff --name-only HEAD^ HEAD
+          git diff --name-only HEAD~4 HEAD
           echo "========== check paths of modified files =========="
-          git diff --name-only HEAD^ HEAD > files.txt
+          git diff --name-only HEAD~4 HEAD > files.txt
           while IFS= read -r file
           do
             echo "checking file $file to be from ${{matrix.containers.path}}"
