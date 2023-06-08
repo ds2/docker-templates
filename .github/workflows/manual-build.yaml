@@ -5,12 +5,12 @@ on:
     inputs:
       path:
         description: "The path to the folder"
-        example: '/enterpriselinux-rust'
+        example: "enterpriselinux-rust"
         required: true
         type: string
       repository:
         description: "The repository id to use"
-        example: 'ds2/enterpriselinux-rust'
+        example: "ds2/enterpriselinux-rust"
         required: false
         type: string
         default: "my-dummy-image"
@@ -33,6 +33,7 @@ on:
 
 jobs:
   build:
+    name: build ${{github.event.inputs.path}}
     runs-on: ubuntu-latest
     steps:
       - name: checkout project
