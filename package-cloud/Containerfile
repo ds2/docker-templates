@@ -1,14 +1,14 @@
 FROM opensuse/leap:15.5
-ARG PCLOUD_VERSION='0.3.12'
 ARG UID=1000
 RUN zypper up -y; zypper in -y ruby ruby-devel gcc-c++ less sudo zsh helix vim system-group-wheel system-user-mail; zypper clean -a
 RUN useradd -m -u ${UID} -s /usr/bin/zsh -g users -c "PackageCloud User" packager
 RUN usermod -aG wheel packager
 RUN gem install package_cloud # we install the latest version
 
-ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib64/ruby/gems/2.5.0/gems/package_cloud-${PCLOUD_VERSION}/bin
-RUN package_cloud version
+COPY entrypoint.sh /entrypoint.sh
+RUN /entrypoint.sh package_cloud version
 
 USER packager
-RUN package_cloud version
 WORKDIR /work
+ENTRYPOINT [ "/entrypoint.sh" ]
+CMD [ "/bin/bash" ]
