@@ -5,7 +5,7 @@ FROM ${linuxDistro}:${distroVersion}
 
 ENV TZ=Etc/UTC
 ENV RUST_BACKTRACE=1
-ARG semverRpmVersion=0.1.1-rc.6
+ARG semverRpmVersion="0.3.0-1"
 ARG protocVersion=22.0
 
 # prepare image
@@ -15,7 +15,7 @@ RUN useradd -c "build user for Rust stuff" -g users -s /bin/zsh -m rusty
 ADD sudoers.txt /etc/sudoers.d/rusty
 
 # install semver tool
-#RUN curl -o /tmp/semver.rpm -L https://ds2linuxrepo.blob.core.windows.net/rpms/semver-formatter-${semverRpmVersion}.el8.x86_64.rpm; rpm -ihv /tmp/semver.rpm; semver-formatter -V
+RUN curl -s https://packagecloud.io/install/repositories/lexxy23/releases/script.deb.sh | sudo bash; apt-get install -y semver-formatter=${semverRpmVersion}; semver-formatter -V
 
 # install azure cli
 RUN mkdir -p /etc/apt/keyrings; curl -sLS https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/keyrings/microsoft.gpg > /dev/null; chmod go+r /etc/apt/keyrings/microsoft.gpg
@@ -30,7 +30,7 @@ RUN curl -o /tmp/azcopy.tgz -L https://aka.ms/downloadazcopy-v10-linux; cd /tmp;
 RUN protoc --version
 
 # install MS SBOM tool
-RUN apt-get install -y libicu; curl -Lo /usr/local/bin/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64; chmod a+x /usr/local/bin/sbom-tool
+RUN apt-get install -y libicu; curl -Lo /usr/local/bin/sbom-tool https://github.com/microsoft/sbom-tool/releases/download/v1.1.2/sbom-tool-linux-x64; chmod a+x /usr/local/bin/sbom-tool
 RUN sbom-tool version
 
 # setup user environment (we do not run as root!!)
