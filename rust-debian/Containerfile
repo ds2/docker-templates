@@ -5,7 +5,6 @@ FROM ${linuxDistro}:${distroVersion}
 
 ENV TZ=Etc/UTC
 ENV RUST_BACKTRACE=1
-ARG semverRpmVersion="0.3.0-1"
 
 # prepare image
 RUN apt-get -y update; apt-get -y upgrade
@@ -15,7 +14,7 @@ ADD sudoers.txt /etc/sudoers.d/rusty
 
 # install semver tool
 RUN curl -s https://packagecloud.io/install/repositories/lexxy23/releases/script.deb.sh | sudo bash;
-RUN apt-get install -y semver-formatter && semver-formatter -V || true
+RUN apt-get install -y semver-formatter && semver-formatter -V
 
 # install protoc
 RUN protoc --version
