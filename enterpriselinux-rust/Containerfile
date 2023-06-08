@@ -15,7 +15,9 @@ RUN adduser -c "RPM build user for Rust stuff" -g users -G wheel -s /bin/zsh -m 
 ADD sudoers.txt /etc/sudoers.d/rusty
 
 # install semver tool
-RUN curl -s https://packagecloud.io/install/repositories/lexxy23/releases/script.rpm.sh | sudo bash; dnf install -y semver-formatter=${semverRpmVersion}; semver-formatter -V
+RUN curl -s https://packagecloud.io/install/repositories/lexxy23/releases/script.rpm.sh | sudo bash
+RUN dnf install -y semver-formatter
+RUN semver-formatter -V
 
 # install azure cli
 RUN rpm --import https://packages.microsoft.com/keys/microsoft.asc
@@ -31,7 +33,7 @@ RUN cd /tmp; export distroVersion=$(cat /etc/system-release-cpe | cut -d ':' -f5
 RUN protoc --version
 
 # install MS SBOM tool
-RUN curl -Lo sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64; chmod +x sbom-tool
+RUN dnf install -y libicu; curl -Lo /usr/local/bin/sbom-tool https://github.com/microsoft/sbom-tool/releases/download/v1.1.2/sbom-tool-linux-x64; chmod a+x /usr/local/bin/sbom-tool
 RUN sbom-tool version
 
 # setup user environment (we do not run as root!!)
