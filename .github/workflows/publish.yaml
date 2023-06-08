@@ -34,7 +34,7 @@ jobs:
               repository: "ds2/rust-debian",
               buildArgs: "linuxDistro=debian \n
                 distroVersion=bullseye",
-              tag: "be",
+              tag: "bullseye",
               shortTag: "be-",
             },
             {
