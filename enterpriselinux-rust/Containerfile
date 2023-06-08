@@ -5,8 +5,7 @@ FROM ${linuxDistro}:${distroVersion}
 
 ENV TZ=Etc/UTC
 ENV RUST_BACKTRACE=1
-ARG semverRpmVersion="0.3.0-1"
-ARG protocVersion=22.0
+ARG protocVersion=23.2
 
 # prepare image
 RUN dnf repolist; yum repolist -v enabled; dnf update -y; dnf upgrade -y
@@ -15,23 +14,16 @@ RUN adduser -c "RPM build user for Rust stuff" -g users -G wheel -s /bin/zsh -m 
 ADD sudoers.txt /etc/sudoers.d/rusty
 
 # install semver tool
-RUN curl -s https://packagecloud.io/install/repositories/lexxy23/releases/script.rpm.sh | sudo bash; dnf install -y semver-formatter=${semverRpmVersion}; semver-formatter -V
-
-# install azure cli
-RUN rpm --import https://packages.microsoft.com/keys/microsoft.asc
-RUN export distroVersion=$(cat /etc/system-release-cpe | cut -d ':' -f5); echo "distroVersion is ${distroVersion}"; if [ $distroVersion == 9 ]; then dnf install -y https://packages.microsoft.com/config/rhel/9.0/packages-microsoft-prod.rpm; elif [ $distroVersion == 8 ]; then sudo dnf install -y https://packages.microsoft.com/config/rhel/8/packages-microsoft-prod.rpm; else echo "No Distro installed??"; exit 23; fi; dnf update -y
-RUN dnf list --showduplicates azure-cli; dnf -y install azure-cli
-RUN az --version
-
-# install azcopy
-RUN curl -o /tmp/azcopy.tgz -L https://aka.ms/downloadazcopy-v10-linux; cd /tmp; tar -xzvf /tmp/azcopy.tgz --strip 1; find /tmp; chmod 755 /tmp/azcopy; cp /tmp/azcopy /usr/bin/; azcopy --version
+RUN curl -s https://packagecloud.io/install/repositories/lexxy23/releases/script.rpm.sh | sudo bash
+RUN dnf install -y semver-formatter
+RUN semver-formatter -V
 
 # install protoc
 RUN cd /tmp; export distroVersion=$(cat /etc/system-release-cpe | cut -d ':' -f5); echo "distroVersion is ${distroVersion}"; PB_REL="https://github.com/protocolbuffers/protobuf/releases"; curl -LO $PB_REL/download/v${protocVersion}/protoc-${protocVersion}-linux-x86_64.zip; unzip protoc-${protocVersion}-linux-x86_64.zip; dnf install -y protobuf-compiler || mv bin/protoc /usr/local/bin/protoc
 RUN protoc --version
 
 # install MS SBOM tool
-RUN curl -Lo sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64; chmod +x sbom-tool
+RUN dnf install -y libicu; curl -Lo /usr/local/bin/sbom-tool https://github.com/microsoft/sbom-tool/releases/download/v1.1.2/sbom-tool-linux-x64; chmod a+x /usr/local/bin/sbom-tool
 RUN sbom-tool version
 
 # setup user environment (we do not run as root!!)
