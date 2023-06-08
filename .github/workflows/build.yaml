@@ -42,8 +42,6 @@ jobs:
     steps:
       - name: checkout project ${{matrix.containers.path}}
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
       - name: Buildah Action
         id: build-image-buildah
         uses: redhat-actions/buildah-build@v2
