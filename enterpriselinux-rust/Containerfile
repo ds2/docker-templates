@@ -5,8 +5,7 @@ FROM ${linuxDistro}:${distroVersion}
 
 ENV TZ=Etc/UTC
 ENV RUST_BACKTRACE=1
-ARG semverRpmVersion="0.3.0-1"
-ARG protocVersion=22.0
+ARG protocVersion=23.2
 
 # prepare image
 RUN dnf repolist; yum repolist -v enabled; dnf update -y; dnf upgrade -y
