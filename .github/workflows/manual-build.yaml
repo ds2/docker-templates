@@ -1,0 +1,56 @@
+name: Manual Container build
+
+on:
+  workflow_dispatch: # for manual builds
+    inputs:
+      path:
+        description: "The path to the folder"
+        example: '/enterpriselinux-rust'
+        required: true
+        type: string
+      repository:
+        description: "The repository id to use"
+        example: 'ds2/enterpriselinux-rust'
+        required: false
+        type: string
+        default: "my-dummy-image"
+      tag:
+        required: false
+        type: string
+        description: "a dedicated tag name"
+        example: "oraclelinux8"
+      buildArgs:
+        required: false
+        type: string
+        description: "a bunch of build args, in a key=value manor, multiline?"
+        example: "linuxDistro=almalinux\ndistroVersion=9"
+      shortTag:
+        required: false
+        type: string
+        description: "A short header used for the short git checksum, followed by a dash"
+        example: "alm9-"
+  # workflow_call: # for sub workflows
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout project
+        uses: actions/checkout@v3
+      - name: get short sha checksum
+        uses: benjlevesque/short-sha@v2.2
+        id: short-sha
+        with:
+          length: 8
+      - name: Build image
+        id: build-image-buildah
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ github.event.inputs.repository || github.event.inputs.path }}
+          context: ./${{ github.event.inputs.path }}
+          tags: latest ${{ github.sha }} ${{ github.events.inputs.shortTag || ''}}${{ steps.short-sha.outputs.sha }} ${{ github.event.inputs.tag || ''}}
+          build-args: ${{ github.event.inputs.buildArgs || '' }}
+          containerfiles: |
+            ./${{ github.event.inputs.path }}/Containerfile
+          labels: |
+            build_on:github
