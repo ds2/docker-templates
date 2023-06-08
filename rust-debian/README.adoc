@@ -16,6 +16,7 @@ To run it, use:
 [,shell]
 ----
 podman run -it --rm quay.io/ds2/rust-debian:bookworm
+podman run -it --rm quay.io/ds2/rust-debian:bullseye
 podman run -it --rm quay.io/ds2/rust-debian:jammy
 ----
 
