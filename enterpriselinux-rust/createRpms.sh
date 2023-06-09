@@ -21,7 +21,7 @@ if [[ ! -z "$MIRROR_SRC_DIR" ]]; then
         mkdir $NEW_SRC_DIR
     fi
     echo "Using new src dir $NEW_SRC_DIR to address user permissions.."
-    rsync -azP --include ".git" --exclude ".*" --exclude target --exclude out --exclude "*.rpm" --exclude "*.deb" $SRC_DIR/ $NEW_SRC_DIR/
+    rsync -azP --include ".git" --include ".semver-version" --exclude ".*" --exclude target --exclude out $SRC_DIR/ $NEW_SRC_DIR/
     cd $NEW_SRC_DIR
 fi
 
@@ -115,6 +115,9 @@ function build_packages() {
         cp --update $SRC_PACKAGE_ROOT/project.el${RHEL_NUMBER}.spec ~/rpmbuild/SPECS/${packageId}.spec || true
         # old way to look for OracleLinux stuff
         cp --update $SRC_PACKAGE_ROOT/project.ol${RHEL_NUMBER}.spec ~/rpmbuild/SPECS/${packageId}.spec || true
+        if [[ -f "./$SRC_PACKAGE_ROOT/override-build.env" ]]; then
+            . "./$SRC_PACKAGE_ROOT/override-build.env"
+        fi
         if [[ -f "./$SRC_PACKAGE_ROOT/prepare.sh" ]]; then
             echo "Preparing package.."
             . "./$SRC_PACKAGE_ROOT/prepare.sh"
@@ -137,7 +140,8 @@ echo "Preparations.."
 
 if [[ ! -d "$ARTIFACTS_DIR" ]]; then
     echo "Creating artifacts directory in $ARTIFACTS_DIR .."
-    install -m 0755 -d $ARTIFACTS_DIR
+    sudo chown rusty $(dirname "$ARTIFACTS_DIR")
+    install -m 0777 -d "$ARTIFACTS_DIR"
 else
     echo "Artifacts will be put into $ARTIFACTS_DIR. Please check if this directory has the right permissions!"
     if [[ ! -w "$ARTIFACTS_DIR" ]]; then
@@ -157,14 +161,14 @@ echo "Perform packaging.."
 if [ -z "$REL_VERSION" ]; then
     # first try
     echo "Will try to extract release version from toml file.."
-    REL_VERSION=$(cat Cargo.toml | grep "^version" | grep -Po "(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?")
+    REL_VERSION=$(cat Cargo.toml | grep "^version" | grep -Po "(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?" || true)
     export REL_VERSION
 fi
 if [ -z "$REL_VERSION" ]; then
     # second try
     echo "(WARN) no rel version found. Will try to get it from semver file (if found).."
     if [ -f ".semver-version" ]; then
-        REL_VERSION=$(cat .semver-version)
+        REL_VERSION=$(cat .semver-version || true)
     fi
 fi
 test -n "$REL_VERSION"
