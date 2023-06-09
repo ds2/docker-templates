@@ -140,8 +140,7 @@ echo "Preparations.."
 
 if [[ ! -d "$ARTIFACTS_DIR" ]]; then
     echo "Creating artifacts directory in $ARTIFACTS_DIR .."
-    sudo chown rusty $(dirname "$ARTIFACTS_DIR")
-    install -m 0777 -d "$ARTIFACTS_DIR"
+    sudo install -o rusty -g users -m 0777 -d "$ARTIFACTS_DIR"
 else
     echo "Artifacts will be put into $ARTIFACTS_DIR. Please check if this directory has the right permissions!"
     if [[ ! -w "$ARTIFACTS_DIR" ]]; then
