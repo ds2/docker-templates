@@ -15,6 +15,7 @@ jobs:
         containers:
           [
             { path: "enterpriselinux-rust" },
+            { path: "cicd/bazel" },
             {
               path: "enterpriselinux-rust",
               registry: "quay.io",
