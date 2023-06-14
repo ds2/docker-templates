@@ -2,6 +2,10 @@ FROM opensuse/leap:15.5
 RUN zypper up -y
 RUN zypper in -y bazel wget
 RUN wget -O /usr/local/bin/bazelisk https://github.com/bazelbuild/bazelisk/releases/download/v1.17.0/bazelisk-linux-amd64; chmod a+x /usr/local/bin/bazelisk
+RUN useradd -c "Bazel Builder" -s /bin/bash bazelor
+
+USER bazelor
+
 RUN bazel version
 RUN bazelisk version
 WORKDIR /work

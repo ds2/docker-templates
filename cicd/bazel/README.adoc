@@ -1,0 +1,3 @@
+= Bazel CICD Image
+
+An image having bazel and bazelisk for CICD purpose.

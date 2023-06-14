@@ -20,6 +20,13 @@ jobs:
               shortTag: "pc-",
             },
             {
+              path: "cicd/bazel",
+              registry: "quay.io",
+              repository: "ds2/bazel-cicd",
+              tag: "opensuse",
+              shortTag: "leap-",
+            },
+            {
               path: "rust-debian",
               registry: "quay.io",
               repository: "ds2/rust-debian",
