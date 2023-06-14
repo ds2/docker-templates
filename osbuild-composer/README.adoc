@@ -10,7 +10,10 @@ Run:
 ----
 podman build --build-arg repository=fedora --build-arg version=39 -t osbc:fed-39 -t osbc:latest -f Containerfile .
 podman build --build-arg repository=almalinux --build-arg version=9 -t osbc:alma-9 -t osbc:latest -f Containerfile .
-podman build --build-arg repository=oraclelinux --build-arg version=8 -t osbc:ol-8 -t osbc:latest -f Containerfile .
+podman build --no-cache --build-arg repository=oraclelinux --build-arg version=8.1 -t osbc:ol-8 -t osbc:latest -f Containerfile .
+
+# 8.1: ERROR: Types Error: Get "http://localhost/api/v1/compose/types": dial unix /run/weldr/api.socket: connect: connection refused
+# 8.2: ERROR: DistroError: Unknown distribution: ol-82
 podman build --build-arg repository=oraclelinux --build-arg version=9 -t osbc:ol-9 -t osbc:latest -f Containerfile .
 ----
 
@@ -56,7 +59,6 @@ To create an image, you need to exec into the container:
 
 [,shell]
 ----
-CONTAINERID=$(podman container list --filter=label=osbuild=true --quiet)
 podman exec -it $CONTAINERID /bin/bash
 ----
 
@@ -77,4 +79,25 @@ to trigger the build, run:
 composer-cli compose start base-image-with-tmux qcow2 # will start the build and return a job id; use -j to return a json which can be parsed via jq
 composer-cli compose info $JOBID # to see the state of the build
 composer-cli logs $JOBID # to see the build log
+----
+
+== Common errors
+
+=== osbuild-composer.socket service failed
+
+Please reset it:
+
+[,shell]
+----
+systemctl stop $CMP_SERVICES
+
+systemctl reset-failed osbuild-composer.service
+systemctl reset-failed osbuild-composer.socket
+systemctl reset-failed osbuild-composer-api.socket
+systemctl reset-failed osbuild-local-worker.socket
+systemctl restart osbuild-composer.socket
+systemctl restart osbuild-composer-api.socket
+systemctl restart osbuild-local-worker.socket
+systemctl restart osbuild-composer.service
+systemctl list-units | grep osbuild | grep "loaded failed"
 ----

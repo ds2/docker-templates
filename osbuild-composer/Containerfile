@@ -2,13 +2,18 @@ ARG compy_pw=compy124
 ARG repository="fedora"
 ARG version="39"
 FROM ${repository}:${version}
-RUN dnf update -y; dnf upgrade -y
+RUN cat /etc/os-release
 RUN dnf install -y systemd osbuild-composer composer-cli jq rsync tar; dnf clean all
 RUN systemctl enable osbuild-composer.socket
 RUN groupadd composers
 RUN composer-cli version
-RUN newgrp weldr || true
+RUN usermod -a -G weldr composers; newgrp weldr || true
 RUN install -d --group composers -m 0777 /work
+RUN cat /etc/os-release
+
 COPY test01.toml /work/
+
+# RUN composer-cli compose types # does not work due to socket error
+
 CMD ["/sbin/init"]
 WORKDIR /work

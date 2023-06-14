@@ -1,6 +1,7 @@
 name = "base-image-with-tmux"
 description = "A base system with tmux"
 version = "0.0.1"
+distro = "fedora-38"
 modules = []
 groups = []
 
