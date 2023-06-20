@@ -119,7 +119,9 @@ function build_packages() {
     else
       # assert that we only have a single binary
       cp "${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/${packageId}" "$BUILD_PACKAGE_ROOT/usr/local/bin/${packageId}" || true
-      cp "${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/${OVERRIDE_PACKAGE_ID}" "$BUILD_PACKAGE_ROOT/usr/local/bin/${OVERRIDE_PACKAGE_ID}" || true
+      if [[ -n "${OVERRIDE_PACKAGE_ID:-}" ]]; then
+        cp "${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/${OVERRIDE_PACKAGE_ID}" "$BUILD_PACKAGE_ROOT/usr/local/bin/${OVERRIDE_PACKAGE_ID}" || true
+      fi
     fi
     echo "Version: ${DEB_VERSION}-${DEB_REVISION}" >>"${BUILD_PACKAGE_ROOT}/DEBIAN/control"
 
