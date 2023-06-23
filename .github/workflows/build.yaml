@@ -16,6 +16,7 @@ jobs:
           [
             { path: "enterpriselinux-rust" },
             { path: "cicd/bazel" },
+            { path: "rust-dind" },
             {
               path: "enterpriselinux-rust",
               registry: "quay.io",

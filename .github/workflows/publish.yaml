@@ -27,6 +27,13 @@ jobs:
               shortTag: "leap-",
             },
             {
+              path: "rust-dind",
+              registry: "quay.io",
+              repository: "ds2/rust-dind",
+              tag: "dind",
+              shortTag: "dind-",
+            },
+            {
               path: "rust-debian",
               registry: "quay.io",
               repository: "ds2/rust-debian",

@@ -48,6 +48,7 @@ RUN mv ~/.cargo/env ~/.cargo/env.orig; echo "" >~/.cargo/env
 USER root
 COPY entrypoint.sh /entrypoint.sh
 COPY createDeb.sh /usr/local/bin/
+RUN rm -rf /var/lib/apt/lists/* && apt-get purge --auto-remove && apt-get clean 
 
 USER rusty
 ENTRYPOINT [ "/entrypoint.sh" ]
