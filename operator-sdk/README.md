@@ -8,7 +8,7 @@ This image is for building kubernetes operators using the Operator SDK.
 
 Run:
 
-    podman build -t operatorsdk:latest -f Dockerfile .
+    podman build -t operatorsdk:latest -f Containerfile .
 
 ## How to test
 
