@@ -14,7 +14,7 @@ Run:
 
 Run:
 
-    docker run -it --rm operatorsdk:latest /bin/bash
+    podman run -it --rm operatorsdk:latest /bin/bash
 
 ## Release
 
