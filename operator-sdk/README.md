@@ -8,7 +8,7 @@ This image is for building kubernetes operators using the Operator SDK.
 
 Run:
 
-    docker build -t operatorsdk:latest .
+    podman build -t operatorsdk:latest -f Dockerfile .
 
 ## How to test
 
@@ -21,3 +21,7 @@ Run:
 Push to quay.io:
 
     ./buildAndPush.sh -d operator-sdk -r quay.io/ds2/operator-sdk-cicd -p
+
+## Sources
+
+* https://github.com/operator-framework/operator-sdk

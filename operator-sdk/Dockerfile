@@ -1,5 +1,5 @@
-FROM golang:latest
-ARG tagName=v1.23.0
+FROM docker.io/golang:1.21rc2
+ARG tagName=v1.30.0
 RUN export ARCH=$(case $(uname -m) in x86_64) echo -n amd64 ;; aarch64) echo -n arm64 ;; *) echo -n $(uname -m) ;; esac) && \
   export OS=$(uname | awk '{print tolower($0)}') && \
   export OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/${tagName} && \
@@ -9,5 +9,6 @@ RUN export ARCH=$(case $(uname -m) in x86_64) echo -n amd64 ;; aarch64) echo -n 
 RUN apt-get update; apt-get install -y lsb-release
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg > /tmp/gpg.key; apt-key add /tmp/gpg.key
 RUN echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
-  apt-get update; apt-get install -y docker-ce docker-ce-cli containerd.io
-RUN rm -rf /var/lib/apt/lists/* && apt-get purge --auto-remove && apt-get clean
+  apt-get update; apt-get install -y docker-ce docker-ce-cli containerd.io; rm -rf /var/lib/apt/lists/* && apt-get purge --auto-remove && apt-get clean
+RUN operator-sdk version
+RUN docker --version
