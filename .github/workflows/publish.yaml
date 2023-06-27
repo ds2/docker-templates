@@ -34,6 +34,12 @@ jobs:
               shortTag: "dind-",
             },
             {
+              path: "operator-sdk",
+              registry: "quay.io",
+              repository: "ds2/operator-sdk-cicd",
+              shortTag: "opsdk-",
+            },
+            {
               path: "rust-debian",
               registry: "quay.io",
               repository: "ds2/rust-debian",

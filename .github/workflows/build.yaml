@@ -263,23 +263,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./${{env.REPO_PATH}}
-  operatorsdk:
-    name: build image operatorsdk
-    runs-on: ubuntu-latest
-    env:
-      REPO_PATH: "operator-sdk"
-    steps:
-      - name: checkout project ${{env.REPO_PATH}}
-        uses: actions/checkout@v3
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Build Docker image for ${{env.REPO_PATH}}
-        id: docker_build
-        uses: docker/build-push-action@v4
-        with:
-          context: ./${{env.REPO_PATH}}
   cicd-jmeter:
     name: build image cicd jmeter
     runs-on: ubuntu-latest
