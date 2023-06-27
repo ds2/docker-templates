@@ -7,7 +7,8 @@ ENV TZ=Etc/UTC
 ENV RUST_BACKTRACE=1
 
 # prepare image
-RUN apt-get -y update; apt-get -y upgrade
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update -y; apt-get upgrade -y
 RUN apt-get install -y zsh sudo git protobuf-compiler python3-pip vim curl unzip pre-commit lsb-release pkg-config rsync
 RUN useradd -c "build user for Rust stuff" -g users -s /bin/zsh -m rusty
 ADD sudoers.txt /etc/sudoers.d/rusty
