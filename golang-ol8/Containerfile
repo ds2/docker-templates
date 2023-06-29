@@ -13,7 +13,7 @@ RUN cat /etc/*-release
 # for OracleLinux 8:
 RUN source /etc/os-release; if [ "$ORACLE_BUGZILLA_PRODUCT" = "Oracle Linux 8" ]; then dnf module enable go-toolset:ol8addon; dnf module install go-toolset; fi;
 
-RUN dnf install go-toolset -y
+RUN dnf install go-toolset -y; dnf clean all
 
 RUN go version
 
@@ -21,9 +21,6 @@ RUN go version
 #RUN dnf install -y libvirt-devel protobuf rpm-build
 
 # the fpm script to build RPMs
-RUN dnf install ruby -y; gem install fpm
-
-
-RUN rm -rf /var/lib/apt/lists/* && apt-get purge --auto-remove && apt-get clean
+RUN dnf install -y ruby; gem install fpm; dnf clean all
 
 WORKDIR /work
