@@ -1,6 +1,10 @@
 ARG linuxDistro=oraclelinux
 ARG distroVersion=9
 FROM ${linuxDistro}:${distroVersion}
+
+ENV LC_ALL=de_DE.UTF-8
+ENV TZ=Etc/UTC
+
 RUN dnf update -y; dnf upgrade -y
 
 RUN ls -l /etc/*-release
@@ -19,10 +23,7 @@ RUN go version
 # the fpm script to build RPMs
 RUN dnf install ruby -y; gem install fpm
 
-ENV LC_ALL=de_DE.UTF-8
-RUN apt-get install -y lsb-release locales; locale-gen en_US.UTF-8; locale-gen de_DE.UTF-8; echo en_US UTF-8 >> /etc/locale.gen; echo de_DE UTF-8 >> /etc/locale.gen; dpkg-reconfigure locales
 
 RUN rm -rf /var/lib/apt/lists/* && apt-get purge --auto-remove && apt-get clean
 
-ENV TZ=Etc/UTC
 WORKDIR /work
