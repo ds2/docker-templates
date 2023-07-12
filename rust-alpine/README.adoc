@@ -1,0 +1,34 @@
+= Rust Alpine Image
+
+To compile rust binaries for Alpine.
+
+== Build the image
+
+Run:
+
+----
+podman build -t quay.io/ds2/rust-alpine:latest -f Containerfile .
+----
+
+== Test the image
+
+[,shell]
+----
+podman run -it --rm quay.io/ds2/rust-alpine:latest
+----
+
+and to test it with your debian like project, run:
+
+[,shell]
+----
+mkdir -p /tmp/cargo
+podman run -it --rm -e CARGO_HOME=/tmp/cargo -v /tmp/cargo:/tmp/cargo -v $(pwd):/work quay.io/ds2/rust-alpine:latest
+podman run -it --rm -e MIRROR_SRC_DIR="y" -e SEMVER_PARAMS="-a -g -m 8" -e CARGO_HOME=/tmp/cargo -v /tmp/cargo:/tmp/cargo -v $(pwd):/work quay.io/ds2/rust-alpine:latest
+----
+
+and to finally test it, run:
+
+[,shell]
+----
+podman run -it --rm -v $(pwd):/work quay.io/ds2/rust-alpine:latest createPackage.sh
+----
