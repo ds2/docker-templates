@@ -6,7 +6,7 @@ ENV TZ=Etc/UTC
 
 # prepare image
 RUN apk update -y; apk upgrade
-RUN apk add zsh sudo git vim curl unzip rsync py3-pip protobuf # protobuf-compiler python3-pip vim curl unzip pre-commit lsb-release pkg-config rsync
+RUN apk add zsh sudo git vim curl unzip rsync py3-pip protobuf alpine-sdk
 RUN adduser -s /bin/zsh -D rusty
 ADD sudoers.txt /etc/sudoers.d/rusty
 
