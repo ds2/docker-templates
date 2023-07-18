@@ -1,0 +1,20 @@
+include:
+  - project: "ds_2/ci-templates"
+    ref: v0.1.17
+    file:
+      - "/templates/stages.yaml"
+      - "/templates/global-vars.yaml"
+
+variables:
+  CI: 1
+
+build-image-feature:
+  image: docker:stable
+  # services:
+  #   - docker:dind
+  stage: build
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^feature/\w+$/'
+  script:
+    - cd enterpriselinux-rust
+    - docker build -t elx-rust:latest -f Containerfile .
