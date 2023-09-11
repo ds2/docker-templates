@@ -1,5 +1,5 @@
 #FROM public.ecr.aws/lts/ubuntu:latest
-FROM ubuntu:focal
+FROM ubuntu:jammy
 ARG USR=gitrunner
 ARG VERSION=2.278.0
 ENV HOSTNAME=myrunner01
