@@ -21,11 +21,11 @@
     {
       "matchDepTypes": ["optionalDependencies"],
       "addLabels": ["optional"]
-    },
-    { "additionalBranchPrefix": "{{parentDir}}-" }
+    }
   ],
   "commitMessagePrefix": "⬆️",
   "addLabels": ["dependencies"],
+  "additionalBranchPrefix": "{{parentDir}}-",
   "reviewersFromCodeOwners": true,
   "additionalReviewers": ["lexxy23", "rusty232", "team:owners"],
   "branchConcurrentLimit": 5,
