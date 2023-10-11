@@ -1,22 +1,40 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "timezone": "Europe/Berlin",
-  "schedule": "before 5am every weekday",
-  "extends": [
-    "config:base"
+  "schedule": [
+    "after 10pm every weekday",
+    "before 5am every weekday",
+    "every weekend"
+  ],
+  "extends": ["config:base"],
+  "packageRules": [
+    {
+      "description": "Automatically merge minor and patch-level updates",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "matchPackagePatterns": ["eslint"],
+      "labels": ["linting"]
+    },
+    {
+      "matchDepTypes": ["optionalDependencies"],
+      "addLabels": ["optional"]
+    },
+    {
+        "matchPaths": ["java11"],
+        "additionalBranchPrefix": "java11-"
+      },
+	  {
+        "matchPaths": ["java8"],
+        "additionalBranchPrefix": "java8-"
+      }
   ],
   "commitMessagePrefix": "⬆️",
-    "labels": [
-        "dependencies"
-    ],
-    "reviewersFromCodeOwners": true,
-    "additionalReviewers": [
-		"lexxy23",
-		"rusty232"
-	],
-	"branchConcurrentLimit": 5,
-	"prConcurrentLimit": 9,
-    "baseBranches": [
-		"develop"
-	]
+  "addLabels": ["dependencies"],
+  "reviewersFromCodeOwners": true,
+  "additionalReviewers": ["lexxy23", "rusty232", "team:owners"],
+  "branchConcurrentLimit": 5,
+  "prConcurrentLimit": 9
 }
