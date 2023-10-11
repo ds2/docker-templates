@@ -22,14 +22,7 @@
       "matchDepTypes": ["optionalDependencies"],
       "addLabels": ["optional"]
     },
-    {
-        "matchPaths": ["java11"],
-        "additionalBranchPrefix": "java11-"
-      },
-	  {
-        "matchPaths": ["java8"],
-        "additionalBranchPrefix": "java8-"
-      }
+    { "additionalBranchPrefix": "{{parentDir}}-" }
   ],
   "commitMessagePrefix": "⬆️",
   "addLabels": ["dependencies"],
