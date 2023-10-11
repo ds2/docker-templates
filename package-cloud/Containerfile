@@ -1,4 +1,4 @@
-FROM opensuse/leap:15.5
+FROM opensuse/leap:42.3
 ARG UID=1000
 RUN zypper up -y; zypper in -y ruby ruby-devel gcc-c++ less sudo zsh helix vim system-group-wheel system-user-mail; zypper clean -a
 RUN useradd -m -u ${UID} -s /usr/bin/zsh -g users -c "PackageCloud User" packager
