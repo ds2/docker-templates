@@ -20,19 +20,19 @@
     },
     {
       "matchPaths": ["openjdk8"],
-      "additionalBranchPrefix": "openjdk8-",
+      "additionalBranchPrefix": "openjdk8-"
     },
     {
       "matchPaths": ["openjdk11"],
-      "additionalBranchPrefix": "openjdk11-",
+      "additionalBranchPrefix": "openjdk11-"
     },
     {
       "matchPaths": ["java8"],
-      "additionalBranchPrefix": "java8-",
+      "additionalBranchPrefix": "java8-"
     },
     {
       "matchPaths": ["java11"],
-      "additionalBranchPrefix": "java11-",
+      "additionalBranchPrefix": "java11-"
     },
     {
       "matchDepTypes": ["optionalDependencies"],
