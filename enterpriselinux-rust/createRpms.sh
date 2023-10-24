@@ -50,6 +50,10 @@ function get_os_name() {
 function build_workspace() {
     echo "Setting build target to $CARGO_BUILD_TARGET"
     test -n "${RUST_PROFILE}"
+    if [[ -d "~/.rustup/tmp" ]]; then
+        echo "Removing rustups tmp directory"
+        rm -rf ~/.rustup/tmp
+    fi
     rustup target add "${CARGO_BUILD_TARGET}"
     test -n "$CARGO_TARGET_DIR"
     if [[ ! -w "$CARGO_TARGET_DIR" ]]; then
