@@ -114,7 +114,7 @@ jobs:
           ]
     steps:
       - name: checkout project ${{matrix.containers.path}}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 5
       - name: get short sha checksum

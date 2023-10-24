@@ -1,4 +1,4 @@
-FROM docker.io/golang:1.21rc2
+FROM docker.io/golang:1.21
 ARG tagName=v1.30.0
 ENV LC_ALL=de_DE.UTF-8
 ENV LC_CTYPE=de_DE.UTF-8
