@@ -1,16 +1,29 @@
 include:
   - project: "ds_2/ci-templates"
-    ref: v0.1.17
+    ref: v0.1.18-alpha.4
     file:
       - "/templates/stages.yaml"
       - "/templates/global-vars.yaml"
+      - "/templates/build-kaniko.yaml"
 
 
 build-image-feature:
   image: docker:stable
   stage: build
-  rules:
-    - if: $CI_COMMIT_BRANCH
   script:
     - cd enterpriselinux-rust
     - docker build -t elx-rust:latest -f Containerfile .
+
+rust-el9:
+  extends: .build-with-kaniko
+  variables:
+    CTX_DIR: enterpriselinux-rust
+    BUILD_ARGS: "linuxDistro=almalinux distroVersion=9"
+    ADDITIONALTAGLIST: "alma9"
+
+rust-ol8:
+  extends: .build-with-kaniko
+  variables:
+    CTX_DIR: enterpriselinux-rust
+    ADDITIONALTAGLIST: "ol8"
+    BUILD_ARGS: "linuxDistro=oraclelinux distroVersion=8"
