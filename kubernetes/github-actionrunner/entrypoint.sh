@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 echo "Will configure this container now with hostname $HOSTNAME.."
 cd ~
 if [ -z "$DRYRUN" ]; then

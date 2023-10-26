@@ -7,4 +7,4 @@ if [ ! -f /app/app.jar ]; then
     exit 1
 fi
 
-java $JAVA_SYSTEM_PROPS -jar /app/app.jar "$@"
+java "$JAVA_SYSTEM_PROPS" -jar /app/app.jar "$@"

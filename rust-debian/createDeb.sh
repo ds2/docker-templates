@@ -50,13 +50,17 @@ function get_os_name() {
 function build_workspace() {
   echo "Setting build target to $CARGO_BUILD_TARGET"
   test -n "${RUST_PROFILE}"
+  if [[ -d "$HOME/.rustup/tmp" ]]; then
+    echo "Removing rustups tmp directory"
+    rm -rf $HOME/.rustup/tmp
+  fi
   rustup target add "${CARGO_BUILD_TARGET}"
   test -n "$CARGO_TARGET_DIR"
   if [[ ! -w "$CARGO_TARGET_DIR" ]]; then
     echo "Cannot write target directory?? I will change the target dir for now to a temporary directory."
     export CARGO_TARGET_DIR=/tmp/my-temp-rust-cargo-target-dir
   fi
-  if [ $SUDO_CLEAN_TARGET -ge 1 -a -d "$CARGO_TARGET_DIR" ]; then
+  if [ "$SUDO_CLEAN_TARGET" -ge 1 -a -d "$CARGO_TARGET_DIR" ]; then
     echo "Sudoing the target directory $CARGO_TARGET_DIR.."
     sudo rm -rf "$CARGO_TARGET_DIR"
   else
@@ -71,7 +75,7 @@ function build_workspace() {
     sudo install -o rusty -g users -m 0777 -d "$CARGO_TARGET_DIR"
   fi
   echo "Building binary/binaries.."
-  ls -alFh $CARGO_TARGET_DIR
+  ls -alFh "$CARGO_TARGET_DIR"
   if [ "release" == "$RUST_PROFILE" ]; then
     BUILD_ARGS+=" --release"
   fi
@@ -90,7 +94,7 @@ function build_packages() {
   BUILD_ROOT="/tmp/debmkp"
 
   cd "os-packaging/linux"
-  packages=$(ls -d */)
+  packages=$(ls -d)
   echo "Packages: $packages"
 
   for p in $packages; do
@@ -101,7 +105,6 @@ function build_packages() {
     echo "Testing package $packageId.."
     export BUILD_PACKAGE_ROOT="$BUILD_ROOT/${packageId}_${DEB_VERSION}-${DEB_REVISION}_amd64"
     SRC_PACKAGE_ROOT="$packageId"
-    local countSpecs=$(ls -1 ${SRC_PACKAGE_ROOT}/*.spec 2>/dev/null | wc -l)
     local countDeb=$(ls -1 ${SRC_PACKAGE_ROOT}/debian.control 2>/dev/null | wc -l)
     mkdir -p "$BUILD_PACKAGE_ROOT/DEBIAN"
     mkdir -p "$BUILD_PACKAGE_ROOT/usr/local/bin"
@@ -110,12 +113,12 @@ function build_packages() {
       continue
     fi
     cp "$SRC_PACKAGE_ROOT/debian.control" "$BUILD_PACKAGE_ROOT/DEBIAN/control"
-    if [[ -f "./$SRC_PACKAGE_ROOT/override-build.env" ]]; then
-      . "./$SRC_PACKAGE_ROOT/override-build.env"
+    if [[ -f "$SRC_PACKAGE_ROOT/override-build.env" ]]; then
+      source "$SRC_PACKAGE_ROOT/override-build.env"
     fi
-    if [[ -f "./$SRC_PACKAGE_ROOT/prepare.sh" ]]; then
+    if [[ -f "$SRC_PACKAGE_ROOT/prepare.sh" ]]; then
       echo "Preparing package.."
-      . "./$SRC_PACKAGE_ROOT/prepare.sh"
+      source "$SRC_PACKAGE_ROOT/prepare.sh"
     else
       # assert that we only have a single binary
       cp "${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/${packageId}" "$BUILD_PACKAGE_ROOT/usr/local/bin/${packageId}" || true
@@ -187,11 +190,11 @@ if [ -f "${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/semver-format
   semverBin="${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/${RUST_PROFILE}/semver-formatter"
 fi
 echo "Trying to format $SEMVER_VERSION.."
-version_string="$(${semverBin} -f deb ${SEMVER_PARAMS} ${SEMVER_VERSION})"
+version_string="$(${semverBin} -f deb ${SEMVER_PARAMS} ""${SEMVER_VERSION}"")"
 # echo "Will evaluate: $version_string"
 eval "$version_string"
 
 build_packages
 
 echo "Artifacts:"
-ls $ARTIFACTS_DIR/*.deb
+ls "$ARTIFACTS_DIR/*.deb"

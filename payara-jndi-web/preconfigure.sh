@@ -7,7 +7,7 @@ if [ ! -d "$DOMAIN_DIR" ]; then
     exit 1
 fi
 
-if [ -f ${JEE_CONFIGS_DIR}/logging.properties ]; then
+if [ -f "${JEE_CONFIGS_DIR}/logging.properties" ]; then
     echo "Replacing logging properties.."
-    cp ${JEE_CONFIGS_DIR}/logging.properties $DOMAIN_DIR/config/
+    cp "${JEE_CONFIGS_DIR}/logging.properties" "$DOMAIN_DIR/config/"
 fi

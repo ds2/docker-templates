@@ -30,4 +30,3 @@ And to test with your own golang project, run:
 ----
 podman run -it --rm -v $(pwd):/work golang:ol8 go build -o out/my-binary-el8 my.gitlab/project/module
 ----
-
