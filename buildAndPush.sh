@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# GITHASH=$(git rev-parse --short=10 HEAD)
+GITHASH=$(git rev-parse --short=10 HEAD)
 
 PUSH=0
 DIRECTORY=""
@@ -51,7 +51,7 @@ function buildImage() {
     local dir=$1
     local repo=$2
     echo "Building image $repo.."
-    CMD="podman build -t ""${repo}:latest"" "
+    CMD="podman build --label local.githash=$GITHASH --label built.by=$(whoami) --no-cache --squash-all -t ""${repo}:latest"" "
     for b in $BUILD_ARGS; do
         CMD+=" --build-arg ""$b"""
     done
@@ -62,12 +62,15 @@ function buildImage() {
         echo "retagging latest as $t"
         podman tag $repo:latest $repo:$t || exit 3
     done
+    podman image ls $repo:latest
     echo "You may run the image now via:"
     echo "  podman run -it --rm ${repo}:latest"
 }
 
-buildImage "$DIRECTORY" "$REPO"
+# buildImage "$DIRECTORY" "$REPO"
 
 if [ $PUSH -eq 1 ]; then
     uploadImage "$REPO"
+else
+    buildImage "$DIRECTORY" "$REPO"
 fi
