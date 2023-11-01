@@ -94,7 +94,7 @@ function build_packages() {
   BUILD_ROOT="/tmp/debmkp"
 
   cd "os-packaging/linux"
-  packages=$(ls -d)
+  packages=$(ls -d */)
   echo "Packages: $packages"
 
   for p in $packages; do
