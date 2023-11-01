@@ -136,7 +136,7 @@ function build_packages() {
     dpkg --contents "${BUILD_PACKAGE_ROOT}.deb"
 
     # copy package to artifacts directory
-    echo "Copying artifacts to output directory.."
+    echo "Copying artifact ${BUILD_PACKAGE_ROOT}.deb to output directory ${ARTIFACTS_DIR}"
     cp "${BUILD_PACKAGE_ROOT}.deb" "${ARTIFACTS_DIR}/"
   done
 }
@@ -197,4 +197,4 @@ eval "$version_string"
 build_packages
 
 echo "Artifacts:"
-ls "$ARTIFACTS_DIR/*.deb"
+ls -lFh "$ARTIFACTS_DIR/"
