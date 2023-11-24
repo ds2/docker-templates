@@ -43,7 +43,7 @@
   "addLabels": ["dependencies"],
   "additionalBranchPrefix": "{{parentDir}}-",
   "reviewersFromCodeOwners": true,
-  "additionalReviewers": ["lexxy23", "rusty232", "team:owners"],
+  "additionalReviewers": ["lexxy23", "rusty232"],
   "branchConcurrentLimit": 5,
   "prConcurrentLimit": 9
 }
