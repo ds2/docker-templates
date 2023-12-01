@@ -27,12 +27,21 @@ export PATH=$CARGO_HOME/bin:$PATH
 
 if [ $PERFORM_RUSTUP_UPDATE -eq 1 ]; then
     echo "Performing rustup update.."
-    rm $CARGO_HOME/bin/rustfmt
-    rm $CARGO_HOME/bin/cargo-fmt
+    rm $CARGO_HOME/bin/rust-* || true
+    rm $CARGO_HOME/bin/{rustc,rustdoc,rustfmt} || true
+    rm $CARGO_HOME/bin/cargo-* || true
+    rm $CARGO_HOME/bin/cargo || true
+    rm -rf ~/.rustup/toolchains
+    ls -alFh $CARGO_HOME/bin/
     rustup update stable
+    rustup default stable-${CARGO_BUILD_TARGET}
+else
+    echo "Will not perform update :)"
 fi
 
-cargo --version
+echo ".."
+
+echo "Using cargo $(cargo --version)"
 
 echo "Alright. Good luck now :D"
 exec "$@"

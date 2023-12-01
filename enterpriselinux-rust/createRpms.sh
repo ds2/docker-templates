@@ -117,8 +117,6 @@ function build_packages() {
         fi
         # new way to look for RHEL stuff from root dir
         cp --update $SRC_PACKAGE_ROOT/project.el${RHEL_NUMBER}.spec ~/rpmbuild/SPECS/${packageId}.spec || true
-        # old way to look for OracleLinux stuff
-        cp --update $SRC_PACKAGE_ROOT/project.ol${RHEL_NUMBER}.spec ~/rpmbuild/SPECS/${packageId}.spec || true
         if [[ -f "./$SRC_PACKAGE_ROOT/override-build.env" ]]; then
             . "./$SRC_PACKAGE_ROOT/override-build.env"
         fi

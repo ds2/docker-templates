@@ -7,7 +7,7 @@ Building it via Podman:
 [,shell]
 ----
 DISTRO_VERSION=8
-podman build -t quay.io/ds2/elx-rust:${DISTRO_VERSION} --build-arg distroVersion=${DISTRO_VERSION} --build-arg 'linuxDistro=oraclelinux' -f Containerfile .
+podman build -t quay.io/ds2/elx-rust:${DISTRO_VERSION} --build-arg distroVersion=${DISTRO_VERSION} --build-arg 'linuxDistro=oraclelinux' --build-arg 'rustVersion=1.70.0' -f Containerfile .
 DISTRO_VERSION=9
 podman build -t quay.io/ds2/elx-rust:${DISTRO_VERSION} --build-arg distroVersion=${DISTRO_VERSION} --build-arg 'linuxDistro=almalinux' -f Containerfile .
 
@@ -21,8 +21,8 @@ Testing it locally:
 [,shell]
 ----
 mkdir -p /tmp/cargo
-podman run -it --rm -e CARGO_HOME=/work/cargo quay.io/ds2/elx-rust:${DISTRO_VERSION}
-podman run -it --rm -e SEMVER_PARAMS="-a -g -m 8" -e MIRROR_SRC_DIR=y -e CARGO_HOME=/tmp/cargo -v /tmp/cargo:/tmp/cargo -v $(pwd):/work quay.io/ds2/elx-rust:${DISTRO_VERSION}
+podman run -it --rm -e PERFORM_RUSTUP_UPDATE=1 -e CARGO_HOME=/work/cargo quay.io/ds2/elx-rust:${DISTRO_VERSION}
+podman run -it --rm -e CARGO_BUILD_TARGET="x86_64-unknown-linux-gnu" -e PERFORM_RUSTUP_UPDATE=0 -e SEMVER_PARAMS="-a -g -m 8" -e MIRROR_SRC_DIR=y -e CARGO_HOME=/tmp/cargo -v /tmp/cargo:/tmp/cargo -v $(pwd):/work quay.io/ds2/elx-rust:${DISTRO_VERSION}
 podman run -it --rm quay.io/ds2/elx-rust:${DISTRO_VERSION}
 ----
 
