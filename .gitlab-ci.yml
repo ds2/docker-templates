@@ -6,7 +6,6 @@ include:
       - "/templates/global-vars.yaml"
       - "/templates/build-kaniko.yaml"
 
-
 rust-alma9:
   extends: .build-with-kaniko
   variables:
@@ -30,6 +29,26 @@ rust-ubuntu-jammy:
 
 rust-debian-bookworm:
   extends: .build-with-kaniko
+  variables:
+    CTX_DIR: rust-debian
+    BUILD_ARGS: "linuxDistro=debian distroVersion=bookworm"
+    ADDITIONALTAGLIST: "bookworm bw"
+
+############################## DEPLOY TO OUR REPO #########################
+
+deploy-rust-alma9:
+  extends: .deploy-with-kaniko
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  variables:
+    CTX_DIR: enterpriselinux-rust
+    BUILD_ARGS: "linuxDistro=almalinux distroVersion=9"
+    ADDITIONALTAGLIST: "alma9"
+
+deploy-rust-debian-bookworm:
+  extends: .deploy-with-kaniko
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   variables:
     CTX_DIR: rust-debian
     BUILD_ARGS: "linuxDistro=debian distroVersion=bookworm"
