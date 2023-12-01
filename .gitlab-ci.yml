@@ -25,14 +25,21 @@ rust-ubuntu-jammy:
   variables:
     CTX_DIR: rust-debian
     BUILD_ARGS: "linuxDistro=ubuntu distroVersion=jammy"
-    ADDITIONALTAGLIST: "jammy bw"
+    ADDITIONALTAGLIST: "jammy jm"
 
-rust-debian-bookworm:
+build-rust-debian-bookworm:
   extends: .build-with-kaniko
   variables:
     CTX_DIR: rust-debian
     BUILD_ARGS: "linuxDistro=debian distroVersion=bookworm"
     ADDITIONALTAGLIST: "bookworm bw"
+
+build-rust-debian-bullseye:
+  extends: .build-with-kaniko
+  variables:
+    CTX_DIR: rust-debian
+    BUILD_ARGS: "linuxDistro=debian distroVersion=bullseye semverUrl=https://ds2linuxrepo.blob.core.windows.net/bullseye/semver-formatter_0.4.0-alpha.1.b5180223.builddate-202306081541_amd64.deb"
+    ADDITIONALTAGLIST: "bullseye be"
 
 ############################## DEPLOY TO OUR REPO #########################
 
@@ -45,6 +52,15 @@ deploy-rust-alma9:
     BUILD_ARGS: "linuxDistro=almalinux distroVersion=9"
     ADDITIONALTAGLIST: "alma9"
 
+deploy-rust-ol8:
+  extends: .deploy-with-kaniko
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  variables:
+    CTX_DIR: enterpriselinux-rust
+    BUILD_ARGS: "linuxDistro=oraclelinux distroVersion=8"
+    ADDITIONALTAGLIST: "ol8"
+
 deploy-rust-debian-bookworm:
   extends: .deploy-with-kaniko
   rules:
@@ -53,3 +69,12 @@ deploy-rust-debian-bookworm:
     CTX_DIR: rust-debian
     BUILD_ARGS: "linuxDistro=debian distroVersion=bookworm"
     ADDITIONALTAGLIST: "bookworm bw"
+
+deploy-rust-debian-bullseye:
+  extends: .deploy-with-kaniko
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  variables:
+    CTX_DIR: rust-debian
+    BUILD_ARGS: "linuxDistro=debian distroVersion=bullseye semverUrl=https://ds2linuxrepo.blob.core.windows.net/bullseye/semver-formatter_0.4.0-alpha.1.b5180223.builddate-202306081541_amd64.deb"
+    ADDITIONALTAGLIST: "bullseye be"
