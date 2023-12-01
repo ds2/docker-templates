@@ -31,7 +31,7 @@ jobs:
                 distroVersion=jammy", tag: "jammy" },
             {
               path: "rust-debian",
-              buildArgs: "distroVersion=bullseye",
+              buildArgs: "distroVersion=bullseye semverUrl=https://ds2linuxrepo.blob.core.windows.net/bullseye/semver-formatter_0.4.0-alpha.1.b5180223.builddate-202306081541_amd64.deb",
               tag: "bullseye",
             },
             { path: "golang-ol8", tag: "ol8" },
