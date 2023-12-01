@@ -52,7 +52,8 @@ jobs:
               path: "rust-debian",
               registry: "quay.io",
               repository: "ds2/rust-debian",
-              buildArgs: "distroVersion=bullseye semverUrl=https://ds2linuxrepo.blob.core.windows.net/bullseye/semver-formatter_0.4.0-alpha.1.b5180223.builddate-202306081541_amd64.deb",
+              buildArgs: "distroVersion=bullseye \n
+                semverUrl=https://ds2linuxrepo.blob.core.windows.net/bullseye/semver-formatter_0.4.0-alpha.1.b5180223.builddate-202306081541_amd64.deb",
               tag: "bullseye",
               shortTag: "be-",
             },
