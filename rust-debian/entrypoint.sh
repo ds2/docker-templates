@@ -7,6 +7,7 @@ whoami
 echo "My path is actually: ${PATH}"
 
 export CARGO_HOME=${CARGO_HOME:-/home/rusty/.cargo}
+export SRC_DIR=${SRC_DIR:-/work}
 export CARGO_BUILD_TARGET=${CARGO_BUILD_TARGET:-'x86_64-unknown-linux-gnu'}
 export CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-target}
 export PERFORM_RUSTUP_UPDATE=${PERFORM_RUSTUP_UPDATE:-0}
@@ -26,12 +27,21 @@ export PATH=$CARGO_HOME/bin:$PATH
 
 if [ $PERFORM_RUSTUP_UPDATE -eq 1 ]; then
     echo "Performing rustup update.."
-    rm $CARGO_HOME/bin/rustfmt
-    rm $CARGO_HOME/bin/cargo-fmt
+    rm $CARGO_HOME/bin/rust-* || true
+    rm $CARGO_HOME/bin/{rustc,rustdoc,rustfmt} || true
+    rm $CARGO_HOME/bin/cargo-* || true
+    rm $CARGO_HOME/bin/cargo || true
+    rm -rf ~/.rustup/toolchains
+    ls -alFh $CARGO_HOME/bin/
     rustup update stable
+    rustup default stable-${CARGO_BUILD_TARGET}
+else
+    echo "Will not perform update :)"
 fi
 
-cargo --version
+echo ".."
+
+echo "Using cargo $(cargo --version)"
 
 echo "Alright. Good luck now :D"
 exec "$@"

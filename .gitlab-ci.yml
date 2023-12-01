@@ -1,20 +1,13 @@
 include:
   - project: "ds_2/ci-templates"
-    ref: v0.1.18-alpha.4
+    ref: v0.1.19-alpha.1
     file:
       - "/templates/stages.yaml"
       - "/templates/global-vars.yaml"
       - "/templates/build-kaniko.yaml"
 
 
-build-image-feature:
-  image: docker:stable
-  stage: build
-  script:
-    - cd enterpriselinux-rust
-    - docker build -t elx-rust:latest -f Containerfile .
-
-rust-el9:
+rust-alma9:
   extends: .build-with-kaniko
   variables:
     CTX_DIR: enterpriselinux-rust
@@ -27,3 +20,17 @@ rust-ol8:
     CTX_DIR: enterpriselinux-rust
     ADDITIONALTAGLIST: "ol8"
     BUILD_ARGS: "linuxDistro=oraclelinux distroVersion=8"
+
+rust-ubuntu-jammy:
+  extends: .build-with-kaniko
+  variables:
+    CTX_DIR: rust-debian
+    BUILD_ARGS: "linuxDistro=ubuntu distroVersion=jammy"
+    ADDITIONALTAGLIST: "jammy bw"
+
+rust-debian-bookworm:
+  extends: .build-with-kaniko
+  variables:
+    CTX_DIR: rust-debian
+    BUILD_ARGS: "linuxDistro=debian distroVersion=bookworm"
+    ADDITIONALTAGLIST: "bookworm bw"

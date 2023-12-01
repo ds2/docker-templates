@@ -1,10 +1,11 @@
 ARG linuxDistro=oraclelinux
 ARG distroVersion=9
-ARG rustVersion=""
 FROM ${linuxDistro}:${distroVersion}
 
 ENV TZ=Etc/UTC
 ENV RUST_BACKTRACE=1
+ENV LC_ALL=de_DE.UTF-8
+ENV TZ=Etc/UTC
 ARG protocVersion=23.2
 
 # prepare image
@@ -14,8 +15,9 @@ RUN adduser -c "RPM build user for Rust stuff" -g users -G wheel -s /bin/zsh -m 
 ADD sudoers.txt /etc/sudoers.d/rusty
 
 # install semver tool
-RUN curl -s https://packagecloud.io/install/repositories/lexxy23/releases/script.rpm.sh | sudo bash
-RUN dnf install -y semver-formatter
+ARG semverUrl=https://ds2linuxrepo.blob.core.windows.net/rpms/semver-formatter-0.3.0-1.el8.x86_64.rpm
+# RUN curl -s https://packagecloud.io/install/repositories/lexxy23/releases/script.rpm.sh | sudo bash; dnf install -y semver-formatter
+RUN curl -sL $semverUrl -o /tmp/semver-formatter.rpm; dnf install -y /tmp/semver-formatter.rpm
 RUN semver-formatter -V
 
 # install protoc
@@ -32,8 +34,10 @@ WORKDIR /tmp
 ENV CARGO_BUILD_TARGET='x86_64-unknown-linux-gnu'
 
 # install rust
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh  -s -- --profile minimal --no-modify-path -y
+ARG rustVersion=stable
+RUN export _RUST_VERSION=$rustVersion; curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh  -s -- --default-toolchain ${_RUST_VERSION:-1.60.0} --profile minimal --no-modify-path -y
 RUN . ~/.cargo/env; cargo version
+RUN rm -rf ~/.rustup/tmp
 
 RUN pip3 install --user pre-commit
 RUN export PATH=$PATH:$HOME/.local/bin:; pre-commit --version
