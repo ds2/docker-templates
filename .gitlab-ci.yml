@@ -6,19 +6,6 @@ include:
       - "/templates/global-vars.yaml"
       - "/templates/build-kaniko.yaml"
 
-rust-alma9:
-  extends: .build-with-kaniko
-  variables:
-    CTX_DIR: enterpriselinux-rust
-    BUILD_ARGS: "linuxDistro=almalinux distroVersion=9"
-    ADDITIONALTAGLIST: "alma9"
-
-rust-ol8:
-  extends: .build-with-kaniko
-  variables:
-    CTX_DIR: enterpriselinux-rust
-    ADDITIONALTAGLIST: "ol8"
-    BUILD_ARGS: "linuxDistro=oraclelinux distroVersion=8"
 
 rust-ubuntu-jammy:
   extends: .build-with-kaniko
@@ -27,19 +14,6 @@ rust-ubuntu-jammy:
     BUILD_ARGS: "linuxDistro=ubuntu distroVersion=jammy"
     ADDITIONALTAGLIST: "jammy jm"
 
-build-rust-debian-bookworm:
-  extends: .build-with-kaniko
-  variables:
-    CTX_DIR: rust-debian
-    BUILD_ARGS: "linuxDistro=debian distroVersion=bookworm"
-    ADDITIONALTAGLIST: "bookworm bw"
-
-build-rust-debian-bullseye:
-  extends: .build-with-kaniko
-  variables:
-    CTX_DIR: rust-debian
-    BUILD_ARGS: "linuxDistro=debian distroVersion=bullseye semverUrl=https://ds2linuxrepo.blob.core.windows.net/bullseye/semver-formatter_0.4.0-alpha.1.b5180223.builddate-202306081541_amd64.deb"
-    ADDITIONALTAGLIST: "bullseye be"
 
 ############################## DEPLOY TO OUR REPO #########################
 
