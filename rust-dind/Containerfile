@@ -1,4 +1,4 @@
-FROM docker.io/rust:1.73.0
+FROM docker.io/rust:1.74.0
 RUN for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do apt-get remove $pkg -y || true; done
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=de_DE.UTF-8
