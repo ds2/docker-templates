@@ -1,4 +1,4 @@
-FROM alpine:3.18.4
+FROM alpine:3.18.5
 RUN apk upgrade --update-cache --available
 RUN apk add texlive bash
 RUN apk add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community pandoc
