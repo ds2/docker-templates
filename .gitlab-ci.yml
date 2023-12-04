@@ -78,3 +78,11 @@ deploy-rust-debian-bullseye:
     CTX_DIR: rust-debian
     BUILD_ARGS: "linuxDistro=debian distroVersion=bullseye semverUrl=https://ds2linuxrepo.blob.core.windows.net/bullseye/semver-formatter_0.4.0-alpha.1.b5180223.builddate-202306081541_amd64.deb"
     ADDITIONALTAGLIST: "bullseye be"
+
+deploy-packagecloud:
+  extends: .deploy-with-kaniko
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  variables:
+    CTX_DIR: package-cloud
+    ADDITIONALTAGLIST: "pkgcld"
