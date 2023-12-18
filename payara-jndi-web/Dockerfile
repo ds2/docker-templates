@@ -1,4 +1,4 @@
-FROM payara/server-web:6.2023.11-jdk17
+FROM payara/server-web:6.2023.12-jdk17
 USER root
 ENV JEE_LIBS_DIR /libs
 ENV JEE_CONFIGS_DIR /configs
