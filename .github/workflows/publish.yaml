@@ -40,60 +40,6 @@ jobs:
               shortTag: "opsdk-",
             },
             {
-              path: "rust-debian",
-              registry: "quay.io",
-              repository: "ds2/rust-debian",
-              buildArgs: "linuxDistro=debian \n
-                distroVersion=bookworm",
-              tag: "bookworm",
-              shortTag: "bw-",
-            },
-            {
-              path: "rust-debian",
-              registry: "quay.io",
-              repository: "ds2/rust-debian",
-              buildArgs: "distroVersion=bullseye \n
-                semverUrl=https://ds2linuxrepo.blob.core.windows.net/bullseye/semver-formatter_0.4.0-alpha.1.b5180223.builddate-202306081541_amd64.deb",
-              tag: "bullseye",
-              shortTag: "be-",
-            },
-            {
-              path: "rust-debian",
-              registry: "quay.io",
-              repository: "ds2/rust-debian",
-              buildArgs: "linuxDistro=ubuntu \n
-                distroVersion=jammy",
-              tag: "jammy",
-              shortTag: "jm-",
-            },
-            {
-              path: "enterpriselinux-rust",
-              registry: "quay.io",
-              repository: "ds2/enterpriselinux-rust",
-              buildArgs: "linuxDistro=oraclelinux \n
-                distroVersion=8",
-              tag: "oraclelinux8",
-              shortTag: "ol8-",
-            },
-            {
-              path: "enterpriselinux-rust",
-              registry: "quay.io",
-              repository: "ds2/enterpriselinux-rust",
-              buildArgs: "linuxDistro=oraclelinux \n
-                distroVersion=9",
-              tag: "oraclelinux9",
-              shortTag: "ol9-",
-            },
-            {
-              path: "enterpriselinux-rust",
-              registry: "quay.io",
-              repository: "ds2/enterpriselinux-rust",
-              buildArgs: "linuxDistro=almalinux \n
-                distroVersion=9",
-              tag: "almalinux9",
-              shortTag: "alm9-",
-            },
-            {
               path: "golang-ol8",
               registry: "quay.io",
               repository: "ds2/golang-el",

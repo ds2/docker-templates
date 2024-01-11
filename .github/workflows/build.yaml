@@ -14,27 +14,9 @@ jobs:
       matrix:
         containers:
           [
-            { path: "enterpriselinux-rust" },
             { path: "cicd/bazel" },
             { path: "rust-dind" },
-            {
-              path: "enterpriselinux-rust",
-              registry: "quay.io",
-              repository: "ds2/enterpriselinux-rust",
-              buildArgs: "linuxDistro=oraclelinux \n
-                distroVersion=9",
-              tag: "ol9",
-            },
             { path: "node-yarn-fe-builder" },
-            { path: "rust-debian" },
-            { path: "rust-debian", buildArgs: "linuxDistro=ubuntu \n
-                distroVersion=jammy", tag: "jammy" },
-            {
-              path: "rust-debian",
-              buildArgs: "distroVersion=bullseye \n
-                semverUrl=https://ds2linuxrepo.blob.core.windows.net/bullseye/semver-formatter_0.4.0-alpha.1.b5180223.builddate-202306081541_amd64.deb",
-              tag: "bullseye",
-            },
             { path: "golang-ol8", tag: "ol8" },
             { path: "golang-ol8", buildArgs: "linuxDistro=almalinux \n
                 distroVersion=9", tag: "alm9" },
