@@ -58,7 +58,7 @@ jobs:
         with:
           fetch-depth: 5
       - name: get short sha checksum
-        uses: benjlevesque/short-sha@v2.2
+        uses: benjlevesque/short-sha@v3.0
         id: short-sha
         with:
           length: 8
