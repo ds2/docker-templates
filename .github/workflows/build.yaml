@@ -38,8 +38,8 @@ jobs:
           containerfiles: |
             ./${{ matrix.containers.path }}/Containerfile
           labels: |
-            build_on:github
-            quay.expires-after:2w
+            build_on=github
+            quay.expires-after=2w
 
   cicd_build8:
     name: build cicd build8 image

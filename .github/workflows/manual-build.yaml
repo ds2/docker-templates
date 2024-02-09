@@ -54,5 +54,5 @@ jobs:
           containerfiles: |
             ./${{ github.event.inputs.path }}/Containerfile
           labels: |
-            build_on:github
-            quay.expires-after:1y
+            build_on=github
+            quay.expires-after=1y
