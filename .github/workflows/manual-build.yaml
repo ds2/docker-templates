@@ -38,7 +38,7 @@ on:
       publish:
         required: true
         default: false
-        type: bool
+        type: boolean
         description: "Push image after build?"
   # workflow_call: # for sub workflows
 
