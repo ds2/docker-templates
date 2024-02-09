@@ -15,33 +15,28 @@ jobs:
           [
             {
               path: "package-cloud",
-              registry: "quay.io",
               repository: "ds2/packagecloud-cli",
               shortTag: "pc-",
             },
             {
               path: "cicd/bazel",
-              registry: "quay.io",
               repository: "ds2/bazel-cicd",
               tag: "opensuse",
               shortTag: "leap-",
             },
             {
               path: "rust-dind",
-              registry: "quay.io",
               repository: "ds2/rust-dind",
               tag: "dind",
               shortTag: "dind-",
             },
             {
               path: "operator-sdk",
-              registry: "quay.io",
               repository: "ds2/operator-sdk-cicd",
               shortTag: "opsdk-",
             },
             {
               path: "golang-ol8",
-              registry: "quay.io",
               repository: "ds2/golang-el",
               buildArgs: "linuxDistro=oraclelinux \n
                 distroVersion=9",
@@ -50,7 +45,6 @@ jobs:
             },
             {
               path: "golang-ol8",
-              registry: "quay.io",
               repository: "ds2/golang-el",
               buildArgs: "linuxDistro=almalinux \n
                 distroVersion=8",
@@ -106,11 +100,11 @@ jobs:
       - name: Push To Registry
         id: push-to-quay
         uses: redhat-actions/push-to-registry@v2
-        if: ${{ matrix.containers.registry && steps.build-image-buildah.outputs.image && steps.build-image-buildah.outcome == 'success' }}
+        if: ${{ steps.build-image-buildah.outputs.image && steps.build-image-buildah.outcome == 'success' }}
         with:
           image: ${{ steps.build-image-buildah.outputs.image }}
           tags: ${{ steps.build-image-buildah.outputs.tags }}
-          registry: ${{matrix.containers.registry}}
+          registry: quay.io
           username: ${{ secrets.QUAY_IO_REGISTRY_USERNAME }}
           password: ${{ secrets.QUAY_IO_REGISTRY_PASSWORD }}
       - name: Print image url
