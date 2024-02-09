@@ -29,6 +29,17 @@ on:
         type: string
         description: "A short header used for the short git checksum, followed by a dash"
         example: "alm9-"
+      quayLifetime:
+        required: false
+        type: string
+        description: "The lifetime of the tag on quay"
+        example: "1y"
+        default: "never"
+      publish:
+        required: true
+        default: false
+        type: bool
+        description: "Push image after build?"
   # workflow_call: # for sub workflows
 
 jobs:
@@ -55,4 +66,17 @@ jobs:
             ./${{ github.event.inputs.path }}/Containerfile
           labels: |
             build_on=github
-            quay.expires-after=1y
+            quay.expires-after=${{ github.event.inputs.quayLifetime }}
+      - name: Push To Registry
+        id: push-to-quay
+        uses: redhat-actions/push-to-registry@v2
+        if: ${{ steps.build-image-buildah.outputs.image && steps.build-image-buildah.outcome == 'success' && github.event.inputs.publish }}
+        with:
+          image: ${{ steps.build-image-buildah.outputs.image }}
+          tags: ${{ steps.build-image-buildah.outputs.tags }}
+          registry: quay.io
+          username: ${{ secrets.QUAY_IO_REGISTRY_USERNAME }}
+          password: ${{ secrets.QUAY_IO_REGISTRY_PASSWORD }}
+      - name: Print image url
+        if: ${{steps.push-to-quay.outcome == 'success'}}
+        run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
