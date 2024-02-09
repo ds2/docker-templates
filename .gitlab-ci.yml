@@ -1,6 +1,6 @@
 include:
   - project: "ds_2/ci-templates"
-    ref: v0.1.19-alpha.1
+    ref: v0.1.20-alpha.1
     file:
       - "/templates/stages.yaml"
       - "/templates/global-vars.yaml"
@@ -15,3 +15,4 @@ deploy-packagecloud:
   variables:
     CTX_DIR: package-cloud
     ADDITIONALTAGLIST: "pkgcld"
+    QUAY_IO_EXPIRY: "1y"
