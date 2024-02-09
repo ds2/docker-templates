@@ -1,4 +1,4 @@
-FROM alpine:3.18.5
+FROM alpine:3.19.1
 ARG terraformUrl110=https://releases.hashicorp.com/terraform/1.1.0/terraform_1.1.0_linux_amd64.zip
 ARG terraformUrl015=https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip
 ARG terraformUrl014=https://releases.hashicorp.com/terraform/0.14.11/terraform_0.14.11_linux_amd64.zip
