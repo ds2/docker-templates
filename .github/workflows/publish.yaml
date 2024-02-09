@@ -102,6 +102,7 @@ jobs:
             ./${{ matrix.containers.path }}/Containerfile
           labels: |
             build_on:github
+            quay.expires-after:1y
       - name: Push To Registry
         id: push-to-quay
         uses: redhat-actions/push-to-registry@v2
