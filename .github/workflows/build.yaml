@@ -39,6 +39,7 @@ jobs:
             ./${{ matrix.containers.path }}/Containerfile
           labels: |
             build_on:github
+            quay.expires-after:2w
 
   cicd_build8:
     name: build cicd build8 image
@@ -57,6 +58,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./${{env.REPO_PATH}}
+          push: false
           # tags: ${env.REPO_PATH}:latest
 
   cicd_build17:
@@ -75,6 +77,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
   terraform:
     name: build image terraform
@@ -92,7 +95,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
+
   payara-jndi-web:
     name: build image payara web
     runs-on: ubuntu-latest
@@ -109,7 +114,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
+
   payara-jndi-full:
     name: build image payara full
     runs-on: ubuntu-latest
@@ -126,7 +133,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
+
   k8s-fw:
     name: build image k8s filewatcher
     runs-on: ubuntu-latest
@@ -143,7 +152,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
+
   k8s-ghar:
     name: build image k8s ghar
     runs-on: ubuntu-latest
@@ -160,7 +171,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
+
   java11:
     name: build image java11 execjre
     runs-on: ubuntu-latest
@@ -177,7 +190,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
+
   java8:
     name: build image java8 execjre
     runs-on: ubuntu-latest
@@ -194,7 +209,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
+
   openjdk8:
     name: build image openjdk8 execjre
     runs-on: ubuntu-latest
@@ -211,7 +228,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
+
   openjdk11:
     name: build image openjdk11 execjre
     runs-on: ubuntu-latest
@@ -228,7 +247,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
+
   latex:
     name: build image latex
     runs-on: ubuntu-latest
@@ -245,7 +266,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
+
   cicd-jmeter:
     name: build image cicd jmeter
     runs-on: ubuntu-latest
@@ -262,7 +285,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
+
   cicd-tca11:
     name: build image cicd tca11
     runs-on: ubuntu-latest
@@ -279,7 +304,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
+
   cicd-jkslave:
     name: build image cicd jenkins
     runs-on: ubuntu-latest
@@ -296,4 +323,5 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
+          push: false
           context: ./${{env.REPO_PATH}}
