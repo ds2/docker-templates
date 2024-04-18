@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk-alpine:11.0.22-jre
+FROM azul/zulu-openjdk-alpine:11.0.23-jre
 EXPOSE 8080 5151
 ARG userId=1000
 ARG groupId=1000
