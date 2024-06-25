@@ -55,7 +55,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./${{env.REPO_PATH}}
           push: false
@@ -75,7 +75,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -93,7 +93,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -112,7 +112,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -131,7 +131,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -150,7 +150,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -169,7 +169,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -188,7 +188,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -207,7 +207,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -226,7 +226,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -245,7 +245,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -264,7 +264,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -283,7 +283,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -302,7 +302,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
@@ -321,7 +321,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{env.REPO_PATH}}
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: false
           context: ./${{env.REPO_PATH}}
