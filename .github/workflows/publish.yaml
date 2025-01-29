@@ -25,12 +25,6 @@ jobs:
               shortTag: "leap-",
             },
             {
-              path: "rust-dind",
-              repository: "ds2/rust-dind",
-              tag: "dind",
-              shortTag: "dind-",
-            },
-            {
               path: "operator-sdk",
               repository: "ds2/operator-sdk-cicd",
               shortTag: "opsdk-",

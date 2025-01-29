@@ -15,7 +15,6 @@ jobs:
         containers:
           [
             { path: "cicd/bazel" },
-            { path: "rust-dind" },
             { path: "node-yarn-fe-builder" },
             { path: "golang-ol8", tag: "ol8" },
             { path: "golang-ol8", buildArgs: "linuxDistro=almalinux \n
