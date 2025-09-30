@@ -10,5 +10,8 @@ RUN package_cloud version
 
 USER packager
 WORKDIR /work
+RUN mkdir -p /home/packager/mytmp
+ENV TMPDIR=/home/packager/mytmp
+ENV TMP=/home/packager/mytmp
 RUN package_cloud version
 CMD [ "/bin/zsh" ]

@@ -1,15 +1,25 @@
 include:
   - project: "ds_2/ci-templates"
-    ref: v0.1.20-alpha.1
+    ref: v2.1.0
     file:
       - "/templates/stages.yaml"
       - "/templates/global-vars.yaml"
-      - "/templates/build-kaniko.yaml"
+      - "/templates/build-buildah.yaml"
+
+############################## Test Image Building ########################
+build-packagecloud:
+  extends: .build-with-buildah
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  variables:
+    CTX_DIR: package-cloud
+    ADDITIONALTAGLIST: "pkgcld"
+    QUAY_IO_EXPIRY: "1w"
 
 ############################## DEPLOY TO OUR REPO #########################
 
 deploy-packagecloud:
-  extends: .deploy-with-kaniko
+  extends: .deploy-with-buildah
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   variables:
