@@ -1,6 +1,6 @@
 FROM docker.io/ruby:3-alpine3.18
 ARG UID=1000
-RUN apk add --no-cache zsh bash
+RUN apk update && apk add --no-cache zsh bash
 RUN adduser -S -u ${UID} -s /usr/bin/zsh -G wheel packager
 RUN ruby -v
 RUN gem install package_cloud
@@ -9,4 +9,5 @@ RUN package_cloud version
 
 USER packager
 WORKDIR /work
+RUN package_cloud version
 CMD [ "/bin/zsh" ]
