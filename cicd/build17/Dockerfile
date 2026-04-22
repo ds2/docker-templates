@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk-alpine:21.0.2-21.32
+FROM azul/zulu-openjdk-alpine:26.0.1-26.30
 RUN apk update; apk upgrade; apk --update add --no-cache gradle maven bash zsh git
 WORKDIR /src
 ENV JAVA_HOME=/usr/lib/jvm/zulu17
