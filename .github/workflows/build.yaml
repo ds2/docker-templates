@@ -9,7 +9,7 @@ concurrency:
 jobs:
   build-image-matrix:
     name: Podman Builds
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         containers:
