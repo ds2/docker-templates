@@ -4,7 +4,11 @@
 
 All notable changes to this project will be documented in this file.
 
-== Unreleased
+== 0.2.0 - 2026-05-04
+
+* **Release**: https://gitlab.com/ds_2/container-images/-/releases/v0.2.0
+* **Tag**: https://gitlab.com/ds_2/container-images/-/tags/v0.2.0
+* **Delta**: https://gitlab.com/ds_2/container-images/compare?from=v0.1.0&to=v0.2.0
 
 === ⚙️ Miscellaneous Tasks
 
@@ -120,4 +124,4 @@ Moved to rust-images.
 
 
 == Version Table
-* 🔖[unreleased]: https://gitlab.com/ds_2/container-images/compare?from=v0.1.0&to=HEAD
+* 🔖[0.2.0]: https://gitlab.com/ds_2/container-images/compare?from=v0.1.0&to=v0.2.0
