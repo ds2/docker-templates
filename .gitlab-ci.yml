@@ -15,6 +15,24 @@ build-packagecloud:
   variables:
     CTX_DIR: package-cloud
 
+build-payara-jndi-web:
+  extends: .build-with-buildah
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  variables:
+    CTX_DIR: payara-jndi
+    DKR_FILE: Dockerfile
+    BUILD_ARGS: "BASE_IMAGE=server-web"
+
+build-payara-jndi-full:
+  extends: .build-with-buildah
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  variables:
+    CTX_DIR: payara-jndi
+    DKR_FILE: Dockerfile
+    BUILD_ARGS: "BASE_IMAGE=server-full"
+
 # build-latex:
 #   extends: .build-with-buildah
 #   rules:
