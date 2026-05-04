@@ -1,10 +1,7 @@
-= Changelog
-:source-highlighter: highlight.js
-:toc:
+== 0.1.0 - 2026-05-04
 
-All notable changes to this project will be documented in this file.
-
-== Unreleased
+* **Release**: https://gitlab.com/ds_2/container-images/-/releases/v0.1.0
+* **Tag**: https://gitlab.com/ds_2/container-images/-/tags/v0.1.0
 
 === ♻️ Refactor
 
@@ -88,6 +85,3 @@ Moved to rust-images.
 === 🚀 Features
 
 * *(🔠 package-cloud)* Only release package cloud image on release - 🔗link:https://gitlab.com/ds_2/container-images/-/commit/55c44cc9ea2ae21ae8f7bf4bd1cee5eb89f5eda8[55c44cc]
-
-
-== Version Table
