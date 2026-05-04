@@ -10,22 +10,22 @@ BUILD_ARGS=""
 
 while getopts ':pd:b:r:t:b:' OPTION; do
     case "$OPTION" in
-    p) PUSH=1 ;;
-    d) DIRECTORY="$OPTARG" ;;
-    r) REPO="$OPTARG" ;;
-    t) TAGS="$OPTARG" ;;
-    b) BUILD_ARGS="$OPTARG" ;;
-    \?) echo "Invalid param: $OPTARG" ;;
-    *)
-        echo "Unbekannter Parameter"
-        echo "Usage:"
-        echo "$0"
-        echo "  -d DIRECTORY = defines the directory to look for the Containerfile"
-        echo "  -r REPO = sets the registry and repository to use; i.e. quay.io/org/image"
-        echo "  -p = push to REPO"
-        echo "  -b ""a=1 b=2"" = defines some build args"
-        echo "As tags, we use the git short checksum, and LATEST."
-        ;;
+        p) PUSH=1 ;;
+        d) DIRECTORY="$OPTARG" ;;
+        r) REPO="$OPTARG" ;;
+        t) TAGS="$OPTARG" ;;
+        b) BUILD_ARGS="$OPTARG" ;;
+        \?) echo "Invalid param: $OPTARG" ;;
+        *)
+            echo "Unbekannter Parameter"
+            echo "Usage:"
+            echo "$0"
+            echo "  -d DIRECTORY = defines the directory to look for the Containerfile"
+            echo "  -r REPO = sets the registry and repository to use; i.e. quay.io/org/image"
+            echo "  -p = push to REPO"
+            echo "  -b ""a=1 b=2"" = defines some build args"
+            echo "As tags, we use the git short checksum, and LATEST."
+            ;;
     esac
 done
 

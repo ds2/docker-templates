@@ -4,6 +4,6 @@
 
 To run a single jar in its own environment.
 
-* The executable jar must be put in /app/app.jar
-* system properties can be given via the ENV variable JAVA_SYSTEM_PROPS
-* any command line parameters can be given directly by appending them to the docker run command
+- The executable jar must be put in /app/app.jar
+- system properties can be given via the ENV variable JAVA_SYSTEM_PROPS
+- any command line parameters can be given directly by appending them to the docker run command

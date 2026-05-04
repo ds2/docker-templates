@@ -8,7 +8,6 @@ else
     ./config.sh --url $REPOURL --token $REPOTOKEN --name $HOSTNAME --work /work --unattended --replace --labels "${LABELS}"
 fi
 
-
 if [ -r "/secrets/maven-settings.xml" ]; then
     echo "Installing maven settings.."
     cp /secrets/maven-settings.xml $HOME/.m2/settings.xml

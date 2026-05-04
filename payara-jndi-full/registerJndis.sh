@@ -90,8 +90,8 @@ function printAsAdm() {
                 PROPARRAY+=("databaseName=$JNDI_DBNAME")
             fi
             if [ -n "$JNDI_URL" ]; then
-                local escapedUrl=$(echo $JNDI_URL | sed 's/\:/\\:/g' )
-                escapedUrl=$(echo $escapedUrl | sed 's/=/\\=/g' )
+                local escapedUrl=$(echo $JNDI_URL | sed 's/\:/\\:/g')
+                escapedUrl=$(echo $escapedUrl | sed 's/=/\\=/g')
                 PROPARRAY+=("url=${escapedUrl}")
             fi
             # echo "# Props are ${PROPARRAY[@]} -> ${PROPARRAY}"

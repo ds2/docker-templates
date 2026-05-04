@@ -24,4 +24,4 @@ Push to quay.io:
 
 ## Sources
 
-* https://github.com/operator-framework/operator-sdk
+- https://github.com/operator-framework/operator-sdk

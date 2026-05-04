@@ -1,0 +1,7 @@
+formatters:
+  - id: shell-fmt
+  - id: reuse-dl
+  - id: prettier-fmt
+alidators:
+  - id: reuse-lint
+  - id: prettier
