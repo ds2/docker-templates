@@ -8,12 +8,16 @@ include:
       - "/templates/release-marker.yaml"
 
 ############################## Test Image Building ########################
-build-packagecloud:
-  extends: .build-with-buildah
+deploy-debug-packagecloud:
+  extends: .deploy-with-buildah
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   variables:
     CTX_DIR: package-cloud
+    CI_REGISTRY: "quay.io"
+    CONTAINER_IMAGE_NAME: "ds2/packagecloud-cli"
+    ADDITIONALTAGLIST: "staging"
+    QUAY_IO_EXPIRY: "1w"
 
 build-payara-jndi-web:
   extends: .build-with-buildah
@@ -51,4 +55,5 @@ deploy-packagecloud:
     - if: $CI_COMMIT_TAG
   variables:
     CTX_DIR: package-cloud
-    ADDITIONALTAGLIST: "pkgcld"
+    CI_REGISTRY: "quay.io"
+    CONTAINER_IMAGE_NAME: "ds2/packagecloud-cli"
