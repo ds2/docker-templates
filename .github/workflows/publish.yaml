@@ -29,22 +29,6 @@ jobs:
               repository: "ds2/operator-sdk-cicd",
               shortTag: "opsdk-",
             },
-            {
-              path: "golang-ol8",
-              repository: "ds2/golang-el",
-              buildArgs: "linuxDistro=oraclelinux \n
-                distroVersion=9",
-              tag: "ol9",
-              shortTag: "ol9-",
-            },
-            {
-              path: "golang-ol8",
-              repository: "ds2/golang-el",
-              buildArgs: "linuxDistro=almalinux \n
-                distroVersion=8",
-              tag: "alm8",
-              shortTag: "alm8-",
-            },
           ]
     steps:
       - name: checkout project ${{matrix.containers.path}}
