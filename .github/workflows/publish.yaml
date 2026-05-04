@@ -14,11 +14,6 @@ jobs:
         containers:
           [
             {
-              path: "package-cloud",
-              repository: "ds2/packagecloud-cli",
-              shortTag: "pc-",
-            },
-            {
               path: "cicd/bazel",
               repository: "ds2/bazel-cicd",
               tag: "opensuse",
