@@ -1,5 +1,5 @@
 ARG BASE_IMAGE=server-full
-FROM docker.io/payara/${BASE_IMAGE}:6.2025.10-jdk17
+FROM docker.io/payara/${BASE_IMAGE}:6.2025.11-jdk17
 USER root
 ENV JEE_LIBS_DIR=/libs
 ENV JEE_CONFIGS_DIR=/configs
