@@ -1,0 +1,28 @@
+== 0.2.0 - 2026-05-04
+
+* **Release**: https://gitlab.com/ds_2/container-images/-/releases/v0.2.0
+* **Tag**: https://gitlab.com/ds_2/container-images/-/tags/v0.2.0
+* **Delta**: https://gitlab.com/ds_2/container-images/compare?from=v0.1.0&to=v0.2.0
+
+=== ⚙️ Miscellaneous Tasks
+
+* *(🔠 deps)* ⬆️ Update docker/setup-buildx-action action to v4 - 🔗link:https://gitlab.com/ds_2/container-images/-/commit/ebcc9e9a76757f4c16b551f73ec5effaa5b3dc15[ebcc9e9]
+
+* *(🔠 deps)* ⬆️ Update docker/setup-qemu-action action to v4 - 🔗link:https://gitlab.com/ds_2/container-images/-/commit/4c630256e0358d9d7105eea3d93834cbc0343e65[4c63025]
+
+* *(🔠 deps)* ⬆️ Update dependency ds_2/ci-templates to v3.5.0 - 🔗link:https://gitlab.com/ds_2/container-images/-/commit/f140bcb5aba2f95deddb07a6e16b10b0084a72a2[f140bcb]
+
+
+
+=== 👷 CI/CD
+
+* *(🔠 github)* Remove package-cloud from github builds - 🔗link:https://gitlab.com/ds_2/container-images/-/commit/21fc70dc2f500e88ff4d23825a53e590f341752f[21fc70d]
+[source,text]
+----
+Since we use Gitlab for now.
+----
+
+
+=== 🚀 Features
+
+* *(🔠 packagecloud)* Deploy final release image to quay.io - 🔗link:https://gitlab.com/ds_2/container-images/-/commit/fd29357e6cd4ebadecb52e7a650e6c46501ccd9a[fd29357]
