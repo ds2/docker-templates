@@ -1,6 +1,6 @@
 include:
   - project: "ds_2/ci-templates"
-    ref: v3.1.2
+    ref: v3.5.0
     file:
       - "/templates/stages.yaml"
       - "/templates/global-vars.yaml"
