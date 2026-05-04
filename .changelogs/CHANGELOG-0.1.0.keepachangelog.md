@@ -1,0 +1,524 @@
+## [0.1.0] - 2026-05-04
+
+### Added
+
+- Add postgres jar
+- Add idea
+- Add curl ;)
+- Add git to GHAR
+- Add sudoers
+- Add purge
+- Add OperatorSdk CI image (#5)
+- Add docker
+- Add renovate.json
+- Add another shellcheck
+- Add build jobs for payara
+- Add changelog config
+
+### Changed
+
+- Initial commit
+- - add executable jre
+- - use a volume to allow better mounting
+- - readme
+- - add idea for a jenkins slave with mvn and gradle
+- - fix warnings
+- - make sh file to build tags
+- - add link to maven
+- - give cmd for running image
+- - idea for jmeter image
+- - more docs
+- - current snapshot
+- - newline
+- - add jre11 also
+- - perform cleanup
+- - ok, no update for now
+- - use only base image, no change
+- - idea to fix vuln via quay.io check
+- - allow sysprops somehow
+- - fix entrypoint
+- - add jre11 as well
+- - README wit test instructions
+- - more READMEs
+- - add zulu
+- - use jmeter 5.2.1
+- - add debug port
+- - csv export
+- - update image
+- - add npm
+- - use nodejs 12
+- - add chromium
+- - use debian
+- - new idea for a monitoring container
+- - rename
+- - more docs
+- - add quay link
+- - initial idea
+- - ok, should work now
+- - some readme
+- - update jk to 4.6
+- - add markdown for ghar
+- - add a container for running terraform
+- - add markdown link for quay
+- - use alpine from ds2 mirror
+- - idea for the TCA 11 agent
+- - more docs
+- - should run with zulu now
+- Use jrun user
+- Wip
+- Seems to work
+- Separate docker image for full and web; also add h2
+- More docs
+- More docs
+- Merge branch 'feature/DT-1-idea-to-create-a-docker-image-to-setup-a-payara-se' of github.com:ds2/docker-templates into feature/DT-1-idea-to-create-a-docker-image-to-setup-a-payara-se
+- Merge pull request #2 from ds2/feature/DT-1-idea-to-create-a-docker-image-to-setup-a-payara-se
+- More docs
+- Merge pull request #1 from ds2/feature/DT-2-create-an-image-to-run-latex-and-create-pdfs-etc-
+- Merge branch 'release/v2021'
+- Merge branch 'master' into develop
+- Docs
+- More docs
+- Merge branch 'release/v2021'
+- Merge branch 'master' into develop
+- - fix git-lfs issue with quay.io
+- Merge branch 'release/v2021'
+- Merge branch 'master' into develop
+- - also add latest patches
+- - change owner of /libs??
+- Merge branch 'release/v2021'
+- Merge branch 'master' into develop
+- Allow logging to different directory
+- Update tca image
+- Merge branch 'release/v2021'
+- Merge branch 'master' into develop
+- Feature/DT-4-create-url-check-image-to-test-a-url-or-a-list-of (#3)
+- More ignores
+- Merge branch 'master' into develop
+- More docs
+- - more docs
+- Update version for GHAR; add npm
+- Merge branch 'release/v2021'
+- Merge branch 'master' into develop
+- Feature/DT-6-fix-ghar-image-add-health-check-also-please-test (#4)
+- Merge branch 'master' into develop
+- Use alternate ubuntu
+- Use aws ubuntu
+- Switch again
+- Use focal
+- Install xvfb
+- Use node v14
+- Allow only shell
+- Terraform TFSec (#6)
+- Run as root ....
+- Also install docker server
+- Docs
+- Squashed commit of the following:
+- - update operator-sdk to v1.11.0
+- - update operator-sdk to v1.12.0
+- - add build cicd image for testing IntelliJ
+- - another image for java 17
+- - add nocache
+- - more cleanup
+- - tidy
+- - update docs
+- - idea for dependabot
+- - update depbot
+- - add more docker files
+- Bump payara/server-web in /payara-jndi
+- Merge pull request #10 from ds2/dependabot/docker/payara-jndi/payara/server-web-5.2021.9-jdk11
+- Bump payara/server-full in /payara-jndi
+- Merge pull request #7 from ds2:dependabot/docker/payara-jndi/payara/server-full-5.2021.9-jdk11
+- Merge branch 'develop' of github.com:ds2/docker-templates into develop
+- - idea to add a build flow
+- - fix path
+- - try to use checkout
+- - idea for env vars
+- - fix env
+- - more repos
+- - fix payara
+- -naming
+- - more repos
+- Bump alpine from 3.12 to 3.15.0 in /kubernetes/filewatcher
+- Merge pull request #13 from ds2:dependabot/docker/kubernetes/filewatcher/alpine-3.15.0
+- - fix azure cli
+- - update tf to run TF v1.1.0
+- Bump alpine from 3.13 to 3.15.0 in /latex
+- Merge pull request #12 from ds2:dependabot/docker/latex/alpine-3.15.0
+- Bump alpine from 3.13 to 3.15.0 in /terraform
+- Merge pull request #8 from ds2:dependabot/docker/terraform/alpine-3.15.0
+- - add more pros
+- - remove urlcheck, has been moved to gitlab
+- Bump jenkins/jnlp-slave from 4.6-1-jdk11 to 4.9-1-jdk11 in /cicd/jkslave
+- Merge pull request #16 from ds2/dependabot/docker/cicd/jkslave/jenkins/jnlp-slave-4.9-1-jdk11
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Merge pull request #17 from ds2/dependabot/docker/cicd/tca11/jetbrains/teamcity-agent-2021.2.1-linux-sudo
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Merge pull request #21 from ds2/dependabot/docker/cicd/tca11/jetbrains/teamcity-agent-2021.2.2-linux-sudo
+- Bump actions/checkout from 2 to 3
+- Merge pull request #23 from ds2/dependabot/github_actions/actions/checkout-3
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Merge pull request #22 from ds2/dependabot/docker/cicd/tca11/jetbrains/teamcity-agent-2021.2.3-linux-sudo
+- Bump alpine from 3.15.0 to 3.15.1 in /terraform
+- Merge pull request #26 from ds2/dependabot/docker/terraform/alpine-3.15.1
+- Bump alpine from 3.15.0 to 3.15.1 in /latex
+- Merge pull request #25 from ds2/dependabot/docker/latex/alpine-3.15.1
+- Bump alpine from 3.15.0 to 3.15.1 in /kubernetes/filewatcher
+- Merge pull request #24 from ds2/dependabot/docker/kubernetes/filewatcher/alpine-3.15.1
+- Bump alpine from 3.15.1 to 3.15.3 in /terraform
+- Merge pull request #32 from ds2/dependabot/docker/terraform/alpine-3.15.3
+- Bump alpine from 3.15.1 to 3.15.3 in /kubernetes/filewatcher
+- Merge pull request #31 from ds2/dependabot/docker/kubernetes/filewatcher/alpine-3.15.3
+- Bump alpine from 3.15.1 to 3.15.3 in /latex
+- Merge pull request #30 from ds2/dependabot/docker/latex/alpine-3.15.3
+- Bump alpine from 3.15.3 to 3.15.4 in /terraform
+- Merge pull request #35 from ds2/dependabot/docker/terraform/alpine-3.15.4
+- Bump alpine from 3.15.3 to 3.15.4 in /latex
+- Merge pull request #33 from ds2/dependabot/docker/latex/alpine-3.15.4
+- Bump alpine from 3.15.3 to 3.15.4 in /kubernetes/filewatcher
+- Merge pull request #34 from ds2/dependabot/docker/kubernetes/filewatcher/alpine-3.15.4
+- Bump azul/zulu-openjdk-alpine from 8-jre to 17-jre in /cicd/jmeter
+- Merge pull request #38 from ds2/dependabot/docker/cicd/jmeter/azul/zulu-openjdk-alpine-17-jre
+- Bump docker/setup-buildx-action from 1 to 2
+- Merge pull request #44 from ds2/dependabot/github_actions/docker/setup-buildx-action-2
+- Bump docker/setup-qemu-action from 1 to 2
+- Merge pull request #43 from ds2/dependabot/github_actions/docker/setup-qemu-action-2
+- Bump docker/build-push-action from 2 to 3
+- Merge pull request #42 from ds2/dependabot/github_actions/docker/build-push-action-3
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Merge pull request #41 from ds2/dependabot/docker/cicd/tca11/jetbrains/teamcity-agent-2022.04-linux-sudo
+- Bump azul/zulu-openjdk-alpine from 17 to 18 in /cicd/build17
+- Merge pull request #39 from ds2/dependabot/docker/cicd/build17/azul/zulu-openjdk-alpine-18
+- - add pandoc
+- - add stale config
+- 📦️ update operator sdk to 1.20.0
+- Bump azul/zulu-openjdk-alpine from 17-jre to 18-jre in /cicd/jmeter
+- Merge pull request #48 from ds2/dependabot/docker/cicd/jmeter/azul/zulu-openjdk-alpine-18-jre
+- Bump alpine from 3.15.4 to 3.16.0 in /latex
+- Merge pull request #47 from ds2/dependabot/docker/latex/alpine-3.16.0
+- Bump alpine from 3.15.4 to 3.16.0 in /kubernetes/filewatcher
+- Merge pull request #46 from ds2/dependabot/docker/kubernetes/filewatcher/alpine-3.16.0
+- Bump alpine from 3.15.4 to 3.16.0 in /terraform
+- Merge pull request #45 from ds2/dependabot/docker/terraform/alpine-3.16.0
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Merge pull request #49 from ds2/dependabot/docker/cicd/tca11/jetbrains/teamcity-agent-2022.04.1-linux-sudo
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Merge pull request #50 from ds2/dependabot/docker/cicd/tca11/jetbrains/teamcity-agent-2022.04.2-linux-sudo
+- Bump jenkins/jnlp-slave in /cicd/jkslave
+- Merge pull request #51 from ds2/dependabot/docker/cicd/jkslave/jenkins/jnlp-slave-4.13.2-1-jdk11
+- Bump alpine from 3.16.0 to 3.16.1 in /kubernetes/filewatcher
+- Merge pull request #53 from ds2/dependabot/docker/kubernetes/filewatcher/alpine-3.16.1
+- Bump alpine from 3.16.0 to 3.16.1 in /latex
+- Merge pull request #54 from ds2/dependabot/docker/latex/alpine-3.16.1
+- Bump alpine from 3.16.0 to 3.16.1 in /terraform
+- Merge pull request #52 from ds2/dependabot/docker/terraform/alpine-3.16.1
+- Bump alpine from 3.16.1 to 3.16.2 in /latex
+- Merge pull request #56 from ds2/dependabot/docker/latex/alpine-3.16.2
+- Bump alpine from 3.16.1 to 3.16.2 in /kubernetes/filewatcher
+- Merge pull request #57 from ds2/dependabot/docker/kubernetes/filewatcher/alpine-3.16.2
+- Bump alpine from 3.16.1 to 3.16.2 in /terraform
+- Merge pull request #58 from ds2/dependabot/docker/terraform/alpine-3.16.2
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Merge pull request #59 from ds2/dependabot/docker/cicd/tca11/jetbrains/teamcity-agent-2022.04.3-linux-sudo
+- ⚗️ idea to create a frontend buildah image
+- 💚 fix Containerfile path
+- 👷 use correct payara path
+- 💚 fix pandoc
+- Bump payara/server-web in /payara-jndi-web
+- Merge pull request #61 from ds2/dependabot/docker/payara-jndi-web/payara/server-web-5.2022.3-jdk11
+- Bump payara/server-full in /payara-jndi-full
+- Merge pull request #60 from ds2/dependabot/docker/payara-jndi-full/payara/server-full-5.2022.3-jdk11
+- ⬆️ updates
+- 📝 update docs for FE builder
+- ⚰️ removing obsolete stuff
+- Merge branch 'feature/installFeClients' into develop
+- 👷 update packages if available
+- 👷 always update npm
+- Bump jenkins/jnlp-slave in /cicd/jkslave
+- Merge pull request #62 from ds2/dependabot/docker/cicd/jkslave/jenkins/jnlp-slave-4.13.3-1-jdk11
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Merge pull request #63 from ds2/dependabot/docker/cicd/tca11/jetbrains/teamcity-agent-2022.04.4-linux-sudo
+- Bump azul/zulu-openjdk-alpine from 18 to 19 in /cicd/build17
+- Merge pull request #67 from ds2/dependabot/docker/cicd/build17/azul/zulu-openjdk-alpine-19
+- Bump azul/zulu-openjdk-alpine from 18-jre to 19-jre in /cicd/jmeter
+- Merge pull request #65 from ds2/dependabot/docker/cicd/jmeter/azul/zulu-openjdk-alpine-19-jre
+- ✨ create OL8 Rust image
+- 👷 build OL8 image
+- 📝 small doc update
+- 👷 update OS before
+- 💚 set PATH for OL8Rust
+- 🚧 more entry points
+- 👷 cargoHome should work now
+- ⚰️ remove shell instruction
+- ✨ allow sudo for rusty
+- 📦️ update semver for OL8 rust image
+- ✨ try RHEL9 image
+- 🚧 prepare push to quay.io
+- 🚧 idea to fix invoker
+- 🚧 use always clause
+- 🐛 set work dir
+- 🐛 problem found ;)
+- 🚧 more debug
+- 🚧 more debug
+- 🚧 idea to add path?
+- 🚧 another idea
+- 🚧 chain if clause?
+- 🚧 more debug
+- 🚧 more debug
+- 🚧 more debug..
+- 🚧 more debug...
+- 🚧 seems to work
+- 🔥 remove obsolete file
+- 🚧 file detection debug
+- 🚧 more debug
+- 🚧 more debug
+- 🚧 debug 3
+- 🚧 debug ..
+- ➕ add protobuf to EL
+- 👷 push only on develop, build on PR
+- 👷 test for GH pipeline
+- 💚 fix tag
+- 💚 fix tags
+- 🚧 set some default values for the image
+- 🔥 remove oraclelinux8-rust image
+- 👷 increase fetch depth
+- 🚧 in the default image, set our CARGO_HOME
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Update EL Rust image (#69)
+- 🧑‍💻 use EL protobuf-compiler if available
+- 🧑‍💻 add createrepo, more docs on rpm script
+- ➕ add pinentry
+- ➕ add vim
+- Bump payara/server-full in /payara-jndi-full
+- Bump payara/server-web in /payara-jndi-web
+- ➕ add pre-commit to tools chain
+- 👷 use user scope for installing pre-commit
+- Bump alpine from 3.16.2 to 3.16.3 in /terraform
+- Bump alpine from 3.16.2 to 3.16.3 in /kubernetes/filewatcher
+- Bump alpine from 3.16.2 to 3.16.3 in /latex
+- Bump alpine from 3.16.3 to 3.17.0 in /kubernetes/filewatcher
+- Bump alpine from 3.16.3 to 3.17.0 in /terraform
+- Bump alpine from 3.16.3 to 3.17.0 in /latex
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Bump payara/server-full in /payara-jndi-full
+- Bump payara/server-web in /payara-jndi-web
+- 🔧 remove space char on linuxDistro var
+- Bump alpine from 3.17.0 to 3.17.1 in /latex
+- Bump alpine from 3.17.0 to 3.17.1 in /terraform
+- Bump alpine from 3.17.0 to 3.17.1 in /kubernetes/filewatcher
+- Bump payara/server-web in /payara-jndi-web
+- Bump payara/server-full in /payara-jndi-full
+- Bump docker/build-push-action from 3 to 4
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Bump alpine from 3.17.1 to 3.17.2 in /terraform
+- Bump alpine from 3.17.1 to 3.17.2 in /kubernetes/filewatcher
+- Bump alpine from 3.17.1 to 3.17.2 in /latex
+- Bump payara/server-full in /payara-jndi-full
+- Bump payara/server-web in /payara-jndi-web
+- 👔 do not update rust via entrypoint
+- ✨ create image to build deb rust images
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Bump azul/zulu-openjdk-alpine from 19 to 20 in /cicd/build17
+- Bump azul/zulu-openjdk-alpine from 19-jre to 20-jre in /cicd/jmeter
+- Bump alpine from 3.17.2 to 3.17.3 in /latex
+- Bump alpine from 3.17.2 to 3.17.3 in /kubernetes/filewatcher
+- Bump alpine from 3.17.2 to 3.17.3 in /terraform
+- Bump payara/server-web in /payara-jndi-web
+- Bump payara/server-full in /payara-jndi-full
+- Bump payara/server-web in /payara-jndi-web
+- Bump payara/server-full in /payara-jndi-full
+- 🧑‍💻 use sudo to install cargo home bin dir
+- 💚 fix debian rust image
+- 👔 tested rust-debian with semver
+- 👔 some changes to address user permissions
+- Bump alpine from 3.17.3 to 3.18.0 in /latex
+- Bump alpine from 3.17.3 to 3.18.0 in /kubernetes/filewatcher
+- Bump alpine from 3.17.3 to 3.18.0 in /terraform
+- 🐛 allow release builds in rust
+- 💥 rewrite release scripts for rust RHEL and Deb
+- Bump payara/server-web in /payara-jndi-web
+- Bump payara/server-full in /payara-jndi-full
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- ✨ golang compiler for OL8/RHEL8
+- 👷 add golang-ol8 to CI
+- ✨ add container for packagecloud
+- 💚 wrong ref
+- 💚 move rust-deb to matrix build
+- 🔨 use podman for build script
+- 🔨 rewrite target directory for rust
+- ♻️ small refactoring
+- ⚗️ use debian rust image to also build for ubuntu jammy (#113)
+- ✨ add MS SBOM tool to rust images
+- 👔 use rsync instead of cp
+- 👷 use matrix job for publishing
+- Bump benjlevesque/short-sha from 1.2 to 2.2 (#114)
+- ✨ build images for golang on RHEL8 and 9
+- ⬆️ update semver-formatter to v0.3.0
+- ⚗️ idea to run image builds manually
+- 💬 wording
+- ⬆️ update semver-formatter to v0.3.0 (was v0.1.1) (#115)
+- 👷 use bullseye instead of be
+- 💥 sf is not required (was optional)
+- 🔨 test deb/rpm with multimodule rust projects
+- 🔨 only change out directory
+- ✨ bazel image
+- 👷 publish bazel image
+- 👷 create home dir for bazel
+- Bump payara/server-web in /payara-jndi-web (#116)
+- Bump payara/server-full in /payara-jndi-full (#117)
+- Bump alpine from 3.18.0 to 3.18.2 in /latex (#120)
+- Bump alpine from 3.18.0 to 3.18.2 in /kubernetes/filewatcher (#119)
+- Bump alpine from 3.18.0 to 3.18.2 in /terraform (#118)
+- 🐛 ignore package id if not set
+- ⬆️ update sbom to v1.1.5
+- ✨ rust dind
+- ⬆️ update operator to v1.30.0
+- ⬆️ image updates
+- 👷 switch operator-sdk image to podman
+- 🔨 fix lang issue?
+- Lang issue fixed
+- 🩹 idea to fix bash locale issue
+- 💚 wrong distro
+- 💚 fix rhel cleanup
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Bump payara/server-full in /payara-jndi-full
+- Bump payara/server-web in /payara-jndi-web
+- 👷 GL cicd
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Bump alpine from 3.18.2 to 3.18.3 in /kubernetes/filewatcher
+- Bump alpine from 3.18.2 to 3.18.3 in /terraform
+- Bump alpine from 3.18.2 to 3.18.3 in /latex
+- Bump payara/server-full in /payara-jndi-full
+- Bump payara/server-web in /payara-jndi-web
+- Bump actions/checkout from 3 to 4
+- Update jetbrains/teamcity-agent Docker tag to v2023.05.3
+- Update docker.io/golang Docker tag to v1.21
+- Update renovate.json
+- ⬆️ Update Node.js to v20
+- ⬆️ Update docker.io/rust Docker tag to v1.72.0
+- ⬆️ Update ubuntu Docker tag to v22
+- ⬆️ Update docker/setup-buildx-action action to v3
+- ⬆️ Update docker/build-push-action action to v5
+- Bump docker/setup-qemu-action from 2 to 3
+- Bump payara/server-web in /payara-jndi-web
+- Bump payara/server-full in /payara-jndi-full
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- ⬆️ Update alpine Docker tag to v3.18.4
+- ⬆️ Update docker.io/rust Docker tag to v1.72.1
+- Bump azul/zulu-openjdk-alpine from 20 to 21 in /cicd/build17
+- Bump azul/zulu-openjdk-alpine from 20-jre to 21-jre in /cicd/jmeter
+- ⬆️ Update docker.io/rust Docker tag to v1.73.0
+- Update renovate.json
+- Update renovate.json
+- Update renovate.json
+- Update renovate.json
+- Update renovate.json
+- ⬆️ Update payara/server-web Docker tag to v6.2023.10
+- ⬆️ Update Node.js to v21
+- ⬆️ Update payara/server-full Docker tag to v6.2023.10
+- Merge remote-tracking branch 'origin/develop' into develop
+- LICENSE hinzufügen
+- ⬆️ Update azul/zulu-openjdk-alpine Docker tag to v11.0.20.1-jre
+- Container builds
+- Merge branch 'feature/glcicd' into 'develop'
+- 🔨 add pre-commit; also update deb package script
+- Enable shellcheck
+- Use official shellcheck precommit
+- 🔨 add tagging and buildargs
+- Separate build-image from push-image
+- 💚 fix ubuntu package finder
+- 💚 some debugging
+- ⬆️ Update azul/zulu-openjdk-alpine Docker tag to v21.0.1-jre
+- Update renovate.json
+- [DT-14] fix Rustup issue when enabling new targets
+- Merge branch 'feature/fixRustUpgradeProcess' into 'develop'
+- 👷 deploy to gitlab repo some images
+- 💚 idea to fix GH bullseye build
+- 👷 add deploys for bullseye and ol8
+- 💚 fix deploy debian bullseye
+- 💚 for GH you need newline chars
+- 💚 fix packagecloud image
+- 👷 build the packagecloud image on gitlab
+- ⬆️ Update azul/zulu-openjdk-alpine Docker tag to v11.0.21-jre
+- ⬆️ Update azul/zulu-openjdk-alpine Docker tag to v21.0.1
+- Merge remote-tracking branch 'origin/develop' into develop
+- ⬆️ Update payara/server-full Docker tag to v6.2023.11
+- ⬆️ Update payara/server-web Docker tag to v6.2023.11
+- ⬆️ Update docker.io/rust Docker tag to v1.74.0
+- ⬆️ Update alpine Docker tag to v3.18.5
+- 👷 do not build when you deploy as well ;)
+- Bump alpine from 3.18.4 to 3.18.5 in /latex
+- Bump azul/zulu-openjdk-alpine in /cicd/jmeter
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- Bump alpine from 3.18.4 to 3.18.5 in /terraform
+- 🔥 remove rust images (moved to separate repository!)
+- 🔨 test with expiry date
+- ⬆️ Update docker.io/rust Docker tag to v1.74.1
+- ⬆️ Update alpine Docker tag to v3.19.0
+- ⬆️ Update alpine Docker tag to v3.19.0
+- ⬆️ Update payara/server-full Docker tag to v6.2023.12
+- ⬆️ Update payara/server-web Docker tag to v6.2023.12
+- Bump azul/zulu-openjdk-alpine in /cicd/build17
+- ⬆️ Update docker.io/rust Docker tag to v1.75.0
+- ⬆️ Update alpine Docker tag to v3.19.1
+- ⬆️ Update alpine Docker tag to v3.19.1
+- ⬆️ Update payara/server-full Docker tag to v6.2024.1
+- ⬆️ Update payara/server-web Docker tag to v6.2024.1
+- ⬆️ Update azul/zulu-openjdk-alpine Docker tag to v11.0.22-jre
+- ⬆️ Update docker.io/golang Docker tag to v1.22
+- Merge remote-tracking branch 'origin/develop' into develop
+- 🔨 set expiry date on push
+- ⬆️ Update alpine Docker tag to v3.19.1
+- Merge remote-tracking branch 'origin/develop' into develop
+- 🔨 fix wrong label
+- 🔨 set expiry date to 1y for GL builds
+- 🔨 testing with manual build
+- 🔨 chain to quay
+- 🔨 fix wrong input type
+- Bump jetbrains/teamcity-agent in /cicd/tca11
+- ⬆️ Update benjlevesque/short-sha action to v3
+- Bump azul/zulu-openjdk-alpine in /cicd/jmeter
+- Bump azul/zulu-openjdk-alpine in /cicd/build17
+- ⬆️ Update docker.io/rust Docker tag to v1.76.0
+- ⬆️ Update payara/server-web Docker tag to v6.2024.2
+- ⬆️ Update payara/server-full Docker tag to v6.2024.2
+- ⬆️ Update azul/zulu-openjdk-alpine Docker tag to v11.0.25-jre
+- Update renovate config
+- Update packages before installing new ones
+- ⬆️ Update azul/zulu-openjdk-alpine Docker tag to v11.0.28-jre
+- ⬆️ Update jetbrains/teamcity-agent Docker tag to v2023.11.5
+- ⬆️ Update docker.io/golang Docker tag to v1.25
+- ⬆️ Update opensuse/leap Docker tag to v15.6
+- ⬆️ Update payara/server-web Docker tag to v6.2025.9
+- ⬆️ Update alpine Docker tag to v3.22.1
+- ⬆️ Update payara/server-full Docker tag to v6.2025.9
+- ⬆️ Update docker/build-push-action action to v6
+- ⬆️ Update jetbrains/teamcity-agent Docker tag to v2025
+- ⬆️ Update dependency ds_2/ci-templates to v3
+- ⬆️ Update actions/checkout action to v5
+- ⬆️ Update Node.js to v22
+- ⬆️ Update dependency ds_2/ci-templates to v3.1.2
+- ⬆️ Update alpine Docker tag to v3.22.2
+- ⬆️ Update opensuse/leap Docker tag to v42
+- ⬆️ Update payara/server-web Docker tag to v6.2025.10
+- ⬆️ Update payara/server-full Docker tag to v6.2025.10
+- Update CI builds
+- Only release package cloud image on release
+- Moved to golang-images repository
+- ⬆️ Update dependency ubuntu to v24
+- ⬆️ Update azul/zulu-openjdk-alpine Docker tag to v11.0.31-jre
+- ⬆️ Update jetbrains/teamcity-agent Docker tag to v2025.11.4
+- Merge remote-tracking branch 'gh/develop' into develop
+- ⬆️ Update actions/checkout action to v6
+- ⬆️ Update docker/build-push-action action to v7
+
+### Fixed
+
+- Fix CI
+- Idea to fix /tmp issue
+- Use user home temp dir
+
+### Removed
+
+- Remove rustup temp dir if exists before we upgrade
+- Remove dind
+- Remove node-yarn image
