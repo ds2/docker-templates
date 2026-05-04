@@ -4,7 +4,10 @@
 
 All notable changes to this project will be documented in this file.
 
-== Unreleased
+== 0.1.0 - 2026-05-04
+
+* **Release**: https://gitlab.com/ds_2/container-images/-/releases/v0.1.0
+* **Tag**: https://gitlab.com/ds_2/container-images/-/tags/v0.1.0
 
 === ♻️ Refactor
 
