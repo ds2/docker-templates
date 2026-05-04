@@ -14,8 +14,6 @@ build-packagecloud:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   variables:
     CTX_DIR: package-cloud
-    ADDITIONALTAGLIST: "staging"
-    QUAY_IO_EXPIRY: "1w"
 
 # build-latex:
 #   extends: .build-with-buildah
@@ -24,15 +22,6 @@ build-packagecloud:
 #   variables:
 #     CTX_DIR: latex
 #     Dockerfile: Dockerfile
-#     ADDITIONALTAGLIST: "staging"
-#     QUAY_IO_EXPIRY: "1w"
-
-# build-node-yarn-builder:
-#   extends: .build-with-buildah
-#   rules:
-#     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-#   variables:
-#     CTX_DIR: node-yarn-fe-builder
 #     ADDITIONALTAGLIST: "staging"
 #     QUAY_IO_EXPIRY: "1w"
 
