@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v6
       - name: Buildah Action
         id: build-image-buildah
-        uses: redhat-actions/buildah-build@v2
+        uses: redhat-actions/buildah-build@v3
         with:
           image: ${{ matrix.containers.repository || matrix.containers.path }}
           context: ./${{ matrix.containers.path }}
