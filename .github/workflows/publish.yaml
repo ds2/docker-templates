@@ -59,7 +59,7 @@ jobs:
       - name: Buildah Action
         id: build-image-buildah
         if: steps.check_files.outputs.run_job == 'true'
-        uses: redhat-actions/buildah-build@v2
+        uses: redhat-actions/buildah-build@v3.0.2
         with:
           image: ${{ matrix.containers.repository || matrix.containers.path }}
           context: ./${{ matrix.containers.path }}
